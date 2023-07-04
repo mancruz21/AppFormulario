@@ -1,10 +1,28 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react';
+import { View, TextInput, Button } from 'react-native';
 
-export default function Seccion1() {
+const Seccion1 = () => {
+  const [questions, setQuestions] = useState([]);
+  const [currentQuestion, setCurrentQuestion] = useState('');
+
+  const handleAddQuestion = () => {
+    setQuestions([...questions, currentQuestion]);
+    setCurrentQuestion('');
+  };
+
   return (
     <View>
-      <Text>Por favor contesta las siguientes preguntas</Text>
+      {questions.map((question, index) => (
+        <Text key={index}>{question}</Text>
+      ))}
+      <TextInput
+        value={currentQuestion}
+        onChangeText={setCurrentQuestion}
+        placeholder="Enter a question"
+      />
+      <Button onPress={handleAddQuestion} title="Add Question" />
     </View>
-  )
-}
+  );
+};
+
+export default Seccion1;

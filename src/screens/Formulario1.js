@@ -18,7 +18,7 @@ export default function Formulario1(props){
                 * Para el caso de las personas menores de 18 años edad (18 años), el suministro de la información se realizará a través del acompañamiento de los padres o de la
                  persona del hogar que esté a cargo de su cuidado.
                  *Para el caso de las personas que no tengan la capacidad de responder por sí mismas, la información será suministrada por un adulto del hogar o por parte de un cuidador
-                  con tiempo de servicio/ acompañamiento mayor o igual a seis meses (≥ 6 meses).
+                  con tiempo de servicio/ acompañamiento mayor o igual a seis meses (≥ 6 meses oooo).
  
             </Text>
             <Button onPress={() => goToPage("Seccion")} title="Siguiente" />
