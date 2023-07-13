@@ -12,6 +12,11 @@ export default function NavigationStack(){
             <Stack.Screen name="Settings" component={SettingsScreen}/>
             <Stack.Screen name="Home" component={HomeScreen}/>
             <Stack.Screen name="Seccion" component={Seccion1}/>
+
+            <Stack.Screen 
+            name="recoverpassword" 
+            component={RecoverPassword}
+            options={{title: "Recuperar contraseña"}}/>
             
         </Stack.Navigator>
     )
