@@ -95,6 +95,8 @@ export default function IdentificacionScreen(props) {
                 maxLength={10}
                 onChangeText={setNumeroIdentificacion}
                 value={numeroIdentificacion}
+                underlineColorAndroid="transparent" // Para Android
+                selectionColor="#02B3C6" // Color de la línea cuando se selecciona el campo
               />
             </View>
           )}
@@ -145,9 +147,8 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    borderRadius: 5,
+    borderBottomWidth: 1, // Añadimos el borde inferior
+    borderBottomColor: "#02B3C6", // Color del borde inferior
     paddingHorizontal: 10,
   },
   /* Estilos Boton */
