@@ -6,47 +6,50 @@ import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../components/firebase-config';
 
-export default function RecuperacioScreen(props) {
+export default function RecuperacioScreen({navigation}) {
 
     const [email, setEmail] = useState("")
     const [errorEmail, setErrorEmail] = useState(null)
-    const [showMessage, setShowMessage] = useState(false);
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    const handleResetEmail = () => {
+    const onSubmit = () => {
+        if (!validateData()) {
+            return
+        }
 
-          // Validar correo electrónico
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      Alert.alert('Error', 'Por favor, introduce un correo electrónico válido');
-      return;
+        sendPasswordResetEmail(auth, email)
+      .then(() => {
+        Alert.alert('Éxito', 'Se ha enviado un correo electrónico para restablecer la contraseña');
+      })
+      .catch((error) => {
+        console.log(error);
+        Alert.alert('Error', 'No se pudo enviar el correo electrónico para el restablecimiento de contraseña');
+      });
+
+        console.log("Fuck yeah!!!")
     }
 
+    const validateData = () => {
+        setErrorEmail(null)
+        let valid = true
+        
 
-    sendPasswordResetEmail(auth, email)
-    .then(() => {
-      console.log('Se ha enviado el correo electrónico de restablecimiento de contraseña');
-      setShowMessage(true);
-      setEmail(""); // Restablecer el valor del campo de texto a una cadena vacía
-      // Aquí puedes mostrar un mensaje al usuario o redirigirlo a otra pantalla
-    })
-    .catch(error => {
-      console.log(error);
-      Alert.alert(error.message);
-    });
-      
-  
+        if (!validateData(email)) {
+            setErrorEmail("Debes ingresar un email valido.")
+            valid = false
+        }
+
+        return valid
     }
-    
-    const {navigation} = props;
 
-  const goToPage = (pageName) => {
-    navigation.navigate(pageName);
-  };
+    const validateEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      };
 
-   
+
   return (
     <View style={styles.formContainer}>
        <Input 
@@ -65,18 +68,25 @@ export default function RecuperacioScreen(props) {
             />
         }
 
-        /> 
-        <Button 
-          title="Recuperar Contraseña"
-          containerStyle={styles.btnContainer}
-          buttonStyle={styles.btnRecover}
-          onPress={handleResetEmail}
-        />
-        {showMessage && (
-        <Text style={styles.messageText}>Verifica tu correo electrónico para restablecer la contraseña.</Text>
-      )}
+        
 
-    
+        /> 
+
+         {/* Boton */}
+      <TouchableOpacity
+        style={styles.boton}
+        title="Recuperar Contraseña"
+        containerStyle={styles.btnContainer}
+        buttonStyle={styles.btnRecover}
+        onPress={onSubmit}
+        
+      >
+        <Text style={styles.textoBoton}>Recuperar contraseña</Text>
+      </TouchableOpacity>
+       
+       
+        
+
     </View>
   )
 }
@@ -106,10 +116,25 @@ const styles = StyleSheet.create({
     icon: {
         color: "#c1c1c1"
     },
-    messageText: {
+    boton: {
+        backgroundColor: "#02B3C6",
+        borderColor: "#707070",
+        borderWidth: 1,
+        borderRadius: 20,
+        marginLeft: 20,
+        marginRight: 20,
         marginTop: 20,
-        color: "#442484",
+        marginBottom: 10,
+        flexDirection: "row", // Alinea el icono a la izquierda del texto
+        alignItems: "center", // Alinea verticalmente el contenido
+        justifyContent: "center", // Alinea horizontalmente el contenido
+      },
+    
+      textoBoton: {
+        textAlign: "center",
+        padding: 10,
+        color: "white",
         fontSize: 16,
-        textAlign: "center"
-      }
+        
+      },
 })
