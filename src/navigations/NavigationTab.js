@@ -51,7 +51,7 @@ export default function NavigationTab() {
 function renderLogo() {
 
     return(
-        <Image source={require('../assets/logo1.webp/')} 
+        <Image source={require('../assets/Logo_Color.png/')} 
         style={{width: 45, height: 60}}
         />
     )

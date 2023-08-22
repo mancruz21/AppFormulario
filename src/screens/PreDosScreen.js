@@ -2,869 +2,848 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  Button,
   TextInput,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
 } from "react-native";
 import { CheckBox } from "react-native-elements";
-
+import RNPickerSelect from "react-native-picker-select";
 export default function PreDosScreen(props) {
   const { navigation } = props;
+  const [opcion1, setOpcion1] = useState(null);
+  const [opcion2, setOpcion2] = useState(null);
+  const [opcion3, setOpcion3] = useState(null);
+  const [selectedOption4, setSelectedOption4] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [discapacidad, setDiscapacidad] = useState(null);
+  const [OptionSelection, setOptionSelection] = useState("");
+  const [etnia, setEtnia] = useState(null);
+  const [indigena, setIndigena] = useState("");
+  const [educativo, setEducativo] = useState(null);
+  const [educacionSuperior, setEducacionSuperior] = useState(null);
+  const [ocupacion, setOcupacion] = useState([]);
+  const [salario, setSalario] = useState(null);
+  const [promedio, setPromedio] = useState(null);
+
+  const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
+  const [additionalInfo, setAdditionalInfo] = useState("");
 
   const goToPreguntaTres = () => {
     navigation.navigate("Pregunta 2.1");
+    console.log("Opcion 1:", opcion1);
+    console.log("Opcion 2:", opcion2);
+    console.log("Opcion 3:", opcion3);
+    console.log("Opcion 4:", selectedOption4);
   };
-  const [respuestas, setRespuestas] = useState({
-    pregunta1: [],
-    pregunta2: "",
-    pregunta3: "",
-    pregunta4: "",
-    pregunta5: "",
-    pregunta6: "",
-    pregunta7: "",
-    pregunta8: "",
-  });
 
-  const handleRespuesta = (pregunta, respuesta) => {
-    setRespuestas((prevRespuestas) => {
-      const respuestasSeleccionadas = prevRespuestas[pregunta];
-
-      if (respuestasSeleccionadas.includes(respuesta)) {
-        // Si la respuesta ya está seleccionada, la deseleccionamos
-        return {
-          ...prevRespuestas,
-          [pregunta]: respuestasSeleccionadas.filter((r) => r !== respuesta),
-        };
-      } else {
-        // Si la respuesta no está seleccionada, la seleccionamos si no se ha alcanzado el límite de 4 opciones
-        if (respuestasSeleccionadas.length < 4) {
-          return {
-            ...prevRespuestas,
-            [pregunta]: [...respuestasSeleccionadas, respuesta],
-          };
-        } else {
-          return prevRespuestas;
-        }
+  const handleOptionChange = (option) => {
+    if (selectedOptions.includes(option)) {
+      setSelectedOptions(selectedOptions.filter((item) => item !== option));
+    } else {
+      if (
+        selectedOption4 === "Población con discapacidad" &&
+        selectedOptions.length < 1
+      ) {
+        setSelectedOptions([...selectedOptions, option]);
       }
-    });
-  };
-
-  const handleSubmit = () => {
-    // Aquí puedes realizar cualquier acción con las respuestas del formulario
-    console.log(respuestas);
+    }
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView>
+      {/* Pregunta 2.1 */}
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-            <Text style={styles.titulo}>
-              {" "}
-              CARACTERÍSTICAS SOCIODEMOGRÁFICAS
+
+            <Text style={styles.titulo}>CARACTERÍSTICAS SOCIODEMOGRÁFICAS</Text>
+
+            <Text style={styles.question}> PREGUNTA 2.1 ( SELECCIÓN MÚLTIPLE - MÁXIMO 4 OPCIONES) </Text>
+
+          </View>
+          <View style={styles.linea} />
+        </View>
+      </View>
+
+
+
+
+
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
+            <Text style={styles.pregunta}>
+              Según su situación social, etapa de vida y rol en el que se
+              identifique, indique el tipo de población al que pertenece:
+            </Text>
+            {/* Opcion 1 */}
+            <Text style={styles.preguntas}> Opcion 1</Text>
+            <View style={styles.inputDate}>
+              <CheckBox
+                title="Población Migrante"
+                checked={opcion1 === "Población Migrante"}
+                onPress={() => setOpcion1("Población Migrante")}
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  opcion1 === "Población Migrante"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
+              <CheckBox
+                title="Población en proceso de reincorporación / reintegración"
+                checked={
+                  opcion1 ===
+                  "Población en proceso de reincorporación / reintegración"
+                }
+                onPress={() =>
+                  setOpcion1(
+                    "Población en proceso de reincorporación / reintegración"
+                  )
+                }
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  opcion1 ===
+                    "Población en proceso de reincorporación / reintegración"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
+
+              <CheckBox
+                title="Víctima de Conflicto Armado - Ley 1448 del 2011"
+                checked={
+                  opcion1 === "Víctima de Conflicto Armado - Ley 1448 del 2011"
+                }
+                onPress={() =>
+                  setOpcion1("Víctima de Conflicto Armado - Ley 1448 del 2011")
+                }
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  opcion1 === "Víctima de Conflicto Armado - Ley 1448 del 2011"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
+            </View>
+            {/* Opcion 2 */}
+            <Text style={styles.preguntas}> Opcion 2 </Text>
+            <View style={styles.inputDate}>
+              <CheckBox
+                title="Infancia (10 a 11 años)"
+                checked={opcion2 === "Infancia (10 a 11 años)"}
+                onPress={() => setOpcion2("Infancia (10 a 11 años)")}
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  opcion2 === "Infancia (10 a 11 años)"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
+
+              <CheckBox
+                title="Adolescente (12 a 17 años)"
+                checked={opcion2 === "Adolescente (12 a 17 años)"}
+                onPress={() => setOpcion2("Adolescente (12 a 17 años)")}
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  opcion2 === "Adolescente (12 a 17 años)"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
+              <CheckBox
+                title="Juventud (18 a 28 años)"
+                checked={opcion2 === "Juventud (18 a 28 años)"}
+                onPress={() => setOpcion2("Juventud (18 a 28 años)")}
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  opcion2 === "Juventud (18 a 28 años)"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
+              <CheckBox
+                title="Adultez (29 a 59 años)"
+                checked={opcion2 === "Adultez (29 a 59 años)"}
+                onPress={() => setOpcion2("Adultez (29 a 59 años)")}
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  opcion2 === "Adultez (29 a 59 años)"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
+              <CheckBox
+                title="Vejez (60 y más)            "
+                checked={opcion2 === "Vejez (60 y más)"}
+                onPress={() => setOpcion2("Vejez (60 y más)")}
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  opcion2 === "Vejez (60 y más)"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
+            </View>
+
+
+            {/* Opcion 3 */}
+            <Text style={styles.preguntas}> Opcion 3 </Text>
+            <View style={styles.inputDate}>
+              <CheckBox
+                title="Mujer embarazada y/o lactante"
+                checked={opcion3 === "Mujer embarazada y/o lactante"}
+                onPress={() => setOpcion3("Mujer embarazada y/o lactante")}
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  opcion3 === "Mujer embarazada y/o lactante"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
+
+              <CheckBox
+                title="Cabeza de Familia                 "
+                checked={opcion3 === "Cabeza de Familia"}
+                onPress={() => setOpcion3("Cabeza de Familia")}
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  opcion3 === "Cabeza de Familia"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
+            </View>
+
+            <View>
+              {/* Opcion 4 */}
+              <Text style={styles.preguntas}> Opcion 4 </Text>
+              <View style={styles.inputDate}>
+                <CheckBox
+                  title="Población con Discapacidad"
+                  checked={selectedOption4 === "Población con Discapacidad"}
+                  onPress={() =>
+                    setSelectedOption4("Población con Discapacidad")
+                  }
+                  containerStyle={styles.checkBoxContainer}
+                  textStyle={
+                    selectedOption4 === "Población con Discapacidad"
+                      ? styles.selectedOptionText
+                      : styles.checkBoxText
+                  }
+                  checkedColor="#BA0C2F"
+                />
+                <CheckBox
+                  title="Población LGBTI"
+                  checked={selectedOption4 === "Población LGBTI"}
+                  onPress={() => setSelectedOption4("Población LGBTI")}
+                  containerStyle={styles.checkBoxContainer}
+                  textStyle={
+                    selectedOption4 === "Población LGBTI"
+                      ? styles.selectedOptionText
+                      : styles.checkBoxText
+                  }
+                  checkedColor="#BA0C2F"
+                />
+                {selectedOption4 === "Población con Discapacidad" && (
+
+                  <View style={styles.questionContainer}>
+                    <Text style={styles.question2}> PREGUNTA 2.2 ( SELECCIÓN ÚNICA ) </Text>
+                    <View style={styles.linea1} />
+                    <Text style={styles.pregunta}>
+                      Si es una persona con discapacidad, indique la categoría
+                      de la misma.
+                    </Text>
+
+                    <RNPickerSelect
+                      placeholder={{
+                        label: "Selecciona una opción",
+                        value: discapacidad,
+                      }}
+                      value={discapacidad}
+                      onValueChange={(value) => setDiscapacidad(value)}
+                      items={[
+                        { label: "Fisica", value: "Fisica" },
+                        { label: "Visual", value: "Visual" },
+                        { label: "Auditiva", value: "Auditiva" },
+                        { label: "Intelectual", value: "Intelectual" },
+                        { label: "Psicosocial", value: "Psicosocial" },
+                        { label: "Sordoceguera", value: "Sordoceguera" },
+                        { label: "Multiple", value: "Multiple" },
+                      ]}
+                    />
+
+                    <Text style={styles.question2}> PREGUNTA 2.3 ( SELECCIÓN ÚNICA ) </Text>
+                    <View style={styles.linea1} />
+
+                    <Text style={styles.pregunta}>
+                      Si es una persona con discapacidad, ¿Cuenta en la
+                      actualidad con el Certificado de Discapacidad a partir del
+                      procedimiento de valoración clínica realizado por un
+                      equipo multidisciplinario de salud**?
+                    </Text>
+
+                    <View style={styles.inputDate}>
+                      <CheckBox
+                        title="Si"
+                        checked={OptionSelection === "Si"}
+                        onPress={() => setOptionSelection("Si")}
+                        containerStyle={styles.checkBoxContainer}
+                        textStyle={
+                          OptionSelection === "Si"
+                            ? styles.selectedOptionText
+                            : styles.checkBoxText
+                        }
+                        checkedColor="#BA0C2F"
+                      />
+                      <CheckBox
+                        title="No"
+                        checked={OptionSelection === "No"}
+                        onPress={() => setOptionSelection("No")}
+                        containerStyle={styles.checkBoxContainer}
+                        textStyle={
+                          OptionSelection === "No"
+                            ? styles.selectedOptionText
+                            : styles.checkBoxText
+                        }
+                        checkedColor="#BA0C2F"
+                      />
+                    </View>
+                  </View>
+                )}
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+
+      {/* Pregunta 2.4 */}
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
+            <Text style={styles.question1}> PREGUNTA 2.4 ( SELECCIÓN ÚNICA ) </Text>
+          </View>
+          <View style={styles.linea} />
+        </View>
+      </View>
+
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
+            <Text style={styles.pregunta}>
+              De acuerdo a sus costumbres y tradiciones, usted se considera:
+            </Text>
+            <RNPickerSelect
+              placeholder={{
+                label: "Selecciona una opción",
+                value: etnia,
+              }}
+              value={etnia}
+              onValueChange={(value) => {
+                setEtnia(value);
+                setShowAdditionalInfo(value === "Indígena");
+              }}
+              items={[
+                { label: "Indígena", value: "Indígena" },
+                { label: "ROM (Gitanos)", value: "ROM (Gitanos)" },
+                {
+                  label:
+                    "Raizal del Archipiélago de San Andrés y Providencia",
+                  value:
+                    "Raizal del Archipiélago de San Andrés y Providencia",
+                },
+                {
+                  label: "Palenquero de San Basilio",
+                  value: "Palenquero de San Basilio",
+                },
+                {
+                  label:
+                    "Negro(a), Mulato(a), Afrocolombiano(a) o Afrodescendientel",
+                  value:
+                    "Negro(a), Mulato(a), Afrocolombiano(a) o Afrodescendiente",
+                },
+                {
+                  label: "Ninguno de los anteriores",
+                  value: "Ninguno de los anteriores",
+                },
+              ]}
+            />
+            {showAdditionalInfo && (
+              <View>
+                <Text style={styles.preguntas}>
+                  Indique el nombre del pueblo indígena al que pertenece:
+                </Text>
+                <TextInput
+                  placeholder="Pueblo indígena"
+                  style={styles.inputLabels}
+                  underlineColorAndroid="transparent"
+                  selectionColor="#efefef"
+                  value={indigena}
+                  onChangeText={setIndigena}
+                />
+              </View>
+            )}
+
+
+
+
+
+            
+          </View>
+
+
+
+        </View>
+      </View>
+
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
+            <Text style={styles.question1}> PREGUNTA 2.5 ( SELECCIÓN ÚNICA ) </Text>
+          </View>
+          <View style={styles.linea} />
+        </View>
+      </View>
+
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
+            <Text style={styles.pregunta}>
+              Indique cuál es el último nivel educativo alcanzado por usted:{" "}
+            </Text>
+            <View style={styles.inputDate}>
+              <CheckBox
+                title="Preescolar"
+                checked={educativo === "Preescolar"}
+                onPress={() => setEducativo("Preescolar")}
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  educativo === "Preescolar"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
+
+              <CheckBox
+                title="Educación básica primaria (1 a 5 grado)"
+                checked={
+                  educativo === "Educación básica primaria (1 a 5 grado)"
+                }
+                onPress={() =>
+                  setEducativo("Educación básica primaria (1 a 5 grado)")
+                }
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  educativo === "Educación básica primaria (1 a 5 grado)"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
+              <CheckBox
+                title="Educación básica secundaria (6 a 9 grado)"
+                checked={
+                  educativo === "Educación básica secundaria (6 a 9 grado)"
+                }
+                onPress={() =>
+                  setEducativo("Educación básica secundaria (6 a 9 grado)")
+                }
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  educativo === "Educación básica secundaria (6 a 9 grado)"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
+              <CheckBox
+                title="Educación media (10 a 11 grado)"
+                checked={educativo === "Educación media (10 a 11 grado)"}
+                onPress={() => setEducativo("Educación media (10 a 11 grado)")}
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  educativo === "Educación media (10 a 11 grado)"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
+              <CheckBox
+                title="Educación Superior"
+                checked={educativo === "Educación Superior"}
+                onPress={() => setEducativo("Educación Superior")}
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  educativo === "Educación Superior"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
+
+              {educativo === "Educación Superior" && (
+                <View style={styles.questionContainer}>
+                  <Text style={styles.preguntas}>
+                    Seleccione el tipo de nivel educativo que tiene
+                  </Text>
+                  <RNPickerSelect
+                    placeholder={{
+                      label: "Selecciona una opción",
+                      value: educacionSuperior,
+                    }}
+                    value={educacionSuperior}
+                    onValueChange={(value) => setEducacionSuperior(value)}
+                    items={[
+                      { label: "Técnico", value: "Técnico" },
+                      { label: "Técnologica", value: "Técnologica" },
+                      { label: "Profesional", value: "Profesional" },
+                    ]}
+                  />
+                </View>
+              )}
+
+              <CheckBox
+                title="Postgrado"
+                checked={educativo === "Postgrado"}
+                onPress={() => setEducativo("Postgrado")}
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  educativo === "Postgrado"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
+
+              <CheckBox
+                title="Ninguno"
+                checked={educativo === "Ninguno"}
+                onPress={() => setEducativo("Ninguno")}
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  educativo === "Ninguno"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
+            </View>
+
+
+          </View>
+
+        </View>
+      </View>
+
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
+            <Text style={styles.question1}> PREGUNTA 2.6 ( SELECCIÓN ÚNICA ) </Text>
+          </View>
+          <View style={styles.linea} />
+        </View>
+      </View>
+
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
+            <Text style={styles.pregunta}>
+              Durante los últimos 6 meses, ha estado principalmente:{" "}
             </Text>
 
-            <View style={styles.preguntaContainer}>
-              <Text style={styles.pregunta}>
-                PREGUNTA 2.1 (SELECCIÓN MÚLTIPLE - MÁXIMO 4 OPCIONES)
-              </Text>
-              <View style={styles.recuadro}>
-                <Text style={styles.recuadroTitulo}>Opción 1</Text>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta1.includes(
-                      "Población Migrante"
-                    )}
-                    onPress={() =>
-                      handleRespuesta("pregunta1", "Población Migrante")
-                    }
-                  />
-
-                  <Text style={styles.opcionTexto}>1. Población Migrante</Text>
-                </View>
-
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta1.includes(
-                      "Población en proceso de reincorporación"
-                    )}
-                    onPress={() =>
-                      handleRespuesta(
-                        "pregunta1",
-                        "Población en proceso de reincorporación"
-                      )
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    2. Población en proceso de reincorporación
-                  </Text>
-                </View>
-
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta1.includes(
-                      "Víctima de Conflicto Armado – Ley 1448"
-                    )}
-                    onPress={() =>
-                      handleRespuesta(
-                        "pregunta1",
-                        "Víctima de Conflicto Armado – Ley 1448"
-                      )
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    3. Víctima de Conflicto Armado – Ley 1448
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.recuadro}>
-                <Text style={styles.recuadroTitulo}>Opción 2</Text>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta1.includes(
-                      "Infancia (10 a 11 años)"
-                    )}
-                    onPress={() =>
-                      handleRespuesta("pregunta1", "Infancia (10 a 11 años)")
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    4. Infancia (10 a 11 años)
-                  </Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta1.includes(
-                      "Adolescente (12 a 17 años)"
-                    )}
-                    onPress={() =>
-                      handleRespuesta("pregunta1", "Adolescente (12 a 17 años)")
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    5. Adolescente (12 a 17 años)
-                  </Text>
-                  <Text></Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta1.includes(
-                      "Juventud (18 a 28 años)"
-                    )}
-                    onPress={() =>
-                      handleRespuesta("pregunta1", "Juventud (18 a 28 años)")
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    6. Juventud (18 a 28 años)
-                  </Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta1.includes(
-                      "Adultez (29 a 59 años)"
-                    )}
-                    onPress={() =>
-                      handleRespuesta("pregunta1", "Adultez (29 a 59 años)")
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    7. Adultez (29 a 59 años)
-                  </Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta1.includes("Vejez (60 y más)")}
-                    onPress={() =>
-                      handleRespuesta("pregunta1", "Vejez (60 y más)")
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>8. Vejez (60 y más)</Text>
-                </View>
-              </View>
-
-              <View style={styles.recuadro}>
-                <Text style={styles.recuadroTitulo}>Opción 3</Text>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta1.includes(
-                      " Mujer embarazada y/o lactante"
-                    )}
-                    onPress={() =>
-                      handleRespuesta(
-                        "pregunta1",
-                        " Mujer embarazada y/o lactante"
-                      )
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    9. Mujer embarazada y/o lactante
-                  </Text>
-                </View>
-
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta1.includes(
-                      " Cabeza de familia"
-                    )}
-                    onPress={() =>
-                      handleRespuesta("pregunta1", " Cabeza de familia")
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>10. Cabeza de familia</Text>
-                </View>
-              </View>
-              <View style={styles.recuadro}>
-                <Text style={styles.recuadroTitulo}>Opción 4</Text>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta1.includes(
-                      " Población con Discapacidad"
-                    )}
-                    onPress={() =>
-                      handleRespuesta(
-                        "pregunta1",
-                        " Población con Discapacidad"
-                      )
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    11. Población con Discapacidad
-                  </Text>
-                </View>
-
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta1.includes("  Población LGBTI")}
-                    onPress={() =>
-                      handleRespuesta("pregunta1", "  Población LGBTI")
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>12. Población LGBTI</Text>
-                </View>
-              </View>
+            <View style={styles.inputDate}>
+              <CheckBox
+                title="Trabajando - Trabajador Urbano - Rural"
+                checked={ocupacion === "Trabajando - Trabajador Urbano - Rural"}
+                onPress={() =>
+                  setOcupacion("Trabajando - Trabajador Urbano - Rural")
+                }
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  ocupacion === "Trabajando - Trabajador Urbano - Rural"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
             </View>
 
-            <View style={styles.preguntaContainer}>
-              <Text style={styles.pregunta}>
-                PREGUNTA 2.2 (SELECCIÓN ÚNICA)
-              </Text>
-              <View style={styles.recuadro}>
-                <Text style={styles.recuadroTitulo}>
-                  Si es una persona con discapacidad, indique la categoría de la
-                  misma:
-                </Text>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta2 === "Física"}
-                    onPress={() => handleRespuesta("pregunta2", "Física")}
-                  />
-                  <Text style={styles.opcionTexto}>1. Física</Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta2 === "Visual"}
-                    onPress={() => handleRespuesta("pregunta2", "Visual")}
-                  />
-                  <Text style={styles.opcionTexto}>2. Visual</Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta2 === "Auditiva"}
-                    onPress={() => handleRespuesta("pregunta2", "Auditiva")}
-                  />
-                  <Text style={styles.opcionTexto}>3. Auditiva</Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta2 === "Intelectual"}
-                    onPress={() => handleRespuesta("pregunta2", "Intelectual")}
-                  />
-                  <Text style={styles.opcionTexto}>4. Intelectual</Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta2 === "Psicosocial"}
-                    onPress={() => handleRespuesta("pregunta2", "Psicosocial")}
-                  />
-                  <Text style={styles.opcionTexto}>5. Psicosocial</Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta2 === "Sordoceguera"}
-                    onPress={() => handleRespuesta("pregunta2", "Sordoceguera")}
-                  />
-                  <Text style={styles.opcionTexto}>6. Sordoceguera</Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta2 === "Múltiple"}
-                    onPress={() => handleRespuesta("pregunta2", "Múltiple")}
-                  />
-                  <Text style={styles.opcionTexto}>7. Múltiple</Text>
-                </View>
-              </View>
-            </View>
+            <CheckBox
+              title="En búsqueda de empleo (cesante)"
+              checked={ocupacion === "En búsqueda de empleo (cesante)"}
+              onPress={() => setOcupacion("En búsqueda de empleo (cesante)")}
+              containerStyle={styles.checkBoxContainer}
+              textStyle={
+                ocupacion === "En búsqueda de empleo (cesante)"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            />
 
-            <View style={styles.preguntaContainer}>
-              <Text style={styles.pregunta}>
-                PREGUNTA 2.3 (SELECCIÓN ÚNICA)
-              </Text>
-              <View style={styles.recuadro}>
-                <Text style={styles.recuadroTitulo}>
-                  Si es una persona con discapacidad,¿Cuenta en la actualidad
-                  con el Certificado de Discapacidad a partir del procedimiento
-                  de valoración clínica realizado por un equipo
-                  multidisciplinario de salud**?
-                </Text>
-                <View style={styles.checkboxContainer}>
-                  <CheckBox
-                    title="Sí"
-                    checked={respuestas.pregunta3 === "Sí"}
-                    onPress={() => handleRespuesta("pregunta3", "Sí")}
-                    containerStyle={styles.checkbox}
-                  />
-                  <CheckBox
-                    title="No"
-                    checked={respuestas.pregunta3 === "No"}
-                    onPress={() => handleRespuesta("pregunta3", "No")}
-                    containerStyle={styles.checkbox}
-                  />
-                </View>
-              </View>
-            </View>
+            <CheckBox
+              title="Con incapacidad permanente para trabajar"
+              checked={ocupacion === "Con incapacidad permanente para trabajar"}
+              onPress={() =>
+                setOcupacion("Con incapacidad permanente para trabajar")
+              }
+              containerStyle={styles.checkBoxContainer}
+              textStyle={
+                ocupacion === "Con incapacidad permanente para trabajar"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            />
 
-            <View style={styles.preguntaContainer}>
-              <Text style={styles.pregunta}>
-                PREGUNTA 2.4 (Selección Única)
-              </Text>
+            <CheckBox
+              title="Estudiando"
+              checked={ocupacion === "Estudiando"}
+              onPress={() => setOcupacion("Estudiando")}
+              containerStyle={styles.checkBoxContainer}
+              textStyle={
+                ocupacion === "Estudiando"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            />
 
-              <View style={styles.recuadro}>
-                <Text style={styles.recuadroTitulo}>
-                  De acuerdo a sus constumbres y tradiciones, usted se
-                  considera:
-                </Text>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta4 === "Indígena"}
-                    onPress={() => handleRespuesta("pregunta4", "Indígena")}
-                  />
-                  <Text style={styles.opcionTexto}>1. Indígena</Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta4 === "ROM (Gitanos)"}
-                    onPress={() =>
-                      handleRespuesta("pregunta4", "ROM (Gitanos)")
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>2. ROM (Gitanos)</Text>
-                </View>
+            <CheckBox
+              title="Actividades del hogar (sin ingresos)"
+              checked={ocupacion === "Actividades del hogar (sin ingresos)"}
+              onPress={() =>
+                setOcupacion("Actividades del hogar (sin ingresos)")
+              }
+              containerStyle={styles.checkBoxContainer}
+              textStyle={
+                ocupacion === "Actividades del hogar (sin ingresos)"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            />
 
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={
-                      respuestas.pregunta4 ===
-                      "Raizal del Archipiélago de San Andrés y P"
-                    }
-                    onPress={() =>
-                      handleRespuesta(
-                        "pregunta4",
-                        "Raizal del Archipiélago de San Andrés y P"
-                      )
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    3. Raizal del Archipiélago de San Andrés y P
-                  </Text>
-                </View>
+            <CheckBox
+              title="Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
+              checked={
+                ocupacion ===
+                "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
+              }
+              onPress={() =>
+                setOcupacion(
+                  "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
+                )
+              }
+              containerStyle={styles.checkBoxContainer}
+              textStyle={
+                ocupacion ===
+                  "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            />
 
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={
-                      respuestas.pregunta4 === "Palenquero de San Basilio"
-                    }
-                    onPress={() =>
-                      handleRespuesta("pregunta4", "Palenquero de San Basilio")
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    4. Palenquero de San Basilio
-                  </Text>
-                </View>
-
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={
-                      respuestas.pregunta4 ===
-                      "Negro(a), Mulato(a), Afrocolombiano(a)"
-                    }
-                    onPress={() =>
-                      handleRespuesta(
-                        "pregunta4",
-                        "Negro(a), Mulato(a), Afrocolombiano(a)"
-                      )
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    5. Negro(a), Mulato(a), Afrocolombiano(a)
-                  </Text>
-                </View>
-
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={
-                      respuestas.pregunta4 === "Ninguno de los anteriores"
-                    }
-                    onPress={() =>
-                      handleRespuesta("pregunta4", "Ninguno de los anteriores")
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    6. Ninguno de los anteriores
-                  </Text>
-                </View>
-              </View>
-            </View>
-
-            <View style={styles.preguntaContainer}>
-              <Text style={styles.pregunta}>
-                PREGUNTA 2.5 (Selección Única)
-              </Text>
-              <View style={styles.recuadro}>
-                <Text style={styles.recuadroTitulo}>
-                  Indique cuál es el último nivel educativo alcanzado por usted:
-                </Text>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta5 === "Preescolar"}
-                    onPress={() => handleRespuesta("pregunta5", "Preescolar")}
-                  />
-                  <Text style={styles.opcionTexto}>1. Preescolar</Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={
-                      respuestas.pregunta5 ===
-                      "Educación básica primaria (1 a 5 grado)"
-                    }
-                    onPress={() =>
-                      handleRespuesta(
-                        "pregunta5",
-                        "Educación básica primaria (1 a 5 grado)"
-                      )
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    2. Educación básica primaria (1 a 5 grado)
-                  </Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={
-                      respuestas.pregunta5 ===
-                      "Educación básica secundaria (6 a 9 grado)"
-                    }
-                    onPress={() =>
-                      handleRespuesta(
-                        "pregunta5",
-                        "Educación básica secundaria (6 a 9 grado)"
-                      )
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    3. Educación básica secundaria (6 a 9 grado)
-                  </Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={
-                      respuestas.pregunta5 === "Educación media (10 a 11 grado)"
-                    }
-                    onPress={() =>
-                      handleRespuesta(
-                        "pregunta5",
-                        "Educación media (10 a 11 grado)"
-                      )
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    4. Educación media (10 a 11 grado)
-                  </Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta5 === "Educación Superior"}
-                    onPress={() =>
-                      handleRespuesta("pregunta5", "Educación Superior")
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>5. Educación Superior</Text>
-                </View>
-                {respuestas.pregunta5 === "Educación Superior" && (
-                  <View style={styles.subopcionesContainer}>
-                    <View style={styles.opcionesContainer}>
-                      <CheckBox
-                        checked={respuestas.pregunta11 === "Técnica"}
-                        onPress={() => handleRespuesta("pregunta11", "Técnica")}
-                      />
-                      <Text style={styles.subopcionTexto}>- Técnica</Text>
-                    </View>
-                    <View style={styles.opcionesContainer}>
-                      <CheckBox
-                        checked={respuestas.pregunta11 === "Tecnológica"}
-                        onPress={() =>
-                          handleRespuesta("pregunta11", "Tecnológica")
-                        }
-                      />
-                      <Text style={styles.subopcionTexto}>- Tecnológica</Text>
-                    </View>
-                    <View style={styles.opcionesContainer}>
-                      <CheckBox
-                        checked={respuestas.pregunta11 === "Profesional"}
-                        onPress={() =>
-                          handleRespuesta("pregunta11", "Profesional")
-                        }
-                      />
-                      <Text style={styles.subopcionTexto}>- Profesional</Text>
-                    </View>
-                  </View>
-                )}
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta5 === "Postgrado"}
-                    onPress={() => handleRespuesta("pregunta5", "Postgrado")}
-                  />
-                  <Text style={styles.opcionTexto}>6. Postgrado</Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta5 === "Ninguno"}
-                    onPress={() => handleRespuesta("pregunta5", "Ninguno")}
-                  />
-                  <Text style={styles.opcionTexto}>7. Ninguno</Text>
-                </View>
-              </View>
-            </View>
-
-            <View style={styles.preguntaContainer}>
-              <Text style={styles.pregunta}>
-                PREGUNTA 2.6 (Selección Única)
-              </Text>
-              <View style={styles.recuadro}>
-                <Text style={styles.recuadroTitulo}>
-                  Durante los últimos 6 meses, ha estado principalmente :
-                </Text>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta6 === "Trabajando"}
-                    onPress={() => handleRespuesta("pregunta6", "Trabajando")}
-                  />
-                  <Text style={styles.opcionTexto}>1. Trabajando</Text>
-                </View>
-                {respuestas.pregunta6 === "Trabajando" && (
-                  <View style={styles.subopcionesContainer}>
-                    <View style={styles.opcionesContainer}>
-                      <CheckBox
-                        checked={respuestas.pregunta12 === "Trabajador Urbano"}
-                        onPress={() =>
-                          handleRespuesta("pregunta12", "Trabajador Urbano")
-                        }
-                      />
-                      <Text style={styles.subopcionTexto}>
-                        - Trabajador Urbano
-                      </Text>
-                    </View>
-                    <View style={styles.opcionesContainer}>
-                      <CheckBox
-                        checked={respuestas.pregunta12 === "Trabajador Rural"}
-                        onPress={() =>
-                          handleRespuesta("pregunta12", "Trabajador Rural")
-                        }
-                      />
-                      <Text style={styles.subopcionTexto}>
-                        - Trabajador Rural
-                      </Text>
-                    </View>
-                  </View>
-                )}
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={
-                      respuestas.pregunta6 === "En búsqueda de empleo (cesante)"
-                    }
-                    onPress={() =>
-                      handleRespuesta(
-                        "pregunta6",
-                        "En búsqueda de empleo (cesante)"
-                      )
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    2. En búsqueda de empleo (cesante)
-                  </Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={
-                      respuestas.pregunta6 ===
-                      "Con incapacidad permanente para trabajar"
-                    }
-                    onPress={() =>
-                      handleRespuesta(
-                        "pregunta6",
-                        "Con incapacidad permanente para trabajar"
-                      )
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    3. Con incapacidad permanente para trabajar
-                  </Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta6 === "Estudiando"}
-                    onPress={() => handleRespuesta("pregunta6", "Estudiando")}
-                  />
-                  <Text style={styles.opcionTexto}>4. Estudiando</Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={
-                      respuestas.pregunta6 ===
-                      "Actividades del hogar (sin ingresos)"
-                    }
-                    onPress={() =>
-                      handleRespuesta(
-                        "pregunta6",
-                        "Actividades del hogar (sin ingresos)"
-                      )
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    5. Actividades del hogar (sin ingresos)
-                  </Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={
-                      respuestas.pregunta6 ===
-                      "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
-                    }
-                    onPress={() =>
-                      handleRespuesta(
-                        "pregunta6",
-                        "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
-                      )
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    6. Ninguna de las anteriores / Otras Actividades
-                    (pensionado, percibiendo renta, beneficiario de ayudas
-                    monetarias)
-                  </Text>
-                </View>
-              </View>
-            </View>
-
-            <View style={styles.preguntaContainer}>
-              <Text style={styles.pregunta}>
-                PREGUNTA 2.7 (Selección Única)
-              </Text>
-              <View style={styles.recuadro}>
-                <Text style={styles.recuadroTitulo}>
+            {ocupacion === "Trabajando - Trabajador Urbano - Rural" && (
+              <View style={styles.questionContainer}>
+                <Text style={styles.question2}> PREGUNTA 2.7 ( SELECCIÓN ÚNICA ) </Text>
+                <View style={styles.linea1} />
+                <Text style={styles.preguntas}>
                   La actividad económica (formal o informal) en la que trabaja
                   en la actualidad se relaciona con:
                 </Text>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta7 === "Industria"}
-                    onPress={() => handleRespuesta("pregunta7", "Industria")}
-                  />
-                  <Text style={styles.opcionTexto}>1. Industria</Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta7 === "Comercio"}
-                    onPress={() => handleRespuesta("pregunta7", "Comercio")}
-                  />
-                  <Text style={styles.opcionTexto}>2. Comercio</Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta7 === "Agrícola"}
-                    onPress={() => handleRespuesta("pregunta7", "Agrícola")}
-                  />
-                  <Text style={styles.opcionTexto}>3. Agrícola</Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta7 === "Pecuaria"}
-                    onPress={() => handleRespuesta("pregunta7", "Pecuaria")}
-                  />
-                  <Text style={styles.opcionTexto}>4. Pecuaria</Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta7 === "Servicios ó Intangibles"}
-                    onPress={() =>
-                      handleRespuesta("pregunta7", "Servicios ó Intangibles")
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    5. Servicios ó Intangibles
-                  </Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={respuestas.pregunta7 === "Otra actividad"}
-                    onPress={() =>
-                      handleRespuesta("pregunta7", "Otra actividad")
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>6. Otra actividad</Text>
-                </View>
-              </View>
-            </View>
 
-            <View style={styles.preguntaContainer}>
-              <Text style={styles.pregunta}>
-                PREGUNTA 2.8 (Selección Única)
-              </Text>
-              <View style={styles.recuadro}>
-                <Text style={styles.recuadroTitulo}>
-                  ¿Cuál es su ingreso mensual promedio?
-                </Text>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={
-                      respuestas.pregunta8 === "Entre $332.000 y $653.781"
-                    }
-                    onPress={() =>
-                      handleRespuesta("pregunta8", "Entre $332.000 y $653.781")
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    1. Entre $332.000 y $653.781 (De 0 a &lt; 1 SMMLV)
+                <RNPickerSelect
+                  placeholder={{
+                    label: "Selecciona una opción",
+                    value: ocupacion,
+                  }}
+                  value={ocupacion}
+                  onValueChange={(value) => setOcupacion(value)}
+                  items={[
+                    { label: "Industria", value: "Industria" },
+                    { label: "Comercio", value: "Comercio" },
+                    { label: "Agricola", value: "Agricola" },
+                    { label: "Pecuaria", value: "Pecuaria" },
+                    {
+                      label: "Servicios ó intangibles",
+                      value: "Servicios ó intangibles",
+                    },
+                    { label: "Otra actividad", value: "Otra actividad" },
+                  ]}
+                />
+              </View>
+            )}
+
+            {ocupacion === ('Trabajando - Trabajador Urbano - Rural') || 
+            ocupacion.includes('Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)')
+             && (
+                <View style={styles.questionContainer}>
+                  <Text style={styles.question2}> PREGUNTA 2.8 ( SELECCIÓN ÚNICA ) </Text>
+                  <View style={styles.linea1} />
+                  <Text style={styles.preguntas}>
+                    ¿Cuál es su ingreso mensual promedio?
                   </Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={
-                      respuestas.pregunta8 === "Entre $654.000 y $908.000"
-                    }
-                    onPress={() =>
-                      handleRespuesta("pregunta8", "Entre $654.000 y $908.000")
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    2. Entre $654.000 y $908.000 1 SMMLV
-                  </Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={
-                      respuestas.pregunta8 ===
-                      "Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
-                    }
-                    onPress={() =>
-                      handleRespuesta(
-                        "pregunta8",
+                  <View style={styles.inputDate}>
+                    <CheckBox
+                      title="Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)"
+                      checked={
+                        salario === "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)"
+                      }
+                      onPress={() =>
+                        setSalario("Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)")
+                      }
+                      containerStyle={styles.checkBoxContainer}
+                      textStyle={
+                        salario === "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)"
+                          ? styles.selectedOptionText
+                          : styles.checkBoxText
+                      }
+                      checkedColor="#BA0C2F"
+                    />
+
+                    {salario ===
+                      "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)" && (
+                        <View style={styles.questionContainer}>
+                          <Text style={styles.preguntas}>*Seleccione*</Text>
+                          <Text style={styles.preguntas}>
+                            Linea de pobreza extrema
+                          </Text>
+                          <View>
+                            <CheckBox
+                              title="Entre $0.000 y $145.004"
+                              checked={promedio === "Entre $0.000 y $145.004"}
+                              onPress={() => setPromedio("Entre $0.000 y $145.004")}
+                              containerStyle={styles.checkBoxContainer}
+                              textStyle={
+                                promedio === "Entre $0.000 y $145.004"
+                                  ? styles.selectedOptionText
+                                  : styles.checkBoxText
+                              }
+                              checkedColor="#BA0C2F"
+                            />
+                          </View>
+
+                          <Text style={styles.preguntas}>
+                            Linea de pobreza monetaria
+                          </Text>
+
+                          <View>
+                            <CheckBox
+                              title="Entre $146.000 y $331.688"
+                              checked={promedio === "Entre $146.000 y $331.688"}
+                              onPress={() =>
+                                setPromedio("Entre $146.000 y $331.688")
+                              }
+                              containerStyle={styles.checkBoxContainer}
+                              textStyle={
+                                promedio === "Entre $146.000 y $331.688"
+                                  ? styles.selectedOptionText
+                                  : styles.checkBoxText
+                              }
+                              checkedColor="#BA0C2F"
+                            />
+                          </View>
+
+                          <Text style={styles.preguntas}>
+                            Condiciones de Vulnerabilidad
+                          </Text>
+
+
+                          <View>
+                            <CheckBox
+                              title="Entre $332.000 y $653.781"
+                              checked={promedio === "Entre $332.000 y $653.781"}
+                              onPress={() =>
+                                setPromedio("Entre $332.000 y $653.781")
+                              }
+                              containerStyle={styles.checkBoxContainer}
+                              textStyle={
+                                promedio === "Entre $332.000 y $653.781"
+                                  ? styles.selectedOptionText
+                                  : styles.checkBoxText
+                              }
+                              checkedColor="#BA0C2F"
+                            />
+
+                            <View style={styles.linea} />
+                          </View>
+                        </View>
+                      )}
+
+
+                    <CheckBox
+                      title="Entre $654.000 y $908.000 1 SMMLV"
+                      checked={salario === "Entre $654.000 y $908.000 1 SMMLV"}
+                      onPress={() =>
+                        setSalario("Entre $654.000 y $908.000 1 SMMLV")
+                      }
+                      containerStyle={styles.checkBoxContainer}
+                      textStyle={
+                        salario === "Entre $654.000 y $908.000 1 SMMLV"
+                          ? styles.selectedOptionText
+                          : styles.checkBoxText
+                      }
+                      checkedColor="#BA0C2F"
+                    />
+
+                    <CheckBox
+                      title="Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
+                      checked={
+                        salario ===
                         "Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
-                      )
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    3. Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)
-                  </Text>
-                </View>
-                <View style={styles.opcionesContainer}>
-                  <CheckBox
-                    checked={
-                      respuestas.pregunta8 === "Mayor a 1.5 SMMLV (≥$1.365.000)"
-                    }
-                    onPress={() =>
-                      handleRespuesta(
-                        "pregunta8",
-                        "Mayor a 1.5 SMMLV (≥$1.365.000)"
-                      )
-                    }
-                  />
-                  <Text style={styles.opcionTexto}>
-                    4. Mayor a 1.5 SMMLV (≥$1.365.000)
-                  </Text>
-                </View>
+                      }
+                      onPress={() =>
+                        setSalario(
+                          "Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
+                        )
+                      }
+                      containerStyle={styles.checkBoxContainer}
+                      textStyle={
+                        salario ===
+                          "Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
+                          ? styles.selectedOptionText
+                          : styles.checkBoxText
+                      }
+                      checkedColor="#BA0C2F"
+                    />
 
-                {respuestas.pregunta8 === "Entre $332.000 y $653.781" && (
-                  <View style={styles.listaDesplegable}>
-                    <Text style={styles.listaDesplegableTitulo}>
-                      Especifique el Salario:
-                    </Text>
-                    <View style={styles.opcionesContainer}>
-                      <CheckBox
-                        checked={
-                          respuestas.pregunta9 ===
-                          "Entre $0.000 y $145.004 Línea de Pobreza Extrema"
-                        }
-                        onPress={() =>
-                          handleRespuesta(
-                            "pregunta9",
-                            "Entre $0.000 y $145.004 Línea de Pobreza Extrema"
-                          )
-                        }
-                      />
-                      <Text style={styles.opcionTexto}>
-                        - Entre $0.000 y $145.004 "Pobreza Extrema"
-                      </Text>
-                    </View>
-                    <View style={styles.opcionesContainer}>
-                      <CheckBox
-                        checked={
-                          respuestas.pregunta9 ===
-                          "Entre $146.000 y $331.688 Línea de Pobreza Monetaria"
-                        }
-                        onPress={() =>
-                          handleRespuesta(
-                            "pregunta9",
-                            "Entre $146.000 y $331.688 Línea de Pobreza Monetaria"
-                          )
-                        }
-                      />
-                      <Text style={styles.opcionTexto}>
-                        - Entre $146.000 y $331.688 "Pobreza Monetaria"
-                      </Text>
-                    </View>
-                    <View style={styles.opcionesContainer}>
-                      <CheckBox
-                       title="Entre $332.000 y $653.781 Condiciones de Vulnerabilidad"
-                        checked={
-                          respuestas.pregunta9 ===
-                          "Entre $332.000 y $653.781 Condiciones de Vulnerabilidad"
-                        }
-                        onPress={() =>
-                          handleRespuesta(
-                            "pregunta9",
-                            "Entre $332.000 y $653.781 Condiciones de Vulnerabilidad"
-                          )
-                        }
-                      />
-                      <Text style={styles.opcionTexto}>
-                        - Entre $332.000 y $653.781 
-                        "Vulnerabilidad"
-                      </Text>
-                    </View>
+                    <CheckBox
+                      title="Mayor a 1.5 SMMLV ( ≥$1.365.000)"
+                      checked={salario === "Mayor a 1.5 SMMLV ( ≥$1.365.000)"}
+                      onPress={() =>
+                        setSalario("Mayor a 1.5 SMMLV ( ≥$1.365.000)")
+                      }
+                      containerStyle={styles.checkBoxContainer}
+                      textStyle={
+                        salario === "Mayor a 1.5 SMMLV ( ≥$1.365.000)"
+                          ? styles.selectedOptionText
+                          : styles.checkBoxText
+                      }
+                      checkedColor="#BA0C2F"
+                    />
                   </View>
-                )}
-              </View>
-            </View>
-
-            {/* Boton */}
+                </View>
+              )}
+              {/* Botón */}
             <TouchableOpacity style={styles.boton} onPress={goToPreguntaTres}>
               <Text style={styles.textoBoton}> Siguiente </Text>
             </TouchableOpacity>
+
           </View>
         </View>
       </View>
@@ -873,74 +852,89 @@ export default function PreDosScreen(props) {
 }
 
 const styles = StyleSheet.create({
-  /* Estilos Boton */
-  boton: {
-    backgroundColor: "#02B3C6",
-    borderColor: "#007bff ",
-    borderWidth: 1,
-    borderRadius: 20,
-    marginLeft: 20,
-    marginRight: 20,
-    marginTop: 20,
-    /* Estilo cuando se pasa el cursor por encima */
-    ":hover": {
-      opacity: 1,
-    },
-  },
+ /* Estilos Boton y texto */
+ boton: {
+  backgroundColor: "#1b3f90",
+  borderColor: "#D2D4DF",
+  borderWidth: 1,
+  borderRadius: 20,
+  marginLeft: 20,
+  marginRight: 20,
+  marginTop: 20,
+  marginBottom: 15,
+ 
+},
+textoBoton: {
+  textAlign: "center",
+  padding: 10,
+  color: "white",
+  fontSize: 16,
+  fontWeight: "bold",
+},
 
-  /* Estilo Boton y texto*/
-  textoBoton: {
-    textAlign: "center",
-    padding: 10,
-    color: "white",
-    fontSize: 16,
-  },
 
-  container: {
-    flexGrow: 1,
-    padding: 16,
-    alignItems: "center",
-  },
   titulo: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 16,
     textAlign: "center",
+    justifyContent: "center",
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 0,
+    marginTop: -20,
+  },
+  preguntas: {
+    color: "#000000",
+    marginBottom: 10,
+    marginTop: 10,
+    fontWeight: "bold",
   },
   preguntaContainer: {
     marginBottom: 16,
   },
   pregunta: {
-    fontSize: 16,
-    marginBottom: 16,
-  },
-  recuadro: {
-    borderWidth: 1,
-    borderColor: "black",
-    borderRadius: 5,
-    padding: 8,
-    alignSelf: "stretch",
-    marginHorizontal: 8,
-  },
-  recuadroTitulo: {
+    marginBottom: 5,
+    textAlign: 'justify',
+    marginTop: -15,
     fontWeight: "bold",
-    marginBottom: 8,
+
   },
-  opcionesContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 2,
+  question: {
+    color: "#35669a",
+    marginBottom: -20,
+    marginTop: 15,
+    fontWeight: "bold",
+    fontSize: 15,
   },
-  opcionTexto: {
-    marginLeft: -15,
+  question1: {
+    color: "#35669a",
+    marginBottom: -80,
+    marginTop: -2,
+    fontWeight: "bold",
+    fontSize: 15,
   },
-  subpreguntaContainer: {
+  question2: {
+    color: "#35669a",
+    marginBottom: 20,
+    marginTop: 2,
+    fontWeight: "bold",
+    fontSize: 15,
+  },
+  linea: {
+    marginTop: "auto",
+    height: 6,              // Altura de la línea
+    backgroundColor: "#BA0C2F",  // Color de la línea (rojo en este caso)
+    position: 'absolute',   // Posición absoluta para que se superponga al contenido
+    bottom: 0,              // Se coloca en la parte inferior de la tarjeta
+    left: 8,                // Alinear a la izquierda
+    right: 8,               // Alinear a la derecha
+  },
+  linea1: {
     marginTop: 8,
-  },
-  subpregunta: {
-    fontSize: 16,
-    marginBottom: 4,
-    fontWeight: "bold",
+    height: 6,              // Altura de la línea
+    backgroundColor: "#BA0C2F",  // Color de la línea (rojo en este caso)
+    position: 'relative',   // Posición absoluta para que se superponga al contenido
+    bottom: 20,              // Se coloca en la parte inferior de la tarjeta
+    left: 0,                // Alinear a la izquierda
+    right: 0,               // Alinear a la derecha
   },
   input: {
     borderWidth: 1,
@@ -948,19 +942,29 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 8,
   },
-
+  inputLabels: {
+    backgroundColor: "white",
+    height: 40,
+    borderBottomWidth: 1, // Añadimos el borde inferior
+    borderBottomColor: "#35669a", // Color del borde inferior
+    paddingHorizontal: 10,
+    width: "100%",
+    marginBottom: 10,
+  },
   contenedorPadre: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
 
+  /* Estilo Contenedor */
+
   tarjeta: {
-    margin: 20,
+    margin: 10,
     backgroundColor: "white",
     borderRadius: 20,
     width: "90%",
-    padding: 20,
+    padding: 15,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -972,6 +976,35 @@ const styles = StyleSheet.create({
   },
 
   contenedor: {
+    padding: 20,
+  },
+
+  checkBoxContainer: {
+    backgroundColor: "transparent",
+    borderWidth: 0,
     padding: 0,
+    margin: 5,
+    marginBottom: 10,
+  },
+  checkBoxText: {
+    fontSize: 16,
+  },
+
+  inputDate: {
+    width: "100%",
+    flexWrap: "wrap",
+    flexDirection: "row",
+  },
+
+  // Estilo para el texto de las opciones seleccionadas
+  selectedOptionText: {
+    color: "#BA0C2F", // Color de texto para la opción seleccionada
+    fontWeight: "bold", // Puedes ajustar el peso del texto si lo deseas
+    fontSize: 16,
+  },
+
+  questionContainer: {
+    marginTop: 10,
+    marginBottom: 10,
   },
 });

@@ -25,7 +25,8 @@ export default function StackNavigation() {
         options={{
           title: "Iniciar Sesión",
           headerTitleAlign: "center",
-          headerStyle: { backgroundColor: "#D2D4DF" }
+          headerStyle: { backgroundColor: "#D2D4DF" },
+           
         }}
       />
       <Stack.Screen
@@ -35,6 +36,10 @@ export default function StackNavigation() {
           title: "Instrucciones ",
           headerTitleAlign: "center",
           headerStyle: { backgroundColor: "#D2D4DF" },
+          
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
         }}
       />
       <Stack.Screen
@@ -46,7 +51,7 @@ export default function StackNavigation() {
           headerStyle: { backgroundColor: "#D2D4DF" },
         }}
       />
-     <Stack.Screen
+      <Stack.Screen
         name="Recuperala"
         component={RecuperacioScreen}
         options={{
@@ -62,15 +67,23 @@ export default function StackNavigation() {
           title: "Tipo de Identificación",
           headerTitleAlign: "center",
           headerStyle: { backgroundColor: "#A7C6ED" },
+          headerTintColor: "white", // Cambia este valor a "white" para cambiar el color del texto del header a blanco
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
         }}
       />
       <Stack.Screen
         name="Pregunta 1.1"
         component={PreUnoScreen}
         options={{
-          title: "Componente I ",
+          title: "Componente I",
           headerTitleAlign: "center",
-          headerStyle: { backgroundColor: "#A7C6ED" },
+          headerStyle: { backgroundColor: "#1B3F90" },
+          headerTintColor: "white", // Cambia este valor a "white" para cambiar el color del texto del header a blanco
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
         }}
       />
       <Stack.Screen
@@ -79,7 +92,11 @@ export default function StackNavigation() {
         options={{
           title: "Componente II ",
           headerTitleAlign: "center",
-          headerStyle: { backgroundColor: "#A7C6ED" },
+          headerStyle: { backgroundColor: "#BA0C2F" },
+          headerTintColor: "white", // Cambia este valor a "white" para cambiar el color del texto del header a blanco
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
         }}
       />
       <Stack.Screen
@@ -88,7 +105,11 @@ export default function StackNavigation() {
         options={{
           title: "Componente III ",
           headerTitleAlign: "center",
-          headerStyle: { backgroundColor: "#A7C6ED" },
+          headerStyle: { backgroundColor: "#34689A" },
+          headerTintColor: "white", // Cambia este valor a "white" para cambiar el color del texto del header a blanco
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
         }}
       />
       <Stack.Screen
@@ -97,7 +118,11 @@ export default function StackNavigation() {
         options={{
           title: "Componente IV ",
           headerTitleAlign: "center",
-          headerStyle: { backgroundColor: "#A7C6ED" },
+          headerStyle: { backgroundColor: "#1B3F90" },
+          headerTintColor: "white", // Cambia este valor a "white" para cambiar el color del texto del header a blanco
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
         }}
       />
       <Stack.Screen
@@ -106,7 +131,10 @@ export default function StackNavigation() {
         options={{
           title: "Componente V ",
           headerTitleAlign: "center",
-          headerStyle: { backgroundColor: "#A7C6ED" },
+          headerStyle: { backgroundColor: "#651D32" },
+          headerTintColor: "white", // Cambia este valor a "white" para cambiar el color del texto del header a blanco
+          headerTitleStyle: {
+            fontWeight: "bold",}
         }}
       />
       <Stack.Screen
@@ -115,7 +143,12 @@ export default function StackNavigation() {
         options={{
           title: "Componente VI ",
           headerTitleAlign: "center",
-          headerStyle: { backgroundColor: "#A7C6ED" },
+          headerStyle: { backgroundColor: "#CFCDC9" },
+          headerTintColor: "white", // Cambia este valor a "white" para cambiar el color del texto del header a blanco
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          
         }}
       />
       <Stack.Screen
@@ -125,6 +158,10 @@ export default function StackNavigation() {
           title: "Componente VII ",
           headerTitleAlign: "center",
           headerStyle: { backgroundColor: "#A7C6ED" },
+          headerTintColor: "white", // Cambia este valor a "white" para cambiar el color del texto del header a blanco
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
         }}
       />
       <Stack.Screen name="Pregunta 2.6" component={EnvioScreen} />

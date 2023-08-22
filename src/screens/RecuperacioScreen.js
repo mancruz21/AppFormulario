@@ -111,30 +111,28 @@ const styles = StyleSheet.create({
     },
 
     btnRecover: {
-        backgroundColor: "#442484"
+        backgroundColor: "#707070"
     },
     icon: {
         color: "#c1c1c1"
     },
-    boton: {
-        backgroundColor: "#02B3C6",
-        borderColor: "#707070",
-        borderWidth: 1,
-        borderRadius: 20,
-        marginLeft: 20,
-        marginRight: 20,
-        marginTop: 20,
-        marginBottom: 10,
-        flexDirection: "row", // Alinea el icono a la izquierda del texto
-        alignItems: "center", // Alinea verticalmente el contenido
-        justifyContent: "center", // Alinea horizontalmente el contenido
-      },
-    
-      textoBoton: {
-        textAlign: "center",
-        padding: 10,
-        color: "white",
-        fontSize: 16,
-        
-      },
+    /* Estilo Boton y texto*/
+   boton: {
+    backgroundColor: "#1b3f90",
+    borderColor: "#D2D4DF",
+    borderWidth: 1,
+    borderRadius: 5,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 20,
+    marginBottom: 15,
+   
+  },
+
+  textoBoton: {
+    textAlign: "center",
+    padding: 10,
+    color: "white",
+    fontSize: 16,
+  },
 })

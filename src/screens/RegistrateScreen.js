@@ -74,7 +74,7 @@ export default function RegistrateScreen(props) {
     <View style={styles.container}>
       <View style={styles.logoContainer}>
         <Image
-          source={require('../assets/logo1.webp')}
+          source={require('../assets/Logo_Color.png')}
           style={styles.logo}
           resizeMode="contain"
         />
@@ -127,36 +127,34 @@ const styles = StyleSheet.create({
     marginHorizontal: 25,
   },
   input: {
+    backgroundColor:"white",
     height: 40,
+    borderBottomWidth: 1, // Añadimos el borde inferior
+    borderBottomColor: "#D2D4DF", // Color del borde inferior
+    paddingHorizontal: 10,
     width: "100%",
+    marginBottom: 10,
+  },
+
+ /* Estilo Boton y texto*/
+ boton: {
+  backgroundColor: "#1b3f90",
     borderColor: "#D2D4DF",
     borderWidth: 1,
     borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 10,
-  },
-
-  boton: {
-    backgroundColor: "#02B3C6",
-    borderColor: "#707070",
-    borderWidth: 1,
-    borderRadius: 20,
     marginLeft: 20,
     marginRight: 20,
     marginTop: 20,
-    marginBottom: 10,
-    flexDirection: "row", // Alinea el icono a la izquierda del texto
-    alignItems: "center", // Alinea verticalmente el contenido
-    justifyContent: "center", // Alinea horizontalmente el contenido
-  },
-
-  textoBoton: {
-    textAlign: "center",
-    padding: 10,
-    color: "white",
-    fontSize: 16,
+    marginBottom: 15,
    
-  },
+},
+
+textoBoton: {
+  textAlign: "center",
+  padding: 10,
+  color: "white",
+  fontSize: 16,
+},
 
   icono: {
     width: 20,
@@ -167,7 +165,7 @@ const styles = StyleSheet.create({
   text: {
     color: "#707070",
     alignSelf: "flex-start",
-    
+
     fontWeight: "bold",
     marginBottom: 4,
   },

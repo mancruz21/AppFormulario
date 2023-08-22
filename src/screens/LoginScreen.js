@@ -12,7 +12,6 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../components/firebase-config";
 
-
 export default function LoginScreen(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -67,7 +66,7 @@ export default function LoginScreen(props) {
     <View style={styles.container}>
       <View style={styles.logoContainer}>
         <Image
-          source={require('../assets/logo1.webp')}
+          source={require("../assets/Logo_Color.png")}
           style={styles.logo}
           resizeMode="contain"
         />
@@ -86,8 +85,6 @@ export default function LoginScreen(props) {
         secureTextEntry={true}
       />
 
-      
-
       {/* Boton */}
       <TouchableOpacity
         style={styles.boton}
@@ -101,13 +98,15 @@ export default function LoginScreen(props) {
 
       <TouchableOpacity onPress={goToRegistrate}>
         <Text style={styles.registrateText}>
-          ¿Aún no tienes cuenta? <Text style={styles.registrate}> Regístrate aquí  </Text> 
+          ¿Aún no tienes cuenta?{" "}
+          <Text style={styles.registrate}> Regístrate aquí </Text>
         </Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={goToRecuperala}>
         <Text style={styles.registrateText}>
-          ¿Olvidaste tu contraseña? <Text style={styles.registrate}> Recupérala  </Text>
+          ¿Olvidaste tu contraseña?{" "}
+          <Text style={styles.registrate}> Recupérala </Text>
         </Text>
       </TouchableOpacity>
     </View>
@@ -120,6 +119,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginHorizontal: 30,
+    backgroundColor: "#efefef"
   },
   logoContainer: {
     alignItems: "center",
@@ -130,50 +130,50 @@ const styles = StyleSheet.create({
     height: 150,
   },
   input: {
-    width: "100%",
+    backgroundColor:"white",
     height: 40,
+    borderBottomWidth: 1, // Añadimos el borde inferior
+    borderBottomColor: "#000000", // Color del borde inferior
+    paddingHorizontal: 10,
+    width: "100%",
+    marginBottom: 10,
+  },
+
+  /*Estilo boton y enlaces */
+  boton: {
+    backgroundColor: "#1b3f90",
     borderColor: "#D2D4DF",
     borderWidth: 1,
     borderRadius: 5,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-  },
-  boton: {
-    backgroundColor: "#02B3C6",
-    borderColor: "#D2D4DF",
-    borderWidth: 1,
-    borderRadius: 20,
     marginLeft: 20,
     marginRight: 20,
     marginTop: 20,
-    marginBottom: 10,
+    marginBottom: 15,
+   
+
   },
   textoBoton: {
     textAlign: "center",
     padding: 10,
     color: "white",
     fontSize: 16,
-    
   },
   registrateText: {
     fontSize: 16,
     marginBottom: 8,
-    fontFamily: "Montserrat",
   },
   text: {
     color: "#707070",
     alignSelf: "flex-start",
-    
+
     fontWeight: "bold",
-    marginBottom:4,
+    marginBottom: 4,
   },
 
-  registrate:{
+  registrate: {
     fontSize: 16,
     marginBottom: 8,
     fontWeight: "bold",
-
-
-
-  }
+    color: "#1b3f90"
+  },
 });

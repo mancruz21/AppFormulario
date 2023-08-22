@@ -70,13 +70,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   input: {
-    width: '100%',
+    backgroundColor:"white",
     height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 12,
+    borderBottomWidth: 1, // Añadimos el borde inferior
+    borderBottomColor: "#D2D4DF", // Color del borde inferior
     paddingHorizontal: 10,
-    backgroundColor: '#fff',
+    width: "100%",
+    marginBottom: 10,
   },
 });
 
