@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
-import {  CheckBox } from "react-native-elements";
+import { CheckBox } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function PreTresScreen(props) {
@@ -57,17 +57,27 @@ export default function PreTresScreen(props) {
 
   return (
     <ScrollView>
+
+      {/* Pregunta 3.1 */}
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-            <Text style={styles.titulo}> ASEGURAMIENTO EN LA SALUD</Text>
 
+            <Text style={styles.titulo}> ASEGURAMIENTO EN LA SALUD </Text>
+
+            <Text style={styles.question}> PREGUNTA 3.1 ( SELECCIÓN ÚNICA) </Text>
+
+          </View>
+          <View style={styles.linea} />
+        </View>
+      </View>
+
+      {/* Pregunta 3.1 */}
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
             <View style={styles.preguntaContainer}>
               <Text style={styles.pregunta}>
-                PREGUNTA 3.1 (Selección Única)
-              </Text>
-
-              <Text style={styles.recuadroTitulo}>
                 Indique cuál es su Régimen de Afiliación en Salud:
               </Text>
               <View style={styles.optionContainer}>
@@ -81,6 +91,7 @@ export default function PreTresScreen(props) {
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
+                  checkedColor="#BA0C2F"
                 />
                 <CheckBox
                   title="Subsidiado"
@@ -92,6 +103,7 @@ export default function PreTresScreen(props) {
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
+                  checkedColor="#BA0C2F"
                 />
                 <CheckBox
                   title="Especial o Excepción (Fuerzas Armadas - Policía Ecopetrol, Senado, Magisterio Educadores)"
@@ -103,6 +115,7 @@ export default function PreTresScreen(props) {
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
+                  checkedColor="#BA0C2F"
                 />
                 <CheckBox
                   title="No afiliado"
@@ -114,36 +127,72 @@ export default function PreTresScreen(props) {
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
+                  checkedColor="#BA0C2F"
                 />
               </View>
             </View>
+          </View>
+        </View>
+      </View>
 
-            <View style={styles.preguntaContainer}>
-              <Text style={styles.pregunta}>PREGUNTA 3.2</Text>
 
-              <View style={styles.preguntaContainer}>
-                <Text style={styles.recuadroTitulo}>
-                  Indique cuál es el nombre de la Aseguradora en Salud / EAPB a
-                  la que se encuentra afiliado en la actualidad:
-                </Text>
-                <TextInput
-                  style={styles.input}
-                  value={aseguradora}
-                  onChangeText={handleAseguradoraChange}
-                  placeholder="Ingrese el nombre de la aseguradora"
-                  underlineColorAndroid="transparent" // Para Android
-                  selectionColor="#efefef" // Color de la línea cuando se selecciona el campo
-                />
-              </View>
-            </View>
+      {/* Pregunta 3.2 */}
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
 
+
+
+            <Text style={styles.question1}> PREGUNTA 3.2  </Text>
+
+          </View>
+          <View style={styles.linea} />
+        </View>
+      </View>
+
+
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
             <View style={styles.preguntaContainer}>
               <Text style={styles.pregunta}>
-                PREGUNTA 3.3 - Sobre el acceso que garantiza la aseguradora
-                (EAPB) a los usuarios en el área de influencia (Selección Única)
+                Indique cuál es el nombre de la Aseguradora en Salud / EAPB a
+                la que se encuentra afiliado en la actualidad:
+              </Text>
+              <TextInput
+                style={styles.input}
+                value={aseguradora}
+                onChangeText={handleAseguradoraChange}
+                placeholder="Ingrese el nombre de la aseguradora"
+                underlineColorAndroid="transparent" // Para Android
+                selectionColor="#efefef" // Color de la línea cuando se selecciona el campo
+              />
+            </View>
+          </View>
+
+        </View>
+      </View>
+
+      {/* Pregunta 3.3 */}
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
+            <Text style={styles.question1}> PREGUNTA 3.3 ( SELECCIÓN ÚNICA)  </Text>
+          </View>
+          <View style={styles.linea} />
+        </View>
+      </View>
+
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
+          <View style={styles.preguntaContainer}>
+              <Text style={styles.pregunta}>
+              Sobre el acceso que garantiza la aseguradora
+              (EAPB) a los usuarios en el área de influencia 
               </Text>
 
-              <Text style={styles.recuadroTitulo}>
+              <Text style={styles.preguntas}>
                 Según la asignación realizada por su aseguradora (EAPB), indique
                 cuál es el lugar al que asiste con mayor frecuencia para su
                 atención general en salud
@@ -164,10 +213,11 @@ export default function PreTresScreen(props) {
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selectedOption2 ===
-                    "Centro de Salud y/o Hospital del Municipio"
+                      "Centro de Salud y/o Hospital del Municipio"
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
+                  checkedColor="#BA0C2F"
                 />
                 <CheckBox
                   title="Centro de Salud y/o Hospital en otro Municipio"
@@ -183,10 +233,11 @@ export default function PreTresScreen(props) {
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selectedOption2 ===
-                    "Centro de Salud y/o Hospital en otro Municipio"
+                      "Centro de Salud y/o Hospital en otro Municipio"
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
+                  checkedColor="#BA0C2F"
                 />
                 <CheckBox
                   title="Consultorio Particular u otro servicio dentro del Municipio"
@@ -202,10 +253,11 @@ export default function PreTresScreen(props) {
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selectedOption2 ===
-                    "Consultorio Particular u otro servicio dentro del Municipio"
+                      "Consultorio Particular u otro servicio dentro del Municipio"
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
+                  checkedColor="#BA0C2F"
                 />
                 <CheckBox
                   title="Consultorio Particular u otro servicio fuera del Municipio"
@@ -221,10 +273,11 @@ export default function PreTresScreen(props) {
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selectedOption2 ===
-                    "Consultorio Particular u otro servicio fuera del Municipio"
+                      "Consultorio Particular u otro servicio fuera del Municipio"
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
+                  checkedColor="#BA0C2F"
                 />
                 <CheckBox
                   title="Medicina Tradicional (Quilombo, Maloka, Sobandero, Taita … etc.)"
@@ -240,37 +293,55 @@ export default function PreTresScreen(props) {
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selectedOption2 ===
-                    "Medicina Tradicional (Quilombo, Maloka, Sobandero, Taita … etc."
+                      "Medicina Tradicional (Quilombo, Maloka, Sobandero, Taita … etc.)"
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
+                  checkedColor="#BA0C2F"
                 />
               </View>
 
               {(selectedOption2 ===
                 "Centro de Salud y/o Hospital en otro Municipio" ||
                 selectedOption2 ===
-                  "Consultorio Particular u otro servicio fuera del Municipio") && (
-                <View style={styles.preguntaContainer}>
-                  <Text style={styles.recuadroTitulo}>
-                    Ingrese el nombre del municipio:
-                  </Text>
-                  <TextInput
-                    style={styles.input}
-                    value={municipio}
-                    onChangeText={handleMunicipioChange}
-                    placeholder="Nombre del municipio"
-                  />
-                </View>
-              )}
+                "Consultorio Particular u otro servicio fuera del Municipio") && (
+                  <View style={styles.preguntaContainer}>
+                    <Text style={styles.pregunta}>
+                      Ingrese el nombre del municipio:
+                    </Text>
+                    <TextInput
+                      style={styles.input}
+                      value={municipio}
+                      onChangeText={handleMunicipioChange}
+                      placeholder="Nombre del municipio"
+                    />
+                  </View>
+                )}
             </View>
+            
+          </View>
+          
+        </View>
+      </View>
 
+      {/* Pregunta 3.4 */}
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
+            <Text style={styles.question1}> PREGUNTA 3.4 ( SELECCIÓN ÚNICA )  </Text>
+          </View>
+          <View style={styles.linea}/>
+        </View>
+      </View>
+
+
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
             <View style={styles.preguntaContainer}>
-              <Text style={styles.pregunta}>
-                PREGUNTA 3.4 (Selección Única)
-              </Text>
+              
 
-              <Text style={styles.recuadroTitulo}>
+              <Text style={styles.pregunta}>
                 ¿El lugar donde su aseguradora (EAPB) realiza la autorización
                 para la atención especializada en salud (hospitalización,
                 cirugía, exámenes diagnósticos, terapias, médicos especialistas,
@@ -287,6 +358,7 @@ export default function PreTresScreen(props) {
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
+                  checkedColor="#BA0C2F"
                 />
                 <CheckBox
                   title="No"
@@ -298,12 +370,13 @@ export default function PreTresScreen(props) {
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
+                  checkedColor="#BA0C2F"
                 />
               </View>
 
               {selectedOption3 === "No" && (
                 <View style={styles.preguntaContainer}>
-                  <Text style={styles.recuadroTitulo}>
+                  <Text style={styles.preguntas}>
                     Ingrese el nombre del municipio:
                   </Text>
                   <TextInput
@@ -312,7 +385,7 @@ export default function PreTresScreen(props) {
                     onChangeText={handleMunicipioChange}
                     placeholder="Nombre del municipio"
                   />
-                  <Text style={styles.recuadroTitulo}>
+                  <Text style={styles.preguntas}>
                     Ingrese el nombre del departamento:
                   </Text>
                   <TextInput
@@ -336,42 +409,29 @@ export default function PreTresScreen(props) {
 }
 
 const styles = StyleSheet.create({
-  preguntaText: {
-    fontWeight: "bold",
-    marginBottom: 8,
-  },
-  container: {
-    flexGrow: 1,
-    padding: 16,
-    alignItems: "center",
-  },
+  
   titulo: {
-    fontSize: 20,
+    textAlign: "center",
+    justifyContent: "center",
+    fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 16,
+    marginBottom: 0,
+    marginTop: -20,
   },
-  preguntaContainer: {
-    marginBottom: 16,
-  },
+  
   pregunta: {
-    fontSize: 16,
-    marginBottom: 10,
+    marginBottom: 5,
+    textAlign: 'justify',
+    marginTop: -15,
     fontWeight: "bold",
   },
-  recuadro: {
-    borderWidth: 1,
-    borderColor: "black",
-    borderRadius: 5,
-    padding: 8,
-    alignSelf: "stretch",
-    marginHorizontal: 8,
-  },
-  recuadroTitulo: {
-    fontWeight: "bold",
+  preguntas: {
+    color: "#000000",
     marginBottom: 10,
-    color: "#35669a",
-    fontSize: 14,
+    marginTop: 10,
+    fontWeight: "bold",
   },
+
   opcionesContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -380,47 +440,45 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     height: 40,
     borderBottomWidth: 1, // Añadimos el borde inferior
-    borderBottomColor: "#D2D4DF", // Color del borde inferior
+    borderBottomColor: "#35669a", // Color del borde inferior
     paddingHorizontal: 10,
     width: "100%",
     marginBottom: 10,
   },
 
-  /* Estilo Boton y texto*/
+  /* Estilos Boton y texto */
   boton: {
-    backgroundColor: "#35669a",
-    borderColor: "#007bff ",
+    backgroundColor: "#1b3f90",
+    borderColor: "#D2D4DF",
     borderWidth: 1,
     borderRadius: 20,
     marginLeft: 20,
     marginRight: 20,
     marginTop: 20,
-    /* Estilo cuando se pasa el cursor por encima */
-    ":hover": {
-      opacity: 1,
-    },
-  },
+    marginBottom: 15,
 
+  },
   textoBoton: {
     textAlign: "center",
     padding: 10,
     color: "white",
     fontSize: 16,
+    fontWeight: "bold",
   },
+   /* Estilo Contenedor */
 
   contenedorPadre: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-  /* Estilo Contenedor */
 
   tarjeta: {
-    margin: 20,
+    margin: 10,
     backgroundColor: "white",
     borderRadius: 20,
     width: "90%",
-    padding: 20,
+    padding: 15,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -432,16 +490,15 @@ const styles = StyleSheet.create({
   },
 
   contenedor: {
-    padding: 0,
+    padding: 20,
   },
 
   // Estilo para el texto de las opciones seleccionadas
   selectedOptionText: {
-    color: "#35669a", // Color de texto para la opción seleccionada
+    color: "#BA0C2F", // Color de texto para la opción seleccionada
     fontWeight: "bold", // Puedes ajustar el peso del texto si lo deseas
     fontSize: 16,
   },
-
   checkBoxText: {
     fontSize: 16,
   },
@@ -452,5 +509,46 @@ const styles = StyleSheet.create({
     padding: 0,
     margin: 5,
     marginBottom: 10,
+  },
+
+  question: {
+    color: "#35669a",
+    marginBottom: -20,
+    marginTop: 15,
+    fontWeight: "bold",
+    fontSize: 15,
+  },
+  question1: {
+    color: "#35669a",
+    marginBottom: -80,
+    marginTop: -2,
+    fontWeight: "bold",
+    fontSize: 15,
+  },
+  question2: {
+    color: "#35669a",
+    marginBottom: 20,
+    marginTop: 2,
+    fontWeight: "bold",
+    fontSize: 15,
+  },
+
+  linea: {
+    marginTop: "auto",
+    height: 6,              // Altura de la línea
+    backgroundColor: "#BA0C2F",  // Color de la línea (rojo en este caso)
+    position: 'absolute',   // Posición absoluta para que se superponga al contenido
+    bottom: 0,              // Se coloca en la parte inferior de la tarjeta
+    left: 8,                // Alinear a la izquierda
+    right: 8,               // Alinear a la derecha
+  },
+  linea1: {
+    marginTop: 8,
+    height: 6,              // Altura de la línea
+    backgroundColor: "#BA0C2F",  // Color de la línea (rojo en este caso)
+    position: 'relative',   // Posición absoluta para que se superponga al contenido
+    bottom: 20,              // Se coloca en la parte inferior de la tarjeta
+    left: 0,                // Alinear a la izquierda
+    right: 0,               // Alinear a la derecha
   },
 });

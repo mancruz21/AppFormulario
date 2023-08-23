@@ -23,12 +23,11 @@ export default function PreDosScreen(props) {
   const [educativo, setEducativo] = useState(null);
   const [educacionSuperior, setEducacionSuperior] = useState(null);
   const [ocupacion, setOcupacion] = useState([]);
+  const [trabajo, setTrabajo] = useState([]);
   const [salario, setSalario] = useState(null);
   const [promedio, setPromedio] = useState(null);
-
   const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
   const [additionalInfo, setAdditionalInfo] = useState("");
-
   const goToPreguntaTres = () => {
     navigation.navigate("Pregunta 2.1");
     console.log("Opcion 1:", opcion1);
@@ -37,19 +36,7 @@ export default function PreDosScreen(props) {
     console.log("Opcion 4:", selectedOption4);
   };
 
-  const handleOptionChange = (option) => {
-    if (selectedOptions.includes(option)) {
-      setSelectedOptions(selectedOptions.filter((item) => item !== option));
-    } else {
-      if (
-        selectedOption4 === "Población con discapacidad" &&
-        selectedOptions.length < 1
-      ) {
-        setSelectedOptions([...selectedOptions, option]);
-      }
-    }
-  };
-
+  
   return (
     <ScrollView>
       {/* Pregunta 2.1 */}
@@ -65,11 +52,6 @@ export default function PreDosScreen(props) {
           <View style={styles.linea} />
         </View>
       </View>
-
-
-
-
-
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
@@ -400,7 +382,7 @@ export default function PreDosScreen(props) {
 
 
 
-            
+
           </View>
 
 
@@ -670,29 +652,30 @@ export default function PreDosScreen(props) {
                 <RNPickerSelect
                   placeholder={{
                     label: "Selecciona una opción",
-                    value: ocupacion,
+                    value: trabajo,
                   }}
-                  value={ocupacion}
-                  onValueChange={(value) => setOcupacion(value)}
+                  value={trabajo}
+                  onValueChange={(value) => setTrabajo(value)}
                   items={[
                     { label: "Industria", value: "Industria" },
                     { label: "Comercio", value: "Comercio" },
                     { label: "Agricola", value: "Agricola" },
                     { label: "Pecuaria", value: "Pecuaria" },
-                    {
-                      label: "Servicios ó intangibles",
-                      value: "Servicios ó intangibles",
-                    },
+                    { label: "Servicios ó intangibles", value: "Servicios ó intangibles",},
                     { label: "Otra actividad", value: "Otra actividad" },
                   ]}
                 />
               </View>
             )}
 
-            {ocupacion === ('Trabajando - Trabajador Urbano - Rural') || 
-            ocupacion.includes('Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)')
-             && (
+            {(ocupacion.includes("Trabajando - Trabajador Urbano - Rural") ||
+              ocupacion.includes(
+                "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
+              ))
+              && (
                 <View style={styles.questionContainer}>
+
+
                   <Text style={styles.question2}> PREGUNTA 2.8 ( SELECCIÓN ÚNICA ) </Text>
                   <View style={styles.linea1} />
                   <Text style={styles.preguntas}>
@@ -839,7 +822,7 @@ export default function PreDosScreen(props) {
                   </View>
                 </View>
               )}
-              {/* Botón */}
+            {/* Botón */}
             <TouchableOpacity style={styles.boton} onPress={goToPreguntaTres}>
               <Text style={styles.textoBoton}> Siguiente </Text>
             </TouchableOpacity>
@@ -852,25 +835,25 @@ export default function PreDosScreen(props) {
 }
 
 const styles = StyleSheet.create({
- /* Estilos Boton y texto */
- boton: {
-  backgroundColor: "#1b3f90",
-  borderColor: "#D2D4DF",
-  borderWidth: 1,
-  borderRadius: 20,
-  marginLeft: 20,
-  marginRight: 20,
-  marginTop: 20,
-  marginBottom: 15,
- 
-},
-textoBoton: {
-  textAlign: "center",
-  padding: 10,
-  color: "white",
-  fontSize: 16,
-  fontWeight: "bold",
-},
+  /* Estilos Boton y texto */
+  boton: {
+    backgroundColor: "#1b3f90",
+    borderColor: "#D2D4DF",
+    borderWidth: 1,
+    borderRadius: 20,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 20,
+    marginBottom: 15,
+
+  },
+  textoBoton: {
+    textAlign: "center",
+    padding: 10,
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 
 
   titulo: {
@@ -881,12 +864,7 @@ textoBoton: {
     marginBottom: 0,
     marginTop: -20,
   },
-  preguntas: {
-    color: "#000000",
-    marginBottom: 10,
-    marginTop: 10,
-    fontWeight: "bold",
-  },
+  
   preguntaContainer: {
     marginBottom: 16,
   },
@@ -896,6 +874,12 @@ textoBoton: {
     marginTop: -15,
     fontWeight: "bold",
 
+  },
+  preguntas: {
+    color: "#000000",
+    marginBottom: 10,
+    marginTop: 10,
+    fontWeight: "bold",
   },
   question: {
     color: "#35669a",
@@ -937,11 +921,14 @@ textoBoton: {
     right: 0,               // Alinear a la derecha
   },
   input: {
-    borderWidth: 1,
-    borderColor: "black",
-    borderRadius: 5,
-    padding: 8,
-  },
+    backgroundColor: "white",
+    height: 40,
+    borderBottomWidth: 1, // Añadimos el borde inferior
+    borderBottomColor: "#35669a", // Color del borde inferior
+    paddingHorizontal: 10,
+    width: "100%",
+    marginBottom: 10,},
+
   inputLabels: {
     backgroundColor: "white",
     height: 40,

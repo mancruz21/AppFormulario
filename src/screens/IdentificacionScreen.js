@@ -29,6 +29,16 @@ export default function IdentificacionScreen(props) {
     );
   };
 
+  const toggleOption = (option) => {
+    if (selectedOption === option) {
+      // Si la opción actual ya está seleccionada, deselecciónala
+      setSelectedOption("");
+    } else {
+      // Si no está seleccionada, selecciónala
+      setSelectedOption(option);
+    }
+  };
+
   return (
     <ScrollView>
       <View style={styles.contenedorPadre}>
@@ -38,7 +48,7 @@ export default function IdentificacionScreen(props) {
             <CheckBox
               title="TI Tarjeta de Identidad (10 a 17 años)"
               checked={selectedOption === "TI"}
-              onPress={() => setSelectedOption("TI")}
+              onPress={() => toggleOption("TI")}
               containerStyle={styles.checkBoxContainer}
               textStyle={
                 selectedOption === "TI"
@@ -51,7 +61,7 @@ export default function IdentificacionScreen(props) {
             <CheckBox
               title="CC Cédula de Ciudadanía"
               checked={selectedOption === "CC"}
-              onPress={() => setSelectedOption("CC")}
+              onPress={() => toggleOption("CC")}
               containerStyle={styles.checkBoxContainer}
               textStyle={
                 selectedOption === "CC"
@@ -63,7 +73,7 @@ export default function IdentificacionScreen(props) {
             <CheckBox
               title="CE Cédula de Extranjería"
               checked={selectedOption === "CE"}
-              onPress={() => setSelectedOption("CE")}
+              onPress={() => toggleOption("CE")}
               containerStyle={styles.checkBoxContainer}
               textStyle={
                 selectedOption === "CE"
@@ -75,7 +85,7 @@ export default function IdentificacionScreen(props) {
             <CheckBox
               title="PA Pasaporte"
               checked={selectedOption === "PA"}
-              onPress={() => setSelectedOption("PA")}
+              onPress={() => toggleOption("PA")}
               containerStyle={styles.checkBoxContainer}
               textStyle={
                 selectedOption === "PA"
@@ -87,7 +97,7 @@ export default function IdentificacionScreen(props) {
             <CheckBox
               title="PEP Permiso Especial de Permanencia"
               checked={selectedOption === "PEP"}
-              onPress={() => setSelectedOption("PEP")}
+              onPress={() => toggleOption("PEP")}
               containerStyle={styles.checkBoxContainer}
               textStyle={
                 selectedOption === "PEP"
@@ -99,7 +109,7 @@ export default function IdentificacionScreen(props) {
             <CheckBox
               title="Adulto sin Identificación (no tiene)"
               checked={selectedOption === "AdultoSinIdentificacion"}
-              onPress={() => setSelectedOption("AdultoSinIdentificacion")}
+              onPress={() => toggleOption("AdultoSinIdentificacion")}
               containerStyle={styles.checkBoxContainer}
               textStyle={
                 selectedOption === "AdultoSinIdentificacion"
@@ -112,7 +122,7 @@ export default function IdentificacionScreen(props) {
               title="Adulto sin Identificación (participa como anónimo)"
               checked={selectedOption === "AdultoSinIdentificacionAnonimo"}
               onPress={() =>
-                setSelectedOption("AdultoSinIdentificacionAnonimo")
+                toggleOption("AdultoSinIdentificacionAnonimo")
               }
               containerStyle={styles.checkBoxContainer}
               textStyle={
