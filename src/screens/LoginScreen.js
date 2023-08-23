@@ -25,6 +25,7 @@ export default function LoginScreen(props) {
         console.log("Signed in!");
         const user = userCredential.user;
         console.log(user);
+        navigation.navigate("Inicio");
       })
       .catch((error) => {
         console.log(error);
@@ -45,7 +46,7 @@ export default function LoginScreen(props) {
       );
       return;
     }
-    navigation.navigate("Inicio");
+    
   };
 
   const goToRegistrate = () => {

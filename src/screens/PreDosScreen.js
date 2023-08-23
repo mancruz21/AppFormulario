@@ -865,9 +865,7 @@ const styles = StyleSheet.create({
     marginTop: -20,
   },
   
-  preguntaContainer: {
-    marginBottom: 16,
-  },
+
   pregunta: {
     marginBottom: 5,
     textAlign: 'justify',

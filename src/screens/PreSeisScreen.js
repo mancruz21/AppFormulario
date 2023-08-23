@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity} from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { CheckBox } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
@@ -82,145 +82,192 @@ export default function PreSeisScreen(props) {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView >
+
+      {/* Pregunta 6.1 */}
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
             <Text style={styles.titulo}>SALUD PÚBLICA</Text>
+            <Text style={styles.question}> PREGUNTA 6.1 ( SELECCIÓN MÚLTIPLE - MÁXIMO 2 OPCIONES) </Text>
+          </View>
+          <View style={styles.linea} />
+        </View>
+      </View>
+
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
             <View style={styles.preguntaContainer}>
+
+
               <Text style={styles.pregunta}>
-                PREGUNTA 6.1 (Selección Múltiple - Máximo 2 opciones)
+                Cuáles de las siguientes intervenciones de Salud Pública
+                asociadas a la Rehabilitación conoce:
               </Text>
-             
-                <Text style={styles.recuadroTitulo}>
-                  Cuáles de las siguientes intervenciones de Salud Pública
-                  asociadas a la Rehabilitación conoce:
-                </Text>
-                {opciones.map((opcion, index) => (
-                  <CheckBox
-                    key={index}
-                    title={opcion}
-                    checked={selectedOptions.includes(index)}
-                    onPress={() => handleCheckboxChange(index)}
-                    containerStyle={styles.checkBoxContainer}
-                textStyle={
-                  selectedOptions ===""
-                    ? styles.selectedOptionText
-                    : styles.checkBoxText
-                }
-                  />
-                ))}
-                {opcionOtro && (
-                  <TextInput
-                    style={styles.input}
-                    value={otroTexto}
-                    onChangeText={handleOtroTextoChange}
-                    placeholder="Especifique otro"
-                  />
-                )}
-              
+              {opciones.map((opcion, index) => (
+                <CheckBox
+                  key={index}
+                  title={opcion}
+                  checked={selectedOptions.includes(index)}
+                  onPress={() => handleCheckboxChange(index)}
+                  containerStyle={styles.checkBoxContainer}
+                  textStyle={
+                    selectedOptions.includes(index)
+
+                      ? styles.selectedOptionText
+                      : styles.checkBoxText
+                  }
+                  checkedColor="#BA0C2F"
+                />
+              ))}
+              {opcionOtro && (
+                <TextInput
+                  style={styles.input}
+                  value={otroTexto}
+                  onChangeText={handleOtroTextoChange}
+                  placeholder="Especifique otro"
+                />
+              )}
+
             </View>
+          </View>
+        </View>
+      </View>
+
+      {/* Pregunta 6.2 */}
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
+            <Text style={styles.question1}> PREGUNTA 6.2 ( SELECCIÓN ÚNICA ) </Text>
+          </View>
+          <View style={styles.linea} />
+        </View>
+      </View>
+
+
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
 
             <View style={styles.preguntaContainer}>
-              <Text style={styles.pregunta}>PREGUNTA 6.2</Text>
-              
-                <Text style={styles.recuadroTitulo}>
-                  ¿Ha participado en alguna de las anteriores intervenciones en
-                  Salud Pública asociadas a la Rehabilitación en el último año?
-                </Text>
-                <CheckBox
-                  title="Si"
-                  checked={seleccionoSi}
-                  onPress={handleSiCheckboxChange}
-                  containerStyle={styles.checkBoxContainer}
+              <Text style={styles.pregunta}>
+                ¿Ha participado en alguna de las anteriores intervenciones en
+                Salud Pública asociadas a la Rehabilitación en el último año?
+              </Text>
+              <CheckBox
+                title="Si"
+                checked={seleccionoSi}
+                onPress={handleSiCheckboxChange}
+                containerStyle={styles.checkBoxContainer}
                 textStyle={
-                  seleccionoSi === ""
+                  seleccionoSi
                     ? styles.selectedOptionText
                     : styles.checkBoxText
                 }
+                checkedColor="#BA0C2F"
+              />
+              <CheckBox
+                title="No"
+                checked={!seleccionoSi}
+                onPress={handleNoCheckboxChange}
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  !seleccionoSi
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
+              {seleccionoSi && (
+                <TextInput
+                  style={styles.input}
+                  value={otroIndicacion}
+                  onChangeText={handleOtroIndicacionChange}
+                  placeholder="Indique cuál o cuáles:"
+                />
+              )}
+
+            </View>
+
+          </View>
+        </View>
+      </View>
+
+      {/* Pregunta 6.3 */}
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
+            <Text style={styles.question1}> PREGUNTA 6.3 ( SELECCIÓN ÚNICA ) </Text>
+          </View>
+          <View style={styles.linea} />
+        </View>
+      </View>
+
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
+            <View style={styles.preguntaContainer}>
+              
+              <Text style={styles.pregunta}>
+                Conoce sobre un lugar de suministro de productos de apoyo en
+                el municipio o en el departamento que beneficie a la población
+                con elementos como: sillas de ruedas, bastones de orientación
+                visual, muletas, caminadores, bastones, etc.
+              </Text>
+              <View style={styles.optionContainer}>
+                <CheckBox
+                  title="Sí"
+                  checked={selectedOption3 === "Sí"}
+                  onPress={() => handleOption3Select("Sí")}
+                  containerStyle={styles.checkBoxContainer}
+                  textStyle={
+                    selectedOption3 === "Sí"
+                      ? styles.selectedOptionText
+                      : styles.checkBoxText
+                  }
+                  checkedColor="#BA0C2F"
                 />
                 <CheckBox
                   title="No"
-                  checked={!seleccionoSi}
-                  onPress={handleNoCheckboxChange}
+                  checked={selectedOption3 === "No"}
+                  onPress={() => handleOption3Select("No")}
                   containerStyle={styles.checkBoxContainer}
-                textStyle={
-                  seleccionoSi === ""
-                    ? styles.selectedOptionText
-                    : styles.checkBoxText
-                }
+                  textStyle={
+                    selectedOption3 === "No"
+                      ? styles.selectedOptionText
+                      : styles.checkBoxText
+                  }
+                  checkedColor="#BA0C2F"
                 />
-                {seleccionoSi && (
+              </View>
+              {selectedOption3 === "Sí" && (
+                <View style={styles.preguntaContainer}>
+                  <Text style={styles.preguntas}>Indique cual:</Text>
                   <TextInput
                     style={styles.input}
-                    value={otroIndicacion}
-                    onChangeText={handleOtroIndicacionChange}
-                    placeholder="Indique cuál o cuáles:"
-                  />
-                )}
-             
-            </View>
+                    value={municipio}
+                    onChangeText={handleMunicipioChange}
+                    placeholder=""
 
-            <View style={styles.preguntaContainer}>
-              <Text style={styles.pregunta}>PREGUNTA 6.3</Text>
-              
-                <Text style={styles.recuadroTitulo}>
-                  Conoce sobre un lugar de suministro de productos de apoyo en
-                  el municipio o en el departamento que beneficie a la población
-                  con elementos como: sillas de ruedas, bastones de orientación
-                  visual, muletas, caminadores, bastones, etc.
-                </Text>
-                <View style={styles.optionContainer}>
-                  <CheckBox
-                    title="Sí"
-                    checked={selectedOption3 === "Sí"}
-                    onPress={() => handleOption3Select("Sí")}
-                    containerStyle={styles.checkBoxContainer}
-                textStyle={
-                  selectedOption3 === "Sí"
-                    ? styles.selectedOptionText
-                    : styles.checkBoxText
-                }
                   />
-                  <CheckBox
-                    title="No"
-                    checked={selectedOption3 === "No"}
-                    onPress={() => handleOption3Select("No")}
-                    containerStyle={styles.checkBoxContainer}
-                    textStyle={
-                      selectedOption3 === "No"
-                        ? styles.selectedOptionText
-                        : styles.checkBoxText
-                    }
+                  <Text style={styles.preguntas}>Dónde se ubica:</Text>
+                  <TextInput
+                    style={styles.input}
+                    value={nombreDepartamento}
+                    onChangeText={handleNombreDepartamentoChange}
+                    placeholder=""
                   />
                 </View>
-                {selectedOption3 === "Sí" && (
-                  <View style={styles.preguntaContainer}>
-                    <Text style={styles.recuadroTitulo}>Indique cual:</Text>
-                    <TextInput
-                      style={styles.input}
-                      value={municipio}
-                      onChangeText={handleMunicipioChange}
-                      placeholder=""
+              )}
 
-                    />
-                    <Text style={styles.recuadroTitulo}>Dónde se ubica:</Text>
-                    <TextInput
-                      style={styles.input}
-                      value={nombreDepartamento}
-                      onChangeText={handleNombreDepartamentoChange}
-                      placeholder=""
-                    />
-                  </View>
-                )}
-              
             </View>
             {/* Boton */}
             <TouchableOpacity style={styles.boton} onPress={goToPreguntaSeis}>
               <Text style={styles.textoBoton}> Siguiente </Text>
             </TouchableOpacity>
 
-            
+
           </View>
         </View>
       </View>
@@ -238,62 +285,97 @@ const styles = StyleSheet.create({
     padding: 16,
     alignItems: "center",
   },
-  titulo: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 16,
-    alignItems: "center",
-  },
-  preguntaContainer: {
-    marginBottom: 16,
-  },
   pregunta: {
-    fontSize: 16,
+    marginBottom: 5,
+    textAlign: 'justify',
+    marginTop: -15,
+    fontWeight: "bold",
+
+  },
+  preguntas: {
+    color: "#000000",
     marginBottom: 10,
+    marginTop: 10,
     fontWeight: "bold",
   },
-  
-  recuadroTitulo: {
-    fontWeight: "bold",
-    marginBottom: 10,
+  question: {
     color: "#35669a",
-    fontSize: 14,
+    marginBottom: -20,
+    marginTop: 15,
+    fontWeight: "bold",
+    fontSize: 15,
   },
-  opcionesContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 4,
+  question1: {
+    color: "#35669a",
+    marginBottom: -80,
+    marginTop: -2,
+    fontWeight: "bold",
+    fontSize: 15,
   },
+  question2: {
+    color: "#35669a",
+    marginBottom: 20,
+    marginTop: 2,
+    fontWeight: "bold",
+    fontSize: 15,
+  },
+  linea: {
+    marginTop: "auto",
+    height: 6,              // Altura de la línea
+    backgroundColor: "#BA0C2F",  // Color de la línea (rojo en este caso)
+    position: 'absolute',   // Posición absoluta para que se superponga al contenido
+    bottom: 0,              // Se coloca en la parte inferior de la tarjeta
+    left: 8,                // Alinear a la izquierda
+    right: 8,               // Alinear a la derecha
+  },
+  linea1: {
+    marginTop: 8,
+    height: 6,              // Altura de la línea
+    backgroundColor: "#BA0C2F",  // Color de la línea (rojo en este caso)
+    position: 'relative',   // Posición absoluta para que se superponga al contenido
+    bottom: 20,              // Se coloca en la parte inferior de la tarjeta
+    left: 0,                // Alinear a la izquierda
+    right: 0,               // Alinear a la derecha
+  },
+
   input: {
     backgroundColor: "white",
     height: 40,
     borderBottomWidth: 1, // Añadimos el borde inferior
-    borderBottomColor: "#D2D4DF", // Color del borde inferior
+    borderBottomColor: "#35669a", // Color del borde inferior
     paddingHorizontal: 10,
     width: "100%",
     marginBottom: 10,
   },
 
-  /* Estilo Boton y texto*/
+  /* Estilos Boton y texto */
   boton: {
-    backgroundColor: "#35669a",
-    borderColor: "#007bff ",
+    backgroundColor: "#1b3f90",
+    borderColor: "#D2D4DF",
     borderWidth: 1,
     borderRadius: 20,
     marginLeft: 20,
     marginRight: 20,
     marginTop: 20,
-    /* Estilo cuando se pasa el cursor por encima */
-    ":hover": {
-      opacity: 1,
-    },
-  },
+    marginBottom: 15,
 
+  },
   textoBoton: {
     textAlign: "center",
     padding: 10,
     color: "white",
     fontSize: 16,
+    fontWeight: "bold",
+  },
+
+
+  titulo: {
+    textAlign: "center",
+    justifyContent: "center",
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 0,
+    marginTop: -20,
   },
   /* Estilo Contenedor */
   contenedorPadre: {
@@ -302,12 +384,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
+  /* Estilo Contenedor */
+
   tarjeta: {
-    margin: 20,
+    margin: 10,
     backgroundColor: "white",
     borderRadius: 20,
     width: "90%",
-    padding: 20,
+    padding: 15,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -319,7 +403,7 @@ const styles = StyleSheet.create({
   },
 
   contenedor: {
-    padding: 0,
+    padding: 20,
   },
 
   checkBoxContainer: {
@@ -330,11 +414,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   // Estilo para el texto de las opciones seleccionadas
+  // Estilo para el texto de las opciones seleccionadas
   selectedOptionText: {
-    color: "#35669a", // Color de texto para la opción seleccionada
+    color: "#BA0C2F", // Color de texto para la opción seleccionada
     fontWeight: "bold", // Puedes ajustar el peso del texto si lo deseas
     fontSize: 16,
   },
+
 
   checkBoxText: {
     fontSize: 16,
