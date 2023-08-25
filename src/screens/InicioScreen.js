@@ -1,23 +1,19 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
-import React from "react";
+import {  View, Text, ScrollView, StyleSheet, TouchableOpacity} from "react-native";
 
 export default function InicioScreen(props) {
   const { navigation } = props;
   const goToIdentificacion = () => {
     navigation.navigate("Identificacion");
-  };
+    
+  }
 
   return (
+    
     <ScrollView>
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.container}>
+            
             <Text style={styles.titulo}>
               CUESTIONARIO PARA LA CARACTERIZACIÓN DE NECESIDADES{" "}
             </Text>
@@ -48,6 +44,7 @@ const styles = StyleSheet.create({
   Text: {
     textAlign: 'justify',
     marginTop: 20,
+    fontWeight: "bold",
   },
   titulo: {
     textAlign: "center",
@@ -93,7 +90,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 20,
     marginBottom: 15,
-   
+
   },
   textoBoton: {
     textAlign: "center",
@@ -102,4 +99,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+
 });

@@ -78,7 +78,7 @@ export default function PreSeisScreen(props) {
   };
 
   const goToPreguntaSeis = () => {
-    navigation.navigate("Pregunta 2.5");
+    navigation.navigate("Pregunta 2.6");
   };
 
   return (
@@ -264,7 +264,7 @@ export default function PreSeisScreen(props) {
             </View>
             {/* Boton */}
             <TouchableOpacity style={styles.boton} onPress={goToPreguntaSeis}>
-              <Text style={styles.textoBoton}> Siguiente </Text>
+              <Text style={styles.textoBoton}> Finalizar </Text>
             </TouchableOpacity>
 
 

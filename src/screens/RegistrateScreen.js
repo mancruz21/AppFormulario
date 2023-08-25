@@ -7,7 +7,7 @@ import {
   Image,
   StyleSheet,
   Alert,
-  
+
 } from "react-native";
 
 
@@ -27,29 +27,33 @@ export default function RegistrateScreen(props) {
   const auth = getAuth(app);
 
   const handleCreateAccount = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log("Account created!");
-        const user = userCredential.user;
-        console.log(user);
-      })
-      .catch((error) => {
-        console.log(error);
-        Alert.alert(error.message);
-      });
 
+    if (!name || !lastName || !email || !password) {
+      Alert.alert("Error", "Por favor, completa todos los campos");
+      return;
+    }
     // Validar correo electrónico
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       Alert.alert("Error", "Por favor, introduce un correo electrónico válido");
       return;
     }
-
     // Validar contraseña
     if (password.length < 6) {
       Alert.alert("Error", "La contraseña debe tener al menos 6 caracteres");
       return;
     }
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        Alert.alert("Registro exitoso, el usuario ha sido exitosamente registrado");
+
+        const user = userCredential.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        console.log(error);
+
+      });
 
     // Ejemplo: Mostrar los valores ingresados en la consola
     console.log("Nombre:", name);
@@ -84,18 +88,24 @@ export default function RegistrateScreen(props) {
         style={styles.input}
         placeholder="Ingresa tu nombre"
         onChangeText={setName}
+        underlineColorAndroid="transparent" // Para Android
+        selectionColor="#efefef" // Color de la línea cuando se selecciona el campo
       />
       <Text style={styles.text}>Apellidos</Text>
       <TextInput
         style={styles.input}
         placeholder="Ingresa tus apellidos"
         onChangeText={setLastName}
+        underlineColorAndroid="transparent" // Para Android
+        selectionColor="#efefef" // Color de la línea cuando se selecciona el campo
       />
       <Text style={styles.text}>Correo</Text>
       <TextInput
         onChangeText={(text) => setEmail(text)}
         style={styles.input}
         placeholder="Ingresa tu Correo"
+        underlineColorAndroid="transparent" // Para Android
+        selectionColor="#efefef" // Color de la línea cuando se selecciona el campo
       />
       <Text style={styles.text}>Contraseña</Text>
       <TextInput
@@ -103,13 +113,18 @@ export default function RegistrateScreen(props) {
         style={styles.input}
         placeholder="Ingresa tu contraseña"
         secureTextEntry={true}
+        underlineColorAndroid="transparent" // Para Android
+        selectionColor="#efefef" // Color de la línea cuando se selecciona el campo
       />
 
       {/* Boton */}
       <TouchableOpacity
         style={styles.boton}
         onPress={() => {
+          // Primero intentar crear la cuenta
           handleCreateAccount();
+
+          // Luego, si no hubo errores, navegar a la página "Login"
           goToPage("Login");
         }}
       >
@@ -127,7 +142,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 25,
   },
   input: {
-    backgroundColor:"white",
+    backgroundColor: "white",
     height: 40,
     borderBottomWidth: 1, // Añadimos el borde inferior
     borderBottomColor: "#D2D4DF", // Color del borde inferior
@@ -136,9 +151,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
- /* Estilo Boton y texto*/
- boton: {
-  backgroundColor: "#1b3f90",
+  /* Estilo Boton y texto*/
+  boton: {
+    backgroundColor: "#1b3f90",
     borderColor: "#D2D4DF",
     borderWidth: 1,
     borderRadius: 5,
@@ -146,15 +161,15 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 20,
     marginBottom: 15,
-   
-},
 
-textoBoton: {
-  textAlign: "center",
-  padding: 10,
-  color: "white",
-  fontSize: 16,
-},
+  },
+
+  textoBoton: {
+    textAlign: "center",
+    padding: 10,
+    color: "white",
+    fontSize: 16,
+  },
 
   icono: {
     width: 20,

@@ -25,10 +25,14 @@ export default function LoginScreen(props) {
         console.log("Signed in!");
         const user = userCredential.user;
         console.log(user);
-        navigation.navigate("Inicio");
+        navigation.navigate("Pregunta 2.5");
       })
+
       .catch((error) => {
-        console.log(error);
+        setError('Ha ingreado mal la contraseña o el correo');
+        Alert.alert('CORREO O CONTRASEÑA INVALIDOS', 'Por favor digite bien el correo o la contraseña');
+
+
       });
   };
 
@@ -36,7 +40,7 @@ export default function LoginScreen(props) {
 
   const goToInicio = () => {
     if (!emailIsValid(email)) {
-      Alert.alert("CORREO INVALIDO", "Por favor, ingresa un correo válido.");
+
       return;
     }
     if (password.length < 6) {
@@ -46,7 +50,7 @@ export default function LoginScreen(props) {
       );
       return;
     }
-    
+
   };
 
   const goToRegistrate = () => {
@@ -77,6 +81,8 @@ export default function LoginScreen(props) {
         onChangeText={(text) => setEmail(text)}
         style={styles.input}
         placeholder="Ingrese su correo"
+        underlineColorAndroid="transparent" // Para Android
+        selectionColor="#efefef" // Color de la línea cuando se selecciona el campo
       />
       <Text style={styles.text}>Contraseña</Text>
       <TextInput
@@ -84,6 +90,8 @@ export default function LoginScreen(props) {
         style={styles.input}
         placeholder="Ingresa tu contraseña"
         secureTextEntry={true}
+        underlineColorAndroid="transparent" // Para Android
+        selectionColor="#efefef" // Color de la línea cuando se selecciona el campo
       />
 
       {/* Boton */}
@@ -131,7 +139,7 @@ const styles = StyleSheet.create({
     height: 150,
   },
   input: {
-    backgroundColor:"white",
+    backgroundColor: "white",
     height: 40,
     borderBottomWidth: 1, // Añadimos el borde inferior
     borderBottomColor: "#000000", // Color del borde inferior
@@ -150,7 +158,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 20,
     marginBottom: 15,
-   
+
 
   },
   textoBoton: {

@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, Alert, TouchableOpacity } from 'react-native'
 import React, {useState} from 'react'
-import {Icon, Input, Button} from 'react-native-elements'
-
+import {Icon, Input} from 'react-native-elements'
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../components/firebase-config';
@@ -20,34 +19,39 @@ export default function RecuperacioScreen({navigation}) {
         }
 
         sendPasswordResetEmail(auth, email)
-      .then(() => {
-        Alert.alert('Éxito', 'Se ha enviado un correo electrónico para restablecer la contraseña');
-      })
-      .catch((error) => {
-        console.log(error);
-        Alert.alert('Error', 'No se pudo enviar el correo electrónico para el restablecimiento de contraseña');
-      });
-
-        console.log("Fuck yeah!!!")
-    }
+        .then(() => {
+          Alert.alert(
+            "Éxito",
+            "Se ha enviado un correo electrónico para restablecer la contraseña"
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+          Alert.alert(
+            "Error",
+            "No se pudo enviar el correo electrónico para el restablecimiento de contraseña"
+          );
+        });
+  
+      console.log("¡Éxito!");
+    };
 
     const validateData = () => {
-        setErrorEmail(null)
-        let valid = true
-        
-
-        if (!validateData(email)) {
-            setErrorEmail("Debes ingresar un email valido.")
-            valid = false
+      setErrorEmail(null);
+      let valid = true;
+  
+      if (!validateEmail(email)) { // <-- Cambio aquí
+        setErrorEmail("Debes ingresar un correo electrónico válido.");
+        valid = false;
         }
 
-        return valid
-    }
+        return valid;
+  };
 
-    const validateEmail = (email) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-      };
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
 
   return (

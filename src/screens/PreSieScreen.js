@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Alert, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { Button, CheckBox } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
@@ -12,7 +12,38 @@ export default function PreSieScreen(props) {
 
   const { navigation } = props;
   const goToEnvio = () => {
-    navigation.navigate("Pregunta 2.6");
+    if (selectedOption === "") {
+      // Si no se selecciona ninguna opción, mostrar una alerta
+      Alert.alert(
+        "Alerta",
+        "Por favor, seleccione una opción antes de continuar.",
+        [{ text: "Aceptar" }],
+        { cancelable: false }
+      );
+    } else if (selectedOption === "Sí") {
+      // Si se seleccionó "Sí", navegar a la siguiente ventana
+      navigation.navigate("Inicio");
+    } else if (selectedOption === "No") {
+      // Si se seleccionó "No", mostrar una alerta con opción de cancelar
+      Alert.alert(
+        "Confirmación",
+        "¿Está seguro de que no desea participar?",
+        [
+          {
+            text: "Cancelar",
+            style: "cancel",
+          },
+          {
+            text: "Aceptar",
+            onPress: () => {
+              // Navegar a la ventana de login
+              navigation.navigate("Login");
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+    }
   };
 
   return (
@@ -73,8 +104,9 @@ export default function PreSieScreen(props) {
 
             {/* Boton */}
             <TouchableOpacity style={styles.boton} onPress={goToEnvio}>
-              <Text style={styles.textoBoton}> Finalizar </Text>
+              <Text style={styles.textoBoton}> Siguiente </Text>
             </TouchableOpacity>
+
           </View>
         </View>
       </View>

@@ -8,14 +8,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { CheckBox } from "react-native-elements";
-import RNPickerSelect from "react-native-picker-select";
 export default function PreDosScreen(props) {
   const { navigation } = props;
   const [opcion1, setOpcion1] = useState(null);
   const [opcion2, setOpcion2] = useState(null);
   const [opcion3, setOpcion3] = useState(null);
   const [selectedOption4, setSelectedOption4] = useState([]);
-  const [selectedOptions, setSelectedOptions] = useState([]);
   const [discapacidad, setDiscapacidad] = useState(null);
   const [OptionSelection, setOptionSelection] = useState("");
   const [etnia, setEtnia] = useState(null);
@@ -27,7 +25,16 @@ export default function PreDosScreen(props) {
   const [salario, setSalario] = useState(null);
   const [promedio, setPromedio] = useState(null);
   const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
-  const [additionalInfo, setAdditionalInfo] = useState("");
+  const handleEtniaChange = (value) => {
+    setEtnia(value);
+    if (value === "Indígena") {
+      setShowAdditionalInfo(true);
+    } else {
+      setShowAdditionalInfo(false);
+      setIndigena("");
+    }
+  };
+
   const goToPreguntaTres = () => {
     navigation.navigate("Pregunta 2.1");
     console.log("Opcion 1:", opcion1);
@@ -36,7 +43,7 @@ export default function PreDosScreen(props) {
     console.log("Opcion 4:", selectedOption4);
   };
 
-  
+
   return (
     <ScrollView>
       {/* Pregunta 2.1 */}
@@ -249,23 +256,93 @@ export default function PreDosScreen(props) {
                       de la misma.
                     </Text>
 
-                    <RNPickerSelect
-                      placeholder={{
-                        label: "Selecciona una opción",
-                        value: discapacidad,
-                      }}
-                      value={discapacidad}
-                      onValueChange={(value) => setDiscapacidad(value)}
-                      items={[
-                        { label: "Fisica", value: "Fisica" },
-                        { label: "Visual", value: "Visual" },
-                        { label: "Auditiva", value: "Auditiva" },
-                        { label: "Intelectual", value: "Intelectual" },
-                        { label: "Psicosocial", value: "Psicosocial" },
-                        { label: "Sordoceguera", value: "Sordoceguera" },
-                        { label: "Multiple", value: "Multiple" },
-                      ]}
+                    <CheckBox
+                      title="Física"
+                      checked={discapacidad === "Física"}
+                      onPress={() => setDiscapacidad("Física")}
+                      containerStyle={styles.checkBoxContainer}
+                      textStyle={
+                        discapacidad === "Física"
+                          ? styles.selectedOptionText
+                          : styles.checkBoxText
+                      }
+                      checkedColor="#BA0C2F"
                     />
+                    <CheckBox
+                      title="Visual"
+                      checked={discapacidad === "Visual"}
+                      onPress={() => setDiscapacidad("Visual")}
+                      containerStyle={styles.checkBoxContainer}
+                      textStyle={
+                        discapacidad === "Visual"
+                          ? styles.selectedOptionText
+                          : styles.checkBoxText
+                      }
+                      checkedColor="#BA0C2F"
+                    />
+                    <CheckBox
+                      title="Auditiva"
+                      checked={discapacidad === "Auditiva"}
+                      onPress={() => setDiscapacidad("Auditiva")}
+                      containerStyle={styles.checkBoxContainer}
+                      textStyle={
+                        discapacidad === "Auditiva"
+                          ? styles.selectedOptionText
+                          : styles.checkBoxText
+                      }
+                      checkedColor="#BA0C2F"
+                    />
+                    <CheckBox
+                      title="Intelectual"
+                      checked={discapacidad === "Intelectual"}
+                      onPress={() => setDiscapacidad("Intelectual")}
+                      containerStyle={styles.checkBoxContainer}
+                      textStyle={
+                        discapacidad === "Intelectual"
+                          ? styles.selectedOptionText
+                          : styles.checkBoxText
+                      }
+                      checkedColor="#BA0C2F"
+                    />
+                    <CheckBox
+                      title="Psicosocial"
+                      checked={discapacidad === "Psicosocial"}
+                      onPress={() => setDiscapacidad("Psicosocial")}
+                      containerStyle={styles.checkBoxContainer}
+                      textStyle={
+                        discapacidad === "Psicosocial"
+                          ? styles.selectedOptionText
+                          : styles.checkBoxText
+                      }
+                      checkedColor="#BA0C2F"
+                    />
+                    <CheckBox
+                      title="Sordoceguera"
+                      checked={discapacidad === "Sordoceguera"}
+                      onPress={() => setDiscapacidad("Sordoceguera")}
+                      containerStyle={styles.checkBoxContainer}
+                      textStyle={
+                        discapacidad === "Sordoceguera"
+                          ? styles.selectedOptionText
+                          : styles.checkBoxText
+                      }
+                      checkedColor="#BA0C2F"
+                    />
+                    <CheckBox
+                      title="Múltiple"
+                      checked={discapacidad === "Múltiple"}
+                      onPress={() => setDiscapacidad("Múltiple")}
+                      containerStyle={styles.checkBoxContainer}
+                      textStyle={
+                        discapacidad === "Múltiple"
+                          ? styles.selectedOptionText
+                          : styles.checkBoxText
+                      }
+                      checkedColor="#BA0C2F"
+                    />
+
+
+
 
                     <Text style={styles.question2}> PREGUNTA 2.3 ( SELECCIÓN ÚNICA ) </Text>
                     <View style={styles.linea1} />
@@ -327,42 +404,79 @@ export default function PreDosScreen(props) {
             <Text style={styles.pregunta}>
               De acuerdo a sus costumbres y tradiciones, usted se considera:
             </Text>
-            <RNPickerSelect
-              placeholder={{
-                label: "Selecciona una opción",
-                value: etnia,
-              }}
-              value={etnia}
-              onValueChange={(value) => {
-                setEtnia(value);
-                setShowAdditionalInfo(value === "Indígena");
-              }}
-              items={[
-                { label: "Indígena", value: "Indígena" },
-                { label: "ROM (Gitanos)", value: "ROM (Gitanos)" },
-                {
-                  label:
-                    "Raizal del Archipiélago de San Andrés y Providencia",
-                  value:
-                    "Raizal del Archipiélago de San Andrés y Providencia",
-                },
-                {
-                  label: "Palenquero de San Basilio",
-                  value: "Palenquero de San Basilio",
-                },
-                {
-                  label:
-                    "Negro(a), Mulato(a), Afrocolombiano(a) o Afrodescendientel",
-                  value:
-                    "Negro(a), Mulato(a), Afrocolombiano(a) o Afrodescendiente",
-                },
-                {
-                  label: "Ninguno de los anteriores",
-                  value: "Ninguno de los anteriores",
-                },
-              ]}
+            <CheckBox
+              title="Indígena"
+              checked={etnia === "Indígena"}
+              onPress={() => setEtnia("Indígena")}
+              containerStyle={styles.checkBoxContainer}
+              textStyle={
+                etnia === "Indígena"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
             />
-            {showAdditionalInfo && (
+            <CheckBox
+              title="ROM (Gitanos)"
+              checked={etnia === "ROM (Gitanos)"}
+              onPress={() => setEtnia("ROM (Gitanos)")}
+              containerStyle={styles.checkBoxContainer}
+              textStyle={
+                etnia === "ROM (Gitanos)"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            />
+            <CheckBox
+              title="Raizal del Archipiélago de San Andrés y Providencia"
+              checked={etnia === "Raizal del Archipiélago de San Andrés y Providencia"}
+              onPress={() => setEtnia("Raizal del Archipiélago de San Andrés y Providencia")}
+              containerStyle={styles.checkBoxContainer}
+              textStyle={
+                etnia === "Raizal del Archipiélago de San Andrés y Providencia"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            />
+            <CheckBox
+              title="Palenquero de San Basilio"
+              checked={etnia === "Palenquero de San Basilio"}
+              onPress={() => setEtnia("Palenquero de San Basilio")}
+              containerStyle={styles.checkBoxContainer}
+              textStyle={
+                etnia === "Palenquero de San Basilio"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            />
+            <CheckBox
+              title="Negro(a), Mulato(a), Afrocolombiano(a) o Afrodescendiente"
+              checked={etnia === "Negro(a), Mulato(a), Afrocolombiano(a) o Afrodescendiente"}
+              onPress={() => setEtnia("Negro(a), Mulato(a), Afrocolombiano(a) o Afrodescendiente")}
+              containerStyle={styles.checkBoxContainer}
+              textStyle={
+                etnia === "Negro(a), Mulato(a), Afrocolombiano(a) o Afrodescendiente"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            />
+            <CheckBox
+              title="Ninguno de los anteriores"
+              checked={etnia === "Ninguno de los anteriores"}
+              onPress={() => setEtnia("Ninguno de los anteriores")}
+              containerStyle={styles.checkBoxContainer}
+              textStyle={
+                etnia === "Ninguno de los anteriores"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            />
+            {etnia == "Indígena" && (
               <View>
                 <Text style={styles.preguntas}>
                   Indique el nombre del pueblo indígena al que pertenece:
@@ -481,20 +595,45 @@ export default function PreDosScreen(props) {
                   <Text style={styles.preguntas}>
                     Seleccione el tipo de nivel educativo que tiene
                   </Text>
-                  <RNPickerSelect
-                    placeholder={{
-                      label: "Selecciona una opción",
-                      value: educacionSuperior,
-                    }}
-                    value={educacionSuperior}
-                    onValueChange={(value) => setEducacionSuperior(value)}
-                    items={[
-                      { label: "Técnico", value: "Técnico" },
-                      { label: "Técnologica", value: "Técnologica" },
-                      { label: "Profesional", value: "Profesional" },
-                    ]}
+                  <CheckBox
+                    title="Técnico"
+                    checked={educacionSuperior === "Técnico"}
+                    onPress={() => setEducacionSuperior("Técnico")}
+                    containerStyle={styles.checkBoxContainer}
+                    textStyle={
+                      educacionSuperior === "Técnico"
+                        ? styles.selectedOptionText
+                        : styles.checkBoxText
+                    }
+                    checkedColor="#BA0C2F"
                   />
+                  <CheckBox
+                    title="Técnologica"
+                    checked={educacionSuperior === "Técnologica"}
+                    onPress={() => setEducacionSuperior("Técnologica")}
+                    containerStyle={styles.checkBoxContainer}
+                    textStyle={
+                      educacionSuperior === "Técnologica"
+                        ? styles.selectedOptionText
+                        : styles.checkBoxText
+                    }
+                    checkedColor="#BA0C2F"
+                  />
+                  <CheckBox
+                    title="Profesional"
+                    checked={educacionSuperior === "Profesional"}
+                    onPress={() => setEducacionSuperior("Profesional")}
+                    containerStyle={styles.checkBoxContainer}
+                    textStyle={
+                      educacionSuperior === "Profesional"
+                        ? styles.selectedOptionText
+                        : styles.checkBoxText
+                    }
+                    checkedColor="#BA0C2F"
+                  />
+                  <View style={styles.linea} />
                 </View>
+
               )}
 
               <CheckBox
@@ -648,23 +787,80 @@ export default function PreDosScreen(props) {
                   La actividad económica (formal o informal) en la que trabaja
                   en la actualidad se relaciona con:
                 </Text>
-
-                <RNPickerSelect
-                  placeholder={{
-                    label: "Selecciona una opción",
-                    value: trabajo,
-                  }}
-                  value={trabajo}
-                  onValueChange={(value) => setTrabajo(value)}
-                  items={[
-                    { label: "Industria", value: "Industria" },
-                    { label: "Comercio", value: "Comercio" },
-                    { label: "Agricola", value: "Agricola" },
-                    { label: "Pecuaria", value: "Pecuaria" },
-                    { label: "Servicios ó intangibles", value: "Servicios ó intangibles",},
-                    { label: "Otra actividad", value: "Otra actividad" },
-                  ]}
+                <CheckBox
+                  title="Industria"
+                  checked={trabajo === "Industria"}
+                  onPress={() => setTrabajo("Industria")}
+                  containerStyle={styles.checkBoxContainer}
+                  textStyle={
+                    trabajo === "Industria"
+                      ? styles.selectedOptionText
+                      : styles.checkBoxText
+                  }
+                  checkedColor="#BA0C2F"
                 />
+                <CheckBox
+                  title="Comercio"
+                  checked={trabajo === "Comercio"}
+                  onPress={() => setTrabajo("Comercio")}
+                  containerStyle={styles.checkBoxContainer}
+                  textStyle={
+                    trabajo === "Comercio"
+                      ? styles.selectedOptionText
+                      : styles.checkBoxText
+                  }
+                  checkedColor="#BA0C2F"
+                />
+                <CheckBox
+                  title="Agrícola"
+                  checked={trabajo === "Agrícola"}
+                  onPress={() => setTrabajo("Agrícola")}
+                  containerStyle={styles.checkBoxContainer}
+                  textStyle={
+                    trabajo === "Agrícola"
+                      ? styles.selectedOptionText
+                      : styles.checkBoxText
+                  }
+                  checkedColor="#BA0C2F"
+                />
+                <CheckBox
+                  title="Pecuaria"
+                  checked={trabajo === "Pecuaria"}
+                  onPress={() => setTrabajo("Pecuaria")}
+                  containerStyle={styles.checkBoxContainer}
+                  textStyle={
+                    trabajo === "Pecuaria"
+                      ? styles.selectedOptionText
+                      : styles.checkBoxText
+                  }
+                  checkedColor="#BA0C2F"
+                />
+                <CheckBox
+                  title="Servicios ó intangibles"
+                  checked={trabajo === "Servicios ó intangibles"}
+                  onPress={() => setTrabajo("Servicios ó intangibles")}
+                  containerStyle={styles.checkBoxContainer}
+                  textStyle={
+                    trabajo === "Servicios ó intangibles"
+                      ? styles.selectedOptionText
+                      : styles.checkBoxText
+                  }
+                  checkedColor="#BA0C2F"
+                />
+                <CheckBox
+                  title="Otra actividad"
+                  checked={trabajo === "Otra actividad"}
+                  onPress={() => setTrabajo("Otra actividad")}
+                  containerStyle={styles.checkBoxContainer}
+                  textStyle={
+                    trabajo === "Otra actividad"
+                      ? styles.selectedOptionText
+                      : styles.checkBoxText
+                  }
+                  checkedColor="#BA0C2F"
+                />
+
+
               </View>
             )}
 
@@ -864,7 +1060,7 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     marginTop: -20,
   },
-  
+
 
   pregunta: {
     marginBottom: 5,
@@ -925,7 +1121,8 @@ const styles = StyleSheet.create({
     borderBottomColor: "#35669a", // Color del borde inferior
     paddingHorizontal: 10,
     width: "100%",
-    marginBottom: 10,},
+    marginBottom: 10,
+  },
 
   inputLabels: {
     backgroundColor: "white",

@@ -155,10 +155,10 @@ export default function StackNavigation() {
         name="Pregunta 2.5"
         component={PreSieScreen}
         options={{
-          title: "Componente VII ",
+          title: "Consentimiento",
           headerTitleAlign: "center",
-          headerStyle: { backgroundColor: "#A7C6ED" },
-          headerTintColor: "white", // Cambia este valor a "white" para cambiar el color del texto del header a blanco
+          headerStyle: { backgroundColor: "#D2D4DF" },
+          
           headerTitleStyle: {
             fontWeight: "bold",
           },

@@ -5,15 +5,19 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import { useEffect, useState } from "react";
-import RNPickerSelect from "react-native-picker-select";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Platform } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
+
 export default function PreUnoScreen(props) {
+
+
+
   const { navigation } = props;
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedOption1, setSelectedOption1] = useState("");
@@ -33,52 +37,57 @@ export default function PreUnoScreen(props) {
   const [fecha, setFecha] = useState("");
   const [edadCalculada, setEdadCalculada] = useState("");
   const [area, setArea] = useState("");
-  const departamentosConMunicipios = [
-    {
-      departamento: "Antioquia",
-      municipios: ["Cáceres", "Caucasia", "El Bagre", "Tarazá", "Valdivia", "Yarumal",
-      ],
-    },
-    {
-      departamento: "Bolívar",
-      municipios: ["San Jacinto", "San Juan Nepomuceno"],
-    },
 
-    {
-      departamento: "Cauca",
-      municipios: ["Cajibío", "Piendamo - Tunía", "Santander de Quilichao", "Toribío",
-      ],
-    },
-    {
-      departamento: "Meta",
-      municipios: ["San Martín"],
-    },
-    {
-      departamento: "Putumayo",
-      municipios: ["Orito"],
-    },
-    {
-      departamento: "Sucre",
-      municipios: ["Colosó"],
-    },
-    {
-      departamento: "Valle del Cauca",
-      municipios: ["Buenaventura"],
-    },
+  // Departamentos y municipios
+
+  const departamentosConMunicipios = [{
+    departamento: "Antioquia",
+    municipios: ["Cáceres", "Caucasia", "El Bagre", "Tarazá", "Valdivia", "Yarumal",
+    ],
+  },
+  {
+    departamento: "Bolívar",
+    municipios: ["San Jacinto", "San Juan Nepomuceno"],
+  },
+
+  {
+    departamento: "Cauca",
+    municipios: ["Cajibío", "Piendamo - Tunía", "Santander de Quilichao", "Toribío",
+    ],
+  },
+  {
+    departamento: "Meta",
+    municipios: ["San Martín"],
+  },
+  {
+    departamento: "Putumayo",
+    municipios: ["Orito"],
+  },
+  {
+    departamento: "Sucre",
+    municipios: ["Colosó"],
+  },
+  {
+    departamento: "Valle del Cauca",
+    municipios: ["Buenaventura"],
+  },
   ];
+  ;
+  const [municipiosDelDepartamento, setMunicipiosDelDepartamento] = useState([]);
+
+
 
   const filtrarMunicipiosPorDepartamento = (departamentoSeleccionado) => {
     const departamentoEncontrado = departamentosConMunicipios.find(
       (dep) => dep.departamento === departamentoSeleccionado
     );
     if (departamentoEncontrado) {
-      return departamentoEncontrado.municipios.map((municipio) => ({
-        label: municipio,
-        value: municipio,
-      }));
+      return departamentoEncontrado.municipios;
     }
     return [];
   };
+
+
   {
     /* Para que atrape la inf de la hora y fecha */
   }
@@ -143,7 +152,6 @@ export default function PreUnoScreen(props) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return date.toLocaleDateString(undefined, options);
   }
-
   const goToPreguntaDos = () => {
     navigation.navigate("Pregunta 1.2");
     console.log("Sexo:", selectedOption);
@@ -162,7 +170,7 @@ export default function PreUnoScreen(props) {
     console.log("Estrato social:", estratoSocial);
   };
   return (
-    <ScrollView>
+    <ScrollView >
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
@@ -282,10 +290,6 @@ export default function PreUnoScreen(props) {
                 placeholder={edadCalculada !== "" ? edadCalculada : ""} // Mostrar el valor calculado en el placeholder
               />
             </View>
-
-
-
-
           </View>
         </View>
       </View>
@@ -298,71 +302,91 @@ export default function PreUnoScreen(props) {
           <View style={styles.linea} />
         </View>
       </View>
-
-
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-
-
             {/* Departamento */}
-
             <Text style={styles.preguntas}>Departamento</Text>
-            <View>
-              <RNPickerSelect
-                placeholder={{
-                  label: "Selecciona el departamento",
-                  value: departamento,
+            {departamentosConMunicipios.map((dep) => (
+              <TouchableOpacity
+                key={dep.departamento}
+                onPress={() => {
+                  setDepartamento(dep.departamento);
+                  setMunicipiosDelDepartamento(dep.municipios); // Actualiza los municipios del departamento seleccionado
                 }}
-                value={departamento}
-                onValueChange={(value) => {
-                  setDepartamento(value);
-                  setMunicipio(""); // Reiniciamos el valor del municipio al cambiar el departamento
-                }}
-                items={[
-                  { label: "Antioquia", value: "Antioquia" },
-                  { label: "Bolívar", value: "Bolívar" },
-                  { label: "Cauca", value: "Cauca" },
-                  { label: "Meta", value: "Meta" },
-                  { label: "Putumayo", value: "Putumayo" },
-                  { label: "Sucre", value: "Sucre" },
-                  { label: "Valle del Cauca", value: "Valle del Cauca" },
+                style={[
+                  { paddingVertical: 10 },
                 ]}
-              />
-            </View>
+              >
+                <Text style={departamento === dep.departamento ? styles.selectedOptionText : null}>{dep.departamento}</Text>
+              </TouchableOpacity>
+            ))}
             {/* Municipio */}
-
             <Text style={styles.preguntas}>Municipio</Text>
-            <View>
-              <RNPickerSelect
-                placeholder={{
-                  label: "Selecciona el Municipio",
-                  value: municipio,
-                }}
-                value={municipio}
-                onValueChange={(value) => setMunicipio(value)}
-                items={filtrarMunicipiosPorDepartamento(departamento)}
-              />
-            </View>
+            {municipiosDelDepartamento.length > 0 ? (
+              municipiosDelDepartamento.map((mun) => (
+                <TouchableOpacity
+                  key={mun}
+                  onPress={() => setMunicipio(mun)}
+                  style={[
+                    { paddingVertical: 10 },
+
+                  ]}
+                >
+                  <Text style={municipio === mun ? styles.selectedOptionText : null}>{mun}</Text>
+                </TouchableOpacity>
+              ))
+            ) : (
+              <Text >No hay municipios disponibles para este departamento.</Text>
+            )}
             {/* Area */}
+
             <Text style={styles.preguntas}> Área</Text>
-
-            <View>
-              <RNPickerSelect
-                placeholder={{
-                  label: "Selecciona una opción",
-                  value: area,
-                }}
-                value={area}
-                onValueChange={(value) => setArea(value)}
-                items={[
-                  { label: "Cabecera Municipal (Area urbana)", value: "Cabecera Municipal (Area urbana)" },
-                  { label: "Centro poblado (Inspección, Corregimiento, caserío)", value: "Centro poblado (Inspección, Corregimiento, caserío)" },
-                  { label: "Rural disperso", value: "Rural disperso" },
-                ]}
-              />
-            </View>
-
+            <CheckBox
+              title="Cabecera Municipal (Area urbana)"
+              checked={area === "Cabecera Municipal (Area urbana)"}
+              onPress={() => setArea("Cabecera Municipal (Area urbana)")}
+              containerStyle={[
+                styles.checkBoxContainer,
+                styles.checkBoxWidth,
+              ]}
+              textStyle={
+                area === "Cabecera Municipal (Area urbana)"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            />
+            <CheckBox
+              title="Centro poblado (Inspección, Corregimiento, caserío)"
+              checked={area === "Centro poblado (Inspección, Corregimiento, caserío)"}
+              onPress={() => setArea("Centro poblado (Inspección, Corregimiento, caserío)")}
+              containerStyle={[
+                styles.checkBoxContainer,
+                styles.checkBoxWidth,
+              ]}
+              textStyle={
+                area === "Centro poblado (Inspección, Corregimiento, caserío)"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            />
+            <CheckBox
+              title="Rural disperso"
+              checked={area === "Rural disperso"}
+              onPress={() => setArea("Rural disperso")}
+              containerStyle={[
+                styles.checkBoxContainer,
+                styles.checkBoxWidth,
+              ]}
+              textStyle={
+                area === "Rural disperso"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            />
             {/* Ubicación */}
             <Text style={styles.preguntas}>
               {" "}
@@ -376,7 +400,6 @@ export default function PreUnoScreen(props) {
               value={nombreCentroPoblado}
               onChangeText={setNombreCentroPoblado}
             />
-
             <Text style={styles.preguntas}>
               {" "}
               Nombre del barrio o vereda (vereda rural - barrio urbano)
@@ -389,7 +412,6 @@ export default function PreUnoScreen(props) {
               value={nombreBarrioVereda}
               onChangeText={setNombreBarrioVereda}
             />
-
             <Text style={styles.preguntas}> Dirección </Text>
             <TextInput
               placeholder="Ingresa su dirección"
@@ -399,9 +421,7 @@ export default function PreUnoScreen(props) {
               value={direccion}
               onChangeText={setDireccion}
             />
-
             <Text style={styles.preguntas}> Número de teléfono</Text>
-
             <TextInput
               style={styles.input}
               placeholder="Ingresa su número de celular"
@@ -412,28 +432,109 @@ export default function PreUnoScreen(props) {
               underlineColorAndroid="transparent" // Para Android
               selectionColor="#efefef" // Color de la línea cuando se selecciona el campo
             />
-
             <Text style={styles.preguntas}> Estrato social</Text>
+            <CheckBox
+              title="1"
+              checked={estratoSocial === "1"}
+              onPress={() => setEstratoSocial("1")}
+              containerStyle={[
+                styles.checkBoxContainer,
+                styles.checkBoxWidth,
+              ]}
+              textStyle={
+                estratoSocial === "1"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            />
+            <CheckBox
+              title="2"
+              checked={estratoSocial === "2"}
+              onPress={() => setEstratoSocial("2")}
+              containerStyle={[
+                styles.checkBoxContainer,
+                styles.checkBoxWidth,
+              ]}
+              textStyle={
+                estratoSocial === "2"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            /><CheckBox
+              title="3"
+              checked={estratoSocial === "3"}
+              onPress={() => setEstratoSocial("3")}
+              containerStyle={[
+                styles.checkBoxContainer,
+                styles.checkBoxWidth,
+              ]}
+              textStyle={
+                estratoSocial === "3"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            /><CheckBox
+              title="4"
+              checked={estratoSocial === "4"}
+              onPress={() => setEstratoSocial("4")}
+              containerStyle={[
+                styles.checkBoxContainer,
+                styles.checkBoxWidth,
+              ]}
+              textStyle={
+                estratoSocial === "4"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            /><CheckBox
+              title="5"
+              checked={estratoSocial === "5"}
+              onPress={() => setEstratoSocial("5")}
+              containerStyle={[
+                styles.checkBoxContainer,
+                styles.checkBoxWidth,
+              ]}
+              textStyle={
+                estratoSocial === "5"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            /><CheckBox
+              title="6"
+              checked={estratoSocial === "6"}
+              onPress={() => setEstratoSocial("6")}
+              containerStyle={[
+                styles.checkBoxContainer,
+                styles.checkBoxWidth,
+              ]}
+              textStyle={
+                estratoSocial === "6"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            /><CheckBox
+              title="Sin Estrato"
+              checked={estratoSocial === "Sin Estrato"}
+              onPress={() => setEstratoSocial("Sin Estrato")}
+              containerStyle={[
+                styles.checkBoxContainer,
+                styles.checkBoxWidth,
+              ]}
+              textStyle={
+                estratoSocial === "Sin Estrato"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            />
 
-            <View>
-              <RNPickerSelect
-                placeholder={{
-                  label: "Selecciona una opción",
-                  value: estratoSocial,
-                }}
-                value={estratoSocial}
-                onValueChange={(value) => setEstratoSocial(value)}
-                items={[
-                  { label: "1", value: "1" },
-                  { label: "2", value: "2" },
-                  { label: "3", value: "3" },
-                  { label: "4", value: "4" },
-                  { label: "5", value: "5" },
-                  { label: "6", value: "6" },
-                  { label: "Sin Estrato", value: "Sin Estrato" },
-                ]}
-              />
-            </View>
+
 
             {/* Boton */}
             <TouchableOpacity style={styles.boton} onPress={goToPreguntaDos}>
@@ -448,7 +549,7 @@ export default function PreUnoScreen(props) {
   );
 }
 const styles = StyleSheet.create({
- /* Estilos Boton y texto */
+  /* Estilos Boton y texto */
   boton: {
     backgroundColor: "#1b3f90",
     borderColor: "#D2D4DF",
@@ -458,7 +559,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 20,
     marginBottom: 15,
-   
+
   },
   textoBoton: {
     textAlign: "center",
@@ -607,7 +708,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 10,
     fontWeight: "bold",
-    
+
 
   },
 
@@ -642,4 +743,48 @@ const styles = StyleSheet.create({
     fontSize: 14,
 
   },
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: "#fff"
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10
+  },
+  dropdownButton: {
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc"
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)"
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 4,
+    color: "#333",
+    paddingRight: 30,
+    backgroundColor: "#fff"
+  },
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 4,
+    color: "#333",
+    paddingRight: 30,
+    backgroundColor: "#fff"
+  }
+
 });
