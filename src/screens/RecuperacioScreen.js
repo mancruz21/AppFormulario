@@ -2,16 +2,16 @@ import { View, Text, StyleSheet, Alert, TouchableOpacity } from 'react-native'
 import React, {useState} from 'react'
 import {Icon, Input} from 'react-native-elements'
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
-import { initializeApp } from 'firebase/app';
-import { firebaseConfig } from '../components/firebase-config';
+import appFirebase from '../components/firebase-config';
+
 
 export default function RecuperacioScreen({navigation}) {
 
     const [email, setEmail] = useState("")
     const [errorEmail, setErrorEmail] = useState(null)
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+   
+    const auth = getAuth(appFirebase);
 
     const onSubmit = () => {
         if (!validateData()) {

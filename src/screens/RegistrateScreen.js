@@ -12,60 +12,76 @@ import {
 
 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../components/firebase-config";
-import { fontFamily, fontWeight } from "react-native-elements";
+
+import appFirebase from "../components/firebase-config";
+import {addDoc, collection, getFirestore} from 'firebase/firestore';
+const db = getFirestore(appFirebase)
+
 
 
 export default function RegistrateScreen(props) {
+ 
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
 
-  const handleCreateAccount = () => {
+  const auth = getAuth(appFirebase);
 
-    if (!name || !lastName || !email || !password) {
-      Alert.alert("Error", "Por favor, completa todos los campos");
-      return;
+  const handleCreateAccount = async () => {
+    try {
+      if (!name || !lastName || !email || !password) {
+        Alert.alert("Error", "Por favor, completa todos los campos");
+        return;
+      }
+
+      // Validar correo electrónico
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        Alert.alert("Error", "Por favor, introduce un correo electrónico válido");
+        return;
+      }
+
+      // Validar contraseña
+      if (password.length < 6) {
+        Alert.alert("Error", "La contraseña debe tener al menos 6 caracteres");
+        return;
+      }
+
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      const userData = {
+        name: name,
+        lastName: lastName,
+        email: email,
+        uid: user.uid // Agregar el UID del usuario autenticado
+      };
+
+      await Promise.all([
+        addDoc(collection(db, 'registro'), userData),
+        // También puedes guardar el userData en otros lugares si es necesario
+      ]);
+
+      Alert.alert("Registro exitoso, el usuario ha sido exitosamente registrado");
+
+      // Ejemplo: Mostrar los valores ingresados en la consola
+      console.log("Nombre:", name);
+      console.log("Apellidos:", lastName);
+      console.log("Correo:", email);
+      console.log("Contraseña:", password);
+
+      // Reiniciar los campos de entrada
+      setName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "Hubo un error al registrar el usuario");
     }
-    // Validar correo electrónico
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      Alert.alert("Error", "Por favor, introduce un correo electrónico válido");
-      return;
-    }
-    // Validar contraseña
-    if (password.length < 6) {
-      Alert.alert("Error", "La contraseña debe tener al menos 6 caracteres");
-      return;
-    }
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        Alert.alert("Registro exitoso, el usuario ha sido exitosamente registrado");
-
-        const user = userCredential.user;
-        console.log(user);
-      })
-      .catch((error) => {
-        console.log(error);
-
-      });
-
-    // Ejemplo: Mostrar los valores ingresados en la consola
-    console.log("Nombre:", name);
-    console.log("Apellidos:", lastName);
-    console.log("Correo:", email);
-    console.log("Contraseña:", password);
-
-    // Reiniciar los campos de entrada
-    setName("");
-    setLastName("");
-    setEmail("");
-    setPassword("");
   };
 
   const { navigation } = props;

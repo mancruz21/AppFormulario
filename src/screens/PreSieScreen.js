@@ -1,14 +1,37 @@
 import { View, Text, StyleSheet, Alert, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
-import { Button, CheckBox } from "react-native-elements";
+import { CheckBox } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function PreSieScreen(props) {
   const [selectedOption, setSelectedOption] = useState("");
 
-  const handleOptionSelect = (option) => {
+ 
+  const handleOptionSelect = async (option) => {
     setSelectedOption(option);
+    try {
+      await AsyncStorage.setItem("selectedOption", option);
+    } catch (error) {
+      console.log("Error storing selected option:", error);
+    }
   };
+  React.useEffect(() => {
+    const getStoredOption = async () => {
+      try {
+        const storedOption = await AsyncStorage.getItem("selectedOption");
+        if (storedOption !== null) {
+          setSelectedOption(storedOption);
+        }
+      } catch (error) {
+        console.log("Error retrieving selected option:", error);
+      }
+    };
+  
+    getStoredOption();
+  }, []);
+  
+
 
   const { navigation } = props;
   const goToEnvio = () => {
@@ -45,6 +68,8 @@ export default function PreSieScreen(props) {
       );
     }
   };
+
+  
 
   return (
     <ScrollView >

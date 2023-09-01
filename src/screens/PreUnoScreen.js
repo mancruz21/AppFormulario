@@ -5,22 +5,68 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Alert,
 
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import { useEffect, useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Platform } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/FontAwesome";
-
-
+import appFirebase from "../components/firebase-config";
+import { addDoc, collection, getFirestore } from 'firebase/firestore';
+const db = getFirestore(appFirebase)
 export default function PreUnoScreen(props) {
-
-
-
   const { navigation } = props;
+ // Función para guardar los datos en AsyncStorage
+ const saveDataToStorage = async () => {
+  try {
+    const data = {
+      selectedOption, apellido,nombres, fecha,edad,departamento, municipio
+      , nombreCentroPoblado, nombreBarrioVereda, direccion,estratoSocial,Celular,
+      area
+     
+    };
+    await AsyncStorage.setItem("formData", JSON.stringify(data));
+  } catch (error) {
+    console.error("Error saving data:", error);
+  }
+};
+
+// Función para cargar los datos desde AsyncStorage
+const loadDataFromStorage = async () => {
+  try {
+    const data = await AsyncStorage.getItem("formData");
+    if (data) {
+      const parsedData = JSON.parse(data);
+      setSelectedOption(parsedData.selectedOption);
+      setApellido(parsedData.apellido);
+      setNombres(parsedData.nombres);
+      setFecha(parsedData.fecha);
+      setEdad(parsedData.edad);
+      setDepartamento(parsedData.departamento);
+      setMunicipio(parsedData.municipio);  
+      setNombreCentroPoblado(parsedData.nombreCentroPoblado);  
+      setNombreBarrioVereda(parsedData.nombreBarrioVereda); 
+      setDireccion(parsedData.direccion);
+      setEstratoSocial(parsedData.estratoSocial);
+      setCelular(parsedData.Celular);
+      
+      setArea(parsedData.area);
+    }
+  } catch (error) {
+    console.error("Error loading data:", error);
+  }
+};
+
+// Llama a la función para cargar los datos al montar el componente
+useEffect(() => {
+  loadDataFromStorage();
+}, []);
+
   const [selectedOption, setSelectedOption] = useState("");
-  const [selectedOption1, setSelectedOption1] = useState("");
+
   const [apellido, setApellido] = useState("");
   const [nombres, setNombres] = useState("");
   const [edad, setEdad] = useState("");
@@ -74,9 +120,6 @@ export default function PreUnoScreen(props) {
   ];
   ;
   const [municipiosDelDepartamento, setMunicipiosDelDepartamento] = useState([]);
-
-
-
   const filtrarMunicipiosPorDepartamento = (departamentoSeleccionado) => {
     const departamentoEncontrado = departamentosConMunicipios.find(
       (dep) => dep.departamento === departamentoSeleccionado
@@ -91,10 +134,7 @@ export default function PreUnoScreen(props) {
   {
     /* Para que atrape la inf de la hora y fecha */
   }
-  const initialState = {
-    titulo: " ",
-    detalle: " ",
-  };
+
   const showMode = (mode) => {
     setMode(mode);
     setShow(true);
@@ -153,21 +193,70 @@ export default function PreUnoScreen(props) {
     return date.toLocaleDateString(undefined, options);
   }
   const goToPreguntaDos = () => {
-    navigation.navigate("Pregunta 1.2");
-    console.log("Sexo:", selectedOption);
-    console.log("Area:", selectedOption1);
-    console.log("Apellido:", apellido);
-    console.log("Nombres:", nombres);
-    console.log("Fecha de nacimiento:", fecha);
-    console.log("Edad:", edad);
-    console.log("Departamento:", departamento);
-    console.log("Municipio:", municipio);
-    console.log("Área:", area);
-    console.log("Nombre centro poblado:", nombreCentroPoblado);
-    console.log("Nombre barrio vereda:", nombreBarrioVereda);
-    console.log("Dirección:", direccion);
-    console.log("Celular:", Celular);
-    console.log("Estrato social:", estratoSocial);
+    if (
+      selectedOption !== "" &&
+      apellido.trim() !== "" &&
+      nombres.trim() !== "" &&
+      fecha.trim() !== "" &&
+      edad.trim() !== "" &&
+      departamento.trim() !== "" &&
+      municipio.trim() !== "" &&
+      area.trim() !== "" &&
+      nombreCentroPoblado.trim() !== "" &&
+      nombreBarrioVereda.trim() !== "" &&
+      direccion.trim() !== "" &&
+      Celular.trim() !== "" &&
+      estratoSocial !== null
+    ) {
+      // Todas las respuestas requeridas han sido llenadas, permitir la navegación
+      navigation.navigate("Pregunta 1.2");
+      console.log("Sexo:", selectedOption);
+      console.log("Apellido:", apellido);
+      console.log("Nombres:", nombres);
+      console.log("Fecha de nacimiento:", fecha);
+      console.log("Edad:", edad);
+      console.log("Departamento:", departamento);
+      console.log("Municipio:", municipio);
+      console.log("Área:", area);
+      console.log("Nombre centro poblado:", nombreCentroPoblado);
+      console.log("Nombre barrio vereda:", nombreBarrioVereda);
+      console.log("Dirección:", direccion);
+      console.log("Celular:", Celular);
+      console.log("Estrato social:", estratoSocial);
+    } else {
+      // Mostrar una alerta al usuario indicando que deben llenar todas las respuestas
+      Alert.alert("Error", "Por favor completa todos los campos.");
+    }
+    saveDataToStorage();
+  };
+  const SaveComponente1 = async () => {
+    try {
+      await addDoc(collection(db, 'componenteuno'), {
+
+        pregunta1_1Apell: apellido,
+        pregunta1_1_2Nombres: nombres,
+        pregunta1_1_3_Sexo: selectedOption,
+        pregunta1_1_4Fecha: fecha,
+        pregunta1_1_5Edad: edadCalculada,
+
+        pregunta1_2_1: departamento,
+        pregunta1_2_2: municipiosDelDepartamento,
+        pregunta1_2_3_Mun: municipio,
+        pregunta1_2_4_Area: area,
+        pregunta1_2_5: nombreCentroPoblado,
+        pregunta1_2_6_Ver: nombreBarrioVereda,
+        pregunta1_2_7_Dir: direccion,
+        pregunta1_2_8_Tel: Celular,
+        pregunta1_2_9_Estr: estratoSocial,
+
+
+      });
+
+
+    } catch (error) {
+      console.error(error);
+
+    }
   };
   return (
     <ScrollView >
@@ -276,7 +365,8 @@ export default function PreUnoScreen(props) {
                   is24Hour={true}
                   display="default"
                   onChange={onChange}
-                  miniumDate={new Date("01-01-1900")}
+                  minimumDate={new Date(1900, 0, 1)} // 1 de enero de 1900
+                  maximumDate={new Date(2014, 11, 31)} // 31 de diciembre de 2014
                 />
               )}
               {/* Edad*/}
@@ -537,8 +627,12 @@ export default function PreUnoScreen(props) {
 
 
             {/* Boton */}
-            <TouchableOpacity style={styles.boton} onPress={goToPreguntaDos}>
-              <Text style={styles.textoBoton}> Siguiente </Text>
+            <TouchableOpacity style={styles.boton} onPress={() => {
+              goToPreguntaDos();
+              SaveComponente1();
+            }}
+            >
+              <Text style={styles.textoBoton}>Siguiente</Text>
             </TouchableOpacity>
 
 
@@ -580,19 +674,41 @@ const styles = StyleSheet.create({
     marginTop: -20,
 
   },
+  pregunta: {
+    marginBottom: 5,
+    textAlign: 'justify',
+    marginTop: -15,
+    fontWeight: "bold",
+    fontSize: 16,
+
+  },
+  preguntas: {
+    color: "#000000",
+    marginBottom: 10,
+    marginTop: 10,
+    fontWeight: "bold",
+    fontSize: 18,
+  },
   question: {
     color: "#35669a",
     marginBottom: -20,
     marginTop: 15,
     fontWeight: "bold",
-    fontSize: 15,
+    fontSize: 18,
   },
   question1: {
     color: "#35669a",
     marginBottom: -80,
-    marginTop: -2,
+    marginTop: -22,
     fontWeight: "bold",
-    fontSize: 15,
+    fontSize: 18,
+  },
+  question2: {
+    color: "#35669a",
+    marginBottom: 20,
+    marginTop: 2,
+    fontWeight: "bold",
+    fontSize: 18,
   },
 
   /* Estilo Formulario*/
@@ -702,15 +818,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
 
-  /* Texto subtitulo */
-  preguntas: {
-    color: "#000000",
-    marginBottom: 10,
-    marginTop: 10,
-    fontWeight: "bold",
-
-
-  },
+  
 
   // Estilo para el texto de las opciones seleccionadas
   selectedOptionText: {

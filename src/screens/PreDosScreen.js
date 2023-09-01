@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,10 +6,18 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { CheckBox } from "react-native-elements";
+import appFirebase from "../components/firebase-config";
+import { addDoc, collection, getFirestore } from "firebase/firestore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const db = getFirestore(appFirebase);
+
 export default function PreDosScreen(props) {
   const { navigation } = props;
+
   const [opcion1, setOpcion1] = useState(null);
   const [opcion2, setOpcion2] = useState(null);
   const [opcion3, setOpcion3] = useState(null);
@@ -24,24 +32,122 @@ export default function PreDosScreen(props) {
   const [trabajo, setTrabajo] = useState([]);
   const [salario, setSalario] = useState(null);
   const [promedio, setPromedio] = useState(null);
-  const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
-  const handleEtniaChange = (value) => {
-    setEtnia(value);
-    if (value === "Indígena") {
-      setShowAdditionalInfo(true);
+
+  useEffect(() => {
+    async function fetchSavedData() {
+      try {
+        const savedOpcion1 = await AsyncStorage.getItem("opcion1");
+        const savedOpcion2 = await AsyncStorage.getItem("opcion2");
+        const savedOpcion3 = await AsyncStorage.getItem("opcion3");
+        const savedSelectedOption4 = await AsyncStorage.getItem("selectedOption4");
+        const savedDiscapacidad = await AsyncStorage.getItem("discapacidad");
+        const savedOptionSelection = await AsyncStorage.getItem("OptionSelection");
+        const savedEtnia = await AsyncStorage.getItem("etnia");
+        const savedIndigena = await AsyncStorage.getItem("indigena");
+        const savedEducativo = await AsyncStorage.getItem("educativo");
+        const savedEducacionSuperior = await AsyncStorage.getItem("educacionSuperior");
+        const savedOcupacion = await AsyncStorage.getItem("ocupacion");
+        const savedTrabajo = await AsyncStorage.getItem("trabajo");
+        const savedSalario = await AsyncStorage.getItem("salario");
+        const savedPromedio = await AsyncStorage.getItem("promedio");
+
+        setOpcion1(savedOpcion1 || null);
+        setOpcion2(savedOpcion2 || null);
+        setOpcion3(savedOpcion3 || null);
+        setSelectedOption4(savedSelectedOption4 || []);
+        setDiscapacidad(savedDiscapacidad || null);
+        setOptionSelection(savedOptionSelection || "");
+        setEtnia(savedEtnia || null);
+        setIndigena(savedIndigena || "");
+        setEducativo(savedEducativo || null);
+        setEducacionSuperior(savedEducacionSuperior || null);
+        if (savedOcupacion) {
+          const parsedOcupacion = JSON.parse(savedOcupacion);
+          setOcupacion(Array.isArray(parsedOcupacion) ? parsedOcupacion : []);
+        }
+  
+        if (savedTrabajo) {
+          const parsedTrabajo = JSON.parse(savedTrabajo);
+          setTrabajo(Array.isArray(parsedTrabajo) ? parsedTrabajo : []);
+        }
+        setSalario(savedSalario || null);
+        setPromedio(savedPromedio || null);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    fetchSavedData();
+  }, []);
+
+  const goToPreguntaTres = async () => {
+    if (
+      opcion1 !== null &&
+      opcion2 !== null &&
+      opcion3 !== null &&
+      (selectedOption4 === "Población con Discapacidad"
+        ? discapacidad !== null && OptionSelection !== ""
+        : true) &&
+      (etnia === "Indígena" ? indigena !== "" : true) &&
+      (educativo === "Educación Superior" ? educacionSuperior !== null : true) &&
+      (ocupacion === "Trabajando - Trabajador Urbano - Rural"
+        ? trabajo.length > 0
+        : true) &&
+      (ocupacion ===
+        "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
+        ? trabajo !== null
+        : true)
+    ) {
+      try {
+        // Evitar guardar valores null
+        if (opcion1 !== null) await AsyncStorage.setItem("opcion1", opcion1);
+        if (opcion2 !== null) await AsyncStorage.setItem("opcion2", opcion2);
+        if (opcion3 !== null) await AsyncStorage.setItem("opcion3", opcion3);
+        if (selectedOption4 !== null) await AsyncStorage.setItem("selectedOption4", selectedOption4);
+        if (discapacidad !== null) await AsyncStorage.setItem("discapacidad", discapacidad);
+        if (OptionSelection !== null) await AsyncStorage.setItem("OptionSelection", OptionSelection);
+        if (etnia !== null) await AsyncStorage.setItem("etnia", etnia);
+        if (indigena !== null) await AsyncStorage.setItem("indigena", indigena);
+        if (educativo !== null) await AsyncStorage.setItem("educativo", educativo);
+        if (educacionSuperior !== null) await AsyncStorage.setItem("educacionSuperior", educacionSuperior);
+        await AsyncStorage.setItem("ocupacion", JSON.stringify(ocupacion));
+        await AsyncStorage.setItem("trabajo", JSON.stringify(trabajo));
+        if (salario !== null) await AsyncStorage.setItem("salario", salario);
+        if (promedio !== null) await AsyncStorage.setItem("promedio", promedio);
+
+        navigation.navigate("Pregunta 2.1");
+      } catch (error) {
+        console.error("Error saving data:", error);
+      }
     } else {
-      setShowAdditionalInfo(false);
-      setIndigena("");
+      Alert.alert("Error", "Por favor completa todos los campos.");
+    }
+  };
+  const SaveComponente2 = async () => {
+    try {
+      await addDoc(collection(db, "componentedos"), {
+        pregunta2_1: opcion1,
+        pregunta2_2: opcion2,
+        pregunta2_3: opcion3,
+        pregunta2_4: selectedOption4,
+        pregunta2_2_1: discapacidad,
+        pregunta2_2_2: OptionSelection,
+        pregunta2_4_1: etnia,
+        pregunta2_4_1_nombre: indigena,
+        pregunta2_5_2_UltimoNivel: educativo,
+        pregunta2_5_1EducaSuperior: educacionSuperior,
+        pregunta2_6_Ocupacion: ocupacion,
+        pregunta2_7_Trabajo: trabajo,
+        pregunta2_8_1_Salario: salario,
+        pregunta2_8_2_Ingreso: promedio,
+      });
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  const goToPreguntaTres = () => {
-    navigation.navigate("Pregunta 2.1");
-    console.log("Opcion 1:", opcion1);
-    console.log("Opcion 2:", opcion2);
-    console.log("Opcion 3:", opcion3);
-    console.log("Opcion 4:", selectedOption4);
-  };
+  // Resto de tu componente
+
 
 
   return (
@@ -50,11 +156,8 @@ export default function PreDosScreen(props) {
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-
             <Text style={styles.titulo}>CARACTERÍSTICAS SOCIODEMOGRÁFICAS</Text>
-
             <Text style={styles.question}> PREGUNTA 2.1 ( SELECCIÓN MÚLTIPLE - MÁXIMO 4 OPCIONES) </Text>
-
           </View>
           <View style={styles.linea} />
         </View>
@@ -67,7 +170,7 @@ export default function PreDosScreen(props) {
               identifique, indique el tipo de población al que pertenece:
             </Text>
             {/* Opcion 1 */}
-            <Text style={styles.preguntas}> Opcion 1</Text>
+            <Text style={styles.preguntas}> Opción 1</Text>
             <View style={styles.inputDate}>
               <CheckBox
                 title="Población Migrante"
@@ -120,7 +223,7 @@ export default function PreDosScreen(props) {
               />
             </View>
             {/* Opcion 2 */}
-            <Text style={styles.preguntas}> Opcion 2 </Text>
+            <Text style={styles.preguntas}> Opción 2 </Text>
             <View style={styles.inputDate}>
               <CheckBox
                 title="Infancia (10 a 11 años)"
@@ -187,7 +290,7 @@ export default function PreDosScreen(props) {
 
 
             {/* Opcion 3 */}
-            <Text style={styles.preguntas}> Opcion 3 </Text>
+            <Text style={styles.preguntas}> Opción 3 </Text>
             <View style={styles.inputDate}>
               <CheckBox
                 title="Mujer embarazada y/o lactante"
@@ -218,7 +321,7 @@ export default function PreDosScreen(props) {
 
             <View>
               {/* Opcion 4 */}
-              <Text style={styles.preguntas}> Opcion 4 </Text>
+              <Text style={styles.preguntas}> Opción 4 </Text>
               <View style={styles.inputDate}>
                 <CheckBox
                   title="Población con Discapacidad"
@@ -340,9 +443,6 @@ export default function PreDosScreen(props) {
                       }
                       checkedColor="#BA0C2F"
                     />
-
-
-
 
                     <Text style={styles.question2}> PREGUNTA 2.3 ( SELECCIÓN ÚNICA ) </Text>
                     <View style={styles.linea1} />
@@ -491,16 +591,7 @@ export default function PreDosScreen(props) {
                 />
               </View>
             )}
-
-
-
-
-
-
           </View>
-
-
-
         </View>
       </View>
 
@@ -1019,10 +1110,13 @@ export default function PreDosScreen(props) {
                 </View>
               )}
             {/* Botón */}
-            <TouchableOpacity style={styles.boton} onPress={goToPreguntaTres}>
-              <Text style={styles.textoBoton}> Siguiente </Text>
+            <TouchableOpacity style={styles.boton} onPress={() => {
+              goToPreguntaTres();
+              SaveComponente2();
+            }}
+            >
+              <Text style={styles.textoBoton}>Siguiente</Text>
             </TouchableOpacity>
-
           </View>
         </View>
       </View>
@@ -1067,6 +1161,7 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
     marginTop: -15,
     fontWeight: "bold",
+    fontSize: 16,
 
   },
   preguntas: {
@@ -1074,27 +1169,28 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 10,
     fontWeight: "bold",
+    fontSize: 18,
   },
   question: {
     color: "#35669a",
     marginBottom: -20,
     marginTop: 15,
     fontWeight: "bold",
-    fontSize: 15,
+    fontSize: 18,
   },
   question1: {
     color: "#35669a",
     marginBottom: -80,
-    marginTop: -2,
+    marginTop: -22,
     fontWeight: "bold",
-    fontSize: 15,
+    fontSize: 18,
   },
   question2: {
     color: "#35669a",
     marginBottom: 20,
     marginTop: 2,
     fontWeight: "bold",
-    fontSize: 15,
+    fontSize: 18,
   },
   linea: {
     marginTop: "auto",

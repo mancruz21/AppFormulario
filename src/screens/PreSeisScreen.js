@@ -1,7 +1,10 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity,Alert } from "react-native";
 import React, { useState } from "react";
 import { CheckBox } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
+import appFirebase from "../components/firebase-config";
+import {addDoc, collection, getFirestore} from 'firebase/firestore';
+const db = getFirestore(appFirebase)
 
 export default function PreSeisScreen(props) {
   const { navigation } = props;
@@ -78,7 +81,37 @@ export default function PreSeisScreen(props) {
   };
 
   const goToPreguntaSeis = () => {
-    navigation.navigate("Pregunta 2.6");
+    if (
+      (selectedOptions.length > 0 &&
+        (!selectedOptions.includes(3) || otroTexto !== "")) && // Validación de opciones y campo de texto
+  
+      ((seleccionoSi && otroIndicacion !== "") || !seleccionoSi) && // Validación de checkboxes y campo de texto
+  
+      ((selectedOption3 === "Sí" && municipio !== "" && nombreDepartamento !== "") ||
+        selectedOption3 === "No") // Validación de la selección única y campos de texto
+    ) {
+      navigation.navigate("Pregunta 2.6");
+    } else {
+      Alert.alert("Error", "Por favor completa todos los campos.");
+    }
+  };
+  const SaveComponente6 = async () => {
+    try {
+      await addDoc(collection(db, 'componenteseis'), {
+        pregunta6_1: selectedOptions.map(index => opciones[index]),
+        otroTexto6_1: opcionOtro ? otroTexto : "",
+        pregunta6_2: seleccionoSi ? "Si" : "No",
+        otroIndicacion6_2: seleccionoSi ? otroIndicacion : "",
+        pregunta6_3: selectedOption3,
+        municipio_pregunta6_3: selectedOption3 === "Sí" ? municipio : "",
+        departamento_pregunta6_3: selectedOption3 === "Sí" ? nombreDepartamento : "",
+      });
+  
+      
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Hubo un error al guardar sus respuestas');
+    }
   };
 
   return (
@@ -180,12 +213,20 @@ export default function PreSeisScreen(props) {
                 checkedColor="#BA0C2F"
               />
               {seleccionoSi && (
-                <TextInput
-                  style={styles.input}
-                  value={otroIndicacion}
-                  onChangeText={handleOtroIndicacionChange}
-                  placeholder="Indique cuál o cuáles:"
-                />
+                <View>
+                  <Text style={styles.advertencia}>Escriba lo números de la respuesta 6.1 </Text>
+                  <Text style={styles.preguntas}>Indique Cúal</Text>
+                  <TextInput
+                
+
+                style={styles.input}
+                value={otroIndicacion}
+                onChangeText={handleOtroIndicacionChange}
+                placeholder="Indique cuál o cuáles:"
+              />
+
+                </View>
+                
               )}
 
             </View>
@@ -208,7 +249,7 @@ export default function PreSeisScreen(props) {
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
             <View style={styles.preguntaContainer}>
-              
+
               <Text style={styles.pregunta}>
                 Conoce sobre un lugar de suministro de productos de apoyo en
                 el municipio o en el departamento que beneficie a la población
@@ -263,9 +304,13 @@ export default function PreSeisScreen(props) {
 
             </View>
             {/* Boton */}
-            <TouchableOpacity style={styles.boton} onPress={goToPreguntaSeis}>
-              <Text style={styles.textoBoton}> Finalizar </Text>
-            </TouchableOpacity>
+            <TouchableOpacity style={styles.boton} onPress={() => {
+             goToPreguntaSeis();
+             SaveComponente6();
+             }}
+             >
+          <Text style={styles.textoBoton}>Siguiente</Text>
+        </TouchableOpacity>
 
 
           </View>
@@ -290,6 +335,7 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
     marginTop: -15,
     fontWeight: "bold",
+    fontSize: 16,
 
   },
   preguntas: {
@@ -297,27 +343,28 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 10,
     fontWeight: "bold",
+    fontSize: 18,
   },
   question: {
     color: "#35669a",
     marginBottom: -20,
     marginTop: 15,
     fontWeight: "bold",
-    fontSize: 15,
+    fontSize: 18,
   },
   question1: {
     color: "#35669a",
     marginBottom: -80,
-    marginTop: -2,
+    marginTop: -22,
     fontWeight: "bold",
-    fontSize: 15,
+    fontSize: 18,
   },
   question2: {
     color: "#35669a",
     marginBottom: 20,
     marginTop: 2,
     fontWeight: "bold",
-    fontSize: 15,
+    fontSize: 18,
   },
   linea: {
     marginTop: "auto",
@@ -424,5 +471,15 @@ const styles = StyleSheet.create({
 
   checkBoxText: {
     fontSize: 16,
+  },
+
+  advertencia: {
+    marginBottom:5,
+    textAlign: 'justify',
+    marginTop: 5,
+    fontWeight: "bold",
+    color: "#BA0C2F",
+    fontSize: 16,
+
   },
 });

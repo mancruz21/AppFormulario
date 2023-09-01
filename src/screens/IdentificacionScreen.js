@@ -1,25 +1,77 @@
-import React, { useState} from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
+import appFirebase from "../components/firebase-config";
+import { addDoc, collection, getFirestore } from 'firebase/firestore';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+
+const db = getFirestore(appFirebase)
 
 export default function IdentificacionScreen(props) {
   const { navigation } = props;
   const [selectedOption, setSelectedOption] = useState("");
   const [numeroIdentificacion, setNumeroIdentificacion] = useState("");
+  const [puedeAvanzar, setPuedeAvanzar] = useState(false);
 
   const goToPreguntaUno = () => {
     // Aquí puedes realizar acciones con la opción seleccionada
-    console.log("Opción seleccionada:", selectedOption);
-    console.log("Número de identificación:", numeroIdentificacion);
-    navigation.navigate("Pregunta 1.1");
+    if (
+      selectedOption !== "" &&
+      (!shouldShowNumeroIdentificacion() || numeroIdentificacion.trim() !== "")
+    ) {
+      console.log("Opción seleccionada:", selectedOption);
+      console.log("Número de identificación:", numeroIdentificacion);
+      navigation.navigate("Pregunta 1.1");
+    } else {
+      // Mostrar una alerta al usuario
+      Alert.alert("Error", "Por favor completa todos los campos.");
+    }
   };
+
+  useEffect(() => {
+    // Recuperar los datos guardados de AsyncStorage cuando la pantalla se carga
+    const restoreData = async () => {
+      try {
+        const savedData = await AsyncStorage.getItem("identificacionData");
+        if (savedData) {
+          const parsedData = JSON.parse(savedData);
+          setSelectedOption(parsedData.selectedOption);
+          setNumeroIdentificacion(parsedData.numeroIdentificacion);
+        }
+      } catch (error) {
+        console.error("Error al restaurar los datos:", error);
+      }
+    };
+
+    restoreData();
+  }, []);
+
+  useEffect(() => {
+    // Guardar los datos seleccionados en AsyncStorage cuando cambian
+    const saveData = async () => {
+      try {
+        const dataToSave = JSON.stringify({
+          selectedOption,
+          numeroIdentificacion,
+        });
+        await AsyncStorage.setItem("identificacionData", dataToSave);
+      } catch (error) {
+        console.error("Error al guardar los datos:", error);
+      }
+    };
+
+    saveData();
+  }, [selectedOption, numeroIdentificacion]);
+
   //Para que no salga la opcion de escribir el documento de identidad
   const shouldShowNumeroIdentificacion = () => {
     return (
@@ -38,6 +90,28 @@ export default function IdentificacionScreen(props) {
       setSelectedOption(option);
     }
   };
+  //Metodo para guardar en firestore
+  const SaveIdent = async () => {
+    try {
+      const docRef = await addDoc(collection(db, 'identificacion'), {
+        tipoIdentificacion: selectedOption,
+        numeroIdentificacion: numeroIdentificacion,
+      });
+
+      console.log("Documento guardado con ID:", docRef.id);
+
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  useEffect(() => {
+    if (selectedOption !== '' && (selectedOption === 'AdultoSinIdentificacion' || selectedOption === 'AdultoSinIdentificacionAnonimo' || numeroIdentificacion !== '')) {
+      setPuedeAvanzar(true);
+    } else {
+      setPuedeAvanzar(false);
+    }
+  }, [selectedOption, numeroIdentificacion])
 
   return (
     <ScrollView>
@@ -57,7 +131,7 @@ export default function IdentificacionScreen(props) {
               }
               checkedColor="#BA0C2F"
             />
-            
+
             <CheckBox
               title="CC Cédula de Ciudadanía"
               checked={selectedOption === "CC"}
@@ -149,8 +223,15 @@ export default function IdentificacionScreen(props) {
             )}
 
             {/* Boton */}
-            <TouchableOpacity style={styles.boton} onPress={goToPreguntaUno}>
-              <Text style={styles.textoBoton}> Siguiente </Text>
+            <TouchableOpacity style={styles.boton} onPress={() => {
+              if (puedeAvanzar) {
+                goToPreguntaUno();
+                SaveIdent();
+              }
+            }}
+              disabled={!puedeAvanzar}
+            >
+              <Text style={styles.textoBoton}>Siguiente</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -196,7 +277,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#000000", // Color del borde inferior
     paddingHorizontal: 10,
     width: "100%",
-    backgroundColor:"white"
+    backgroundColor: "white"
   },
   /* Estilos Boton y texto */
   boton: {
@@ -208,7 +289,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 20,
     marginBottom: 15,
-   
+
   },
   textoBoton: {
     textAlign: "center",

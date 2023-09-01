@@ -9,31 +9,41 @@ import {
   Alert,
 } from "react-native";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../components/firebase-config";
+import appFirebase from "../components/firebase-config";
+import {addDoc, collection, getFirestore} from 'firebase/firestore';
+import PreSieScreen from "./PreSieScreen";
+
+
 
 export default function LoginScreen(props) {
+  const db = getFirestore(appFirebase)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [selectedRole, setSelectedRole] = useState("user"); // Valor predeterminado: Usuario
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+  
+  const auth = getAuth(appFirebase);
 
   const handleSignIn = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log("Signed in!");
         const user = userCredential.user;
+        
         console.log(user);
-        navigation.navigate("Pregunta 2.5");
+        
+        navigation.navigate("Pregunta 2.5");        
       })
-
       .catch((error) => {
-        setError('Ha ingreado mal la contraseña o el correo');
-        Alert.alert('CORREO O CONTRASEÑA INVALIDOS', 'Por favor digite bien el correo o la contraseña');
-
-
+        console.log(error);
+        
       });
+
+    // Ejemplo: Mostrar los valores ingresados en la consola
+    console.log("Correo:", email);
+    console.log("Contraseña:", password);
+
+    
   };
 
   const { navigation } = props;
@@ -51,6 +61,9 @@ export default function LoginScreen(props) {
       return;
     }
 
+  };
+  const handleRoleButtonClick = (role) => {
+    setSelectedRole((prevRole) => (prevRole === role ? "" : role));
   };
 
   const goToRegistrate = () => {
@@ -94,6 +107,46 @@ export default function LoginScreen(props) {
         selectionColor="#efefef" // Color de la línea cuando se selecciona el campo
       />
 
+      <Text style={styles.text}>Tipo de Usuario</Text>
+
+      <View style={styles.roleButtonsContainer}>
+        <TouchableOpacity
+          style={[
+            styles.roleButton,
+            selectedRole === "user" && styles.selectedRoleButton,
+          ]}
+          onPress={() => handleRoleButtonClick("user")}
+        >
+          <Text
+            style={[
+              styles.roleButtonText,
+              selectedRole === "user" && styles.selectedRoleButtonText,
+            ]}
+
+          >
+            Usuario
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.roleButton,
+            selectedRole === "admin" && styles.selectedRoleButton,
+          ]}
+          onPress={() => handleRoleButtonClick("admin")}
+        >
+          <Text
+            style={[
+              styles.roleButtonText,
+              selectedRole === "admin" && styles.selectedRoleButtonText,
+            ]}
+          >
+            Administrador
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+
+
       {/* Boton */}
       <TouchableOpacity
         style={styles.boton}
@@ -112,7 +165,7 @@ export default function LoginScreen(props) {
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={goToRecuperala}>
+      <TouchableOpacity onPress={PreSieScreen}>
         <Text style={styles.registrateText}>
           ¿Olvidaste tu contraseña?{" "}
           <Text style={styles.registrate}> Recupérala </Text>
@@ -185,4 +238,31 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#1b3f90"
   },
+  /* Estilo para los botones de roles */
+  roleButton: {
+    backgroundColor: "#D2D4DF",
+    borderRadius: 5,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    marginVertical: 5,
+    marginRight: 10,
+  },
+  selectedRoleButton: {
+    backgroundColor: "#1b3f90",
+  },
+  roleButtonText: {
+    color: "#000000",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  selectedRoleButtonText: {
+    color: "#ffffff",
+  },
+  roleButtonsContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+
 });

@@ -1,33 +1,91 @@
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-import React, { useState } from "react";
 import { CheckBox } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
+import appFirebase from "../components/firebase-config";
+import { addDoc, collection, getFirestore } from 'firebase/firestore';
+import { Picker } from '@react-native-picker/picker';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const db = getFirestore(appFirebase);
 
 export default function PreTresScreen(props) {
   const { navigation } = props;
   const [selectedOption, setSelectedOption] = useState(null);
-  const [aseguradora, setAseguradora] = useState("");
+  const [aseguradora, setAseguradora] = useState("option1");
   const [selectedOption2, setSelectedOption2] = useState(null);
   const [municipio, setMunicipio] = useState("");
+  const [municipio1, setMunicipio1] = useState("");
   const [selectedOption3, setSelectedOption3] = useState(null);
   const [nombreDepartamento, setNombreDepartamento] = useState("");
 
-  const goToPreguntaCua = () => {
+  useEffect(() => {
+    async function fetchSavedData() {
+      try {
+        const savedSelectedOption = await AsyncStorage.getItem("selectedOption");
+        const savedAseguradora = await AsyncStorage.getItem("aseguradora");
+        const savedSelectedOption2 = await AsyncStorage.getItem("selectedOption2");
+        const savedMunicipio = await AsyncStorage.getItem("municipio");
+        const savedSelectedOption3 = await AsyncStorage.getItem("selectedOption3");
+        const savedMunicipio1 = await AsyncStorage.getItem("municipio1");
+        const savedNombreDepartamento = await AsyncStorage.getItem("nombreDepartamento");
+
+        setSelectedOption(savedSelectedOption || null);
+        setAseguradora(savedAseguradora || "option1");
+        setSelectedOption2(savedSelectedOption2 || null);
+        setMunicipio(savedMunicipio || "");
+        setSelectedOption3(savedSelectedOption3 || null);
+        setMunicipio1(savedMunicipio1 || "");
+        setNombreDepartamento(savedNombreDepartamento || "");
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    fetchSavedData();
+  }, []);
+
+  const goToPreguntaCua = async () => {
+    try {
+      await AsyncStorage.setItem("selectedOption", selectedOption);
+      await AsyncStorage.setItem("aseguradora", aseguradora);
+      await AsyncStorage.setItem("selectedOption2", selectedOption2);
+      await AsyncStorage.setItem("municipio", municipio);
+      await AsyncStorage.setItem("selectedOption3", selectedOption3);
+      await AsyncStorage.setItem("municipio1", municipio1);
+      await AsyncStorage.setItem("nombreDepartamento", nombreDepartamento);
+    } catch (error) {
+      console.error("Error saving data:", error);
+      Alert.alert("Error", "Hubo un error al guardar los datos.");
+      return;
+    }
+
     navigation.navigate("Pregunta 2.2");
-    // Verificar si se ha seleccionado una opción antes de continuar
-    if (
-      selectedOption !== null &&
-      selectedOption2 !== null &&
-      selectedOption3 !== null
-    ) {
-    } else {
-      // Aquí puedes mostrar una notificación o mensaje de error indicando al usuario que debe seleccionar una opción antes de continuar
+  };
+
+  const SaveComponente3 = async () => {
+    try {
+      await addDoc(collection(db, 'componentetres'), {
+        pregunta3_1: selectedOption,
+        pregunta3_2: aseguradora,
+        pregunta3_3: selectedOption2,
+        municipio_pregunta3_3: municipio,
+        pregunta3_4: selectedOption3,
+        municipio_pregunta3_4: selectedOption3 === "No" ? municipio : null,
+        departamento_pregunta3_4: selectedOption3 === "No" ? nombreDepartamento : null,
+      });
+
+     
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Hubo un error al guardar sus respuestas');
     }
   };
 
@@ -50,6 +108,9 @@ export default function PreTresScreen(props) {
   };
   const handleMunicipioChange = (text) => {
     setMunicipio(text);
+  };
+  const handleMunicipioChange1 = (text) => {
+    setMunicipio1(text);
   };
   const handleNombreDepartamentoChange = (text) => {
     setNombreDepartamento(text);
@@ -159,14 +220,47 @@ export default function PreTresScreen(props) {
                 Indique cuál es el nombre de la Aseguradora en Salud / EAPB a
                 la que se encuentra afiliado en la actualidad:
               </Text>
-              <TextInput
-                style={styles.input}
-                value={aseguradora}
-                onChangeText={handleAseguradoraChange}
-                placeholder="Ingrese el nombre de la aseguradora"
-                underlineColorAndroid="transparent" // Para Android
-                selectionColor="#efefef" // Color de la línea cuando se selecciona el campo
-              />
+              <Picker
+                selectedValue={aseguradora}
+                style={{ height: 70, width: 300 }}
+                onValueChange={(itemValue, itemIndex) => setAseguradora(itemValue)}
+              >
+                <Picker.Item label="COOSALUD EPS-S" value="COOSALUD EPS-S" />
+                <Picker.Item label="NUEVA EPS" value="NUEVA EPS" />
+                <Picker.Item label="MUTUAL SER" value="MUTUAL SER" />
+                <Picker.Item label="ALIANSALUD EPS " value="ALIANSALUD EPS " />
+                <Picker.Item label="SALUD TOTAL EPS S.A" value="SALUD TOTAL EPS S.A" />
+                <Picker.Item label="EPS SANITAS" value="EPS SANITAS" />
+                <Picker.Item label="FAMISANAR" value="FAMISANAR" />
+                <Picker.Item label="SERVICIO OCCIDENTAL DE SALUD EPS SOS" value="SERVICIO OCCIDENTAL DE SALUD EPS SOS" />
+                <Picker.Item label="SALUD MIA" value="SALUD MIA" />
+                <Picker.Item label="COMFENALCO VALLE" value="COMFENALCO VALLE" />
+                <Picker.Item label="COMPENSAR EPS" value="COMPENSAR EPS" />
+                <Picker.Item label="EPM - EMPRESAS PUBLICAS DE MEDELLIN" value="EPM - EMPRESAS PUBLICAS DE MEDELLIN" />
+                <Picker.Item label="FONDO DE PASIVO SOCIAL DE FERROCARRILES
+NACIONALES DE COLOMBIA" value="FONDO DE PASIVO SOCIAL DE FERROCARRILES
+NACIONALES DE COLOMBIA" />
+                <Picker.Item label="CAJACOPI ATLANTICO" value="CAJACOPI ATLANTICO " />
+                <Picker.Item label="CAPRESOCA" value="CAPRESOCA" />
+                <Picker.Item label="COMFACHOCO" value="COMFACHOCO" />
+                <Picker.Item label="COMFAORIENTE" value="COMFAORIENTE" />
+                <Picker.Item label="EPS FAMILIAR DE COLOMBIA" value="EPS FAMILIAR DE COLOMBIA" />
+                <Picker.Item label="ASMET SALUD" value="ASMET SALUD" />
+                <Picker.Item label="EMSSANAR E.S.S" value="EMSSANAR E.S.S" />
+                <Picker.Item label="CAPITAL SALUD EPS-S" value="CAPITAL SALUD EPS-S" />
+                <Picker.Item label="SAVIA SALUD EPS" value="SAVIA SALUD EPS" />
+                <Picker.Item label="DUSAKAWI EPSI" value="DUSAKAWI EPSI" />
+                <Picker.Item label="ASOCIACION INDIGENA DEL CAUCA EPSI" value="ASOCIACION INDIGENA DEL CAUCA EPSI" />
+                <Picker.Item label="ANAS WAYUU EPSI" value="ANAS WAYUU EPSI" />
+                <Picker.Item label="MALLAMAS EPSI" value="MALLAMAS EPSI " />
+
+                <Picker.Item label="PIJAOS SALUD EPSI" value="PIJAOS SALUD EPSI" />
+                <Picker.Item label="SALUD BÓLIVAR EPS SAS" value="SALUD BÓLIVAR EPS SAS" />
+
+
+
+              </Picker>
+              <Text style={styles.preguntas} >Opción seleccionada: {aseguradora}</Text>
             </View>
           </View>
 
@@ -186,10 +280,10 @@ export default function PreTresScreen(props) {
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-          <View style={styles.preguntaContainer}>
+            <View style={styles.preguntaContainer}>
               <Text style={styles.pregunta}>
-              Sobre el acceso que garantiza la aseguradora
-              (EAPB) a los usuarios en el área de influencia 
+                Sobre el acceso que garantiza la aseguradora
+                (EAPB) a los usuarios en el área de influencia
               </Text>
 
               <Text style={styles.preguntas}>
@@ -306,7 +400,7 @@ export default function PreTresScreen(props) {
                 selectedOption2 ===
                 "Consultorio Particular u otro servicio fuera del Municipio") && (
                   <View style={styles.preguntaContainer}>
-                    <Text style={styles.pregunta}>
+                    <Text style={styles.preguntas}>
                       Ingrese el nombre del municipio:
                     </Text>
                     <TextInput
@@ -318,9 +412,9 @@ export default function PreTresScreen(props) {
                   </View>
                 )}
             </View>
-            
+
           </View>
-          
+
         </View>
       </View>
 
@@ -330,7 +424,7 @@ export default function PreTresScreen(props) {
           <View style={styles.contenedor}>
             <Text style={styles.question1}> PREGUNTA 3.4 ( SELECCIÓN ÚNICA )  </Text>
           </View>
-          <View style={styles.linea}/>
+          <View style={styles.linea} />
         </View>
       </View>
 
@@ -339,7 +433,7 @@ export default function PreTresScreen(props) {
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
             <View style={styles.preguntaContainer}>
-              
+
 
               <Text style={styles.pregunta}>
                 ¿El lugar donde su aseguradora (EAPB) realiza la autorización
@@ -381,8 +475,8 @@ export default function PreTresScreen(props) {
                   </Text>
                   <TextInput
                     style={styles.input}
-                    value={municipio}
-                    onChangeText={handleMunicipioChange}
+                    value={municipio1}
+                    onChangeText={handleMunicipioChange1}
                     placeholder="Nombre del municipio"
                   />
                   <Text style={styles.preguntas}>
@@ -398,8 +492,12 @@ export default function PreTresScreen(props) {
               )}
             </View>
             {/* Boton */}
-            <TouchableOpacity style={styles.boton} onPress={goToPreguntaCua}>
-              <Text style={styles.textoBoton}> Siguiente </Text>
+            <TouchableOpacity style={styles.boton} onPress={() => {
+              goToPreguntaCua();
+              SaveComponente3();
+            }}
+            >
+              <Text style={styles.textoBoton}>Siguiente</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -409,7 +507,7 @@ export default function PreTresScreen(props) {
 }
 
 const styles = StyleSheet.create({
-  
+
   titulo: {
     textAlign: "center",
     justifyContent: "center",
@@ -418,20 +516,43 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     marginTop: -20,
   },
-  
+
   pregunta: {
     marginBottom: 5,
     textAlign: 'justify',
     marginTop: -15,
     fontWeight: "bold",
+    fontSize: 16,
+
   },
   preguntas: {
     color: "#000000",
     marginBottom: 10,
     marginTop: 10,
     fontWeight: "bold",
+    fontSize: 18,
   },
-
+  question: {
+    color: "#35669a",
+    marginBottom: -20,
+    marginTop: 15,
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+  question1: {
+    color: "#35669a",
+    marginBottom: -80,
+    marginTop: -22,
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+  question2: {
+    color: "#35669a",
+    marginBottom: 20,
+    marginTop: 2,
+    fontWeight: "bold",
+    fontSize: 18,
+  },
   opcionesContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -465,7 +586,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-   /* Estilo Contenedor */
+  /* Estilo Contenedor */
 
   contenedorPadre: {
     flex: 1,

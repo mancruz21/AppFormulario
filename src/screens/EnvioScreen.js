@@ -1,17 +1,20 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Button } from 'react-native';
 
 export default function EnvioScreen() {
+  
+
   return (
     <View>
-      <View>
-
-        <View>
+    <Text>Se han enviado los datos</Text>
 
 
-        </View>
-      </View>
-      
-    </View>
-  )
+    
+    
+</View>
+  );
 }
+
+const styles = StyleSheet.create({
+  
+});

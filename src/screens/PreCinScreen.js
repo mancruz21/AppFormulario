@@ -1,8 +1,10 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Button, CheckBox } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
-
+import appFirebase from "../components/firebase-config";
+import {addDoc, collection, getFirestore} from 'firebase/firestore';
+const db = getFirestore(appFirebase)
 
 
 export default function PreCinScreen(props) {
@@ -10,8 +12,8 @@ export default function PreCinScreen(props) {
   const [selectedOption3, setSelectedOption3] = useState("");
   const [selectedOption2, setSelectedOption2] = useState([]);
 
-  const [selectedOption222, setSelectedOption222] = useState("");
-  const [selectedOptions2, setSelectedOptions2] = useState([]);
+  const [selectedOption222, setSelectedOption222] = useState([]);
+
 
   const [selectedOption1, setSelectedOption1] = useState("");
   const [selected1Option, setSelected1Option] = useState([]);
@@ -52,17 +54,72 @@ export default function PreCinScreen(props) {
   const [motivo3, setMotivo3] = useState('');
 
   //Constante para pregunta 5.12
-  const [selectedCell, setSelectedCell] = useState(null);
-  //Metodo para pregunta 5.12
+  
+  const [selectedCells, setSelectedCells] = useState(Array(5).fill(-1));
   const handleCellSelection = (row, col) => {
-    setSelectedCell({ row, col });
-  }
+    if (row === 0 || col === 0) {
+      // Evitar selección en la primera fila y la primera columna
+      return;
+    }
+
+    const newSelectedCells = [...selectedCells];
+    if (newSelectedCells[row] === col) {
+      newSelectedCells[row] = -1;
+    } else {
+      newSelectedCells[row] = col;
+    }
+    setSelectedCells(newSelectedCells);
+  };
+
+  const cellColors = Array(5).fill(null).map((_, rowIndex) =>
+    Array(4).fill('white').map((color, colIndex) =>
+      colIndex === selectedCells[rowIndex] ? '#BA0C2F' : 'white'
+    )
+  );
+
+  const cellTexts = [
+    ['', 'Costo en dinero de la atención', 'Costo en dinero del transporte', 'Tiempo de desplazamiento hasta el servicio de rehabilitación'],
+    ['BAJA', 'Entre $0  $2.900', 'Entre $0  $2.900', 'Entre 15m  30m'],
+    ['MEDIA', 'Entre $3.000  $14.900', 'Entre $3.000  $9.900', 'Entre 30m  60m'],
+    ['ALTA', 'Entre $15.000  $29.900', 'Entre $10.000  $29.900', 'Entre 60m  90m'],
+    ['MUY ALTA', 'Entre $30.000  $60.000', 'Entre $29.900  $60.000', '> 90m'],
+  ];
   //Constante para pregunta 5.13
-  const [selectedCell1, setSelectedCell1] = useState(null);
-  //Metodo para pregunta 5.13
+
+  const [selectedCells1, setSelectedCells1] = useState(Array(4).fill(-1));
   const handleCellSelection1 = (row, col) => {
-    setSelectedCell1({ row, col });
-  }
+    if (row === 0 || col === 0) {
+      // Evitar selección en la primera fila y la primera columna
+      return;
+    }
+
+    const newSelectedCells1 = [...selectedCells1];
+    if (newSelectedCells1[row] === col) {
+      newSelectedCells1[row] = -1;
+    } else {
+      newSelectedCells1[row] = col;
+    }
+    setSelectedCells1(newSelectedCells1);
+  };
+
+  const cellColors1 = Array(4).fill(null).map((_, rowIndex) =>
+    Array(4).fill('white').map((color, colIndex) =>
+      colIndex === selectedCells1[rowIndex] ? '#BA0C2F' : 'white'
+    )
+  );
+
+  const cellTexts1 = [
+    ['', 'Oportunidad en la asignación de la cita', 'Calidad en la atención por parte del profesional', 'Satisfacción de la atención recibida'],
+    ['ALTA', '< 3 días', '8 - 10 días', '8 - 10 días'],
+    ['MEDIA', '3 - 5 días', '4 - 7 días', '4 - 7 días'],
+    ['BAJA', '> 5 días', '1 - 3 días', '1 - 3 días'],
+
+  ];
+
+
+
+
+
   const [opcionOtro, setOpcionOtro] = useState(false);
   const [otroTexto, setOtroTexto] = useState('');
   const [selecteOptions, setSelecteOptions] = useState([]);
@@ -84,13 +141,32 @@ export default function PreCinScreen(props) {
   const { navigation } = props;
 
   const goToPreguntaSeis = () => {
-    navigation.navigate("Pregunta 2.4")
-    console.log("Opción seleccionada:", selectedOption);
-    console.log("Opciones seleccionadas:", selectedOptions);
-    console.log("Opción seleccionada:", selectedOption0);
-    console.log("Opciones seleccionadas:", selectedOptions0);
+    if (
+      selectedOption !== "" &&
+      (selectedOption === "Si" ? (selectedOptions.length !== 0) : true) &&
+      selectedOption3 !== "" &&
+      (selectedOption3 === "Si" ? (selectedOption2.length !== 0) : true) &&
+      (selectedOption3 === "No" ? (selectedOption22.length !== 0) : true) &&
+      selectedOption1 !== "" &&
+      (selectedOption1 === "No" ? (selected1Option.length !== 0) : true) &&
+      (selectedOption222.length !== 0 &&
+        selectedOption222 === "Otros servicios de salud"
+        ? (selectedOption11.length !== 0)
+        : true) &&
+      selectedOptions4.length !== 0 &&
+      selectedOption8 !== null &&
+      selectedOption9 !== null &&
+      (selectedOption0 === "No" ? (selectedOptions0.length !== 0) : true) &&
+      transporte.length !== 0 &&
+      (transporte === "Otro ¿Cuál?" ? (otro !== "") : true)
+    ) {
+      navigation.navigate("Pregunta 2.4");
+      console.log("Opcion 1:", selectedOption11);
+    } else {
+      Alert.alert("Error", "Por favor completa todos los campos.");
+    }
+  };
 
-  }
 
 
   const handleMunicipioChange = (text) => {
@@ -127,6 +203,7 @@ export default function PreCinScreen(props) {
     setNombre('');
     setLugar('');
   };
+
   const handleOption9Select = (option) => {
     setSelectedOption9(option);
 
@@ -296,7 +373,7 @@ export default function PreCinScreen(props) {
         setShowTextInput2(false);
       }
     } else {
-      if (selectedOptions1.length < 3) {
+      if (selectedOption11.length < 3) {
         setSelectedOption11([...selectedOption11, option]);
 
         if (option === "Otro motivo ¿Cuál?") {
@@ -326,9 +403,10 @@ export default function PreCinScreen(props) {
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
             <View style={styles.preguntaContainer}>
+              <Text style={styles.advertencia}>Nota: Ver respuesta a la pregunta 2.1 Tipo de Población</Text>
 
 
-              <Text style={styles.pregunta}>De acuerdo al tipo de población con la que se identifica, ¿considera usted que requiere ser atendido en algún sevicio de rehabilitación?</Text>
+              <Text style={styles.preguntas}>De acuerdo al tipo de población con la que se identifica, ¿considera usted que requiere ser atendido en algún sevicio de rehabilitación?</Text>
               <View style={styles.optionContainer}>
                 <CheckBox
                   title="Si (indique cuál)"
@@ -898,11 +976,11 @@ export default function PreCinScreen(props) {
                   <Text style={styles.preguntas}>Sabe usted si ¿existen servicios de rehabilitación ubicados en otro municipio cercano que se encuentren en funcionamiento?</Text>
                   <CheckBox
                     title="SI hay servicios"
-                    checked={selectedOption2 === 'SI hay servicios'}
-                    onPress={() => handleOption2Select('SI hay servicios')}
+                    checked={selectedOption22 === 'SI hay servicios'}
+                    onPress={() => setSelectedOption22('SI hay servicios')}
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOption2 === "SI hay servicios"
+                      selectedOption22 === "SI hay servicios"
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
@@ -910,11 +988,11 @@ export default function PreCinScreen(props) {
                   />
                   <CheckBox
                     title="NO hay servicios"
-                    checked={selectedOption2 === 'NO hay servicios'}
-                    onPress={() => handleOption2Select('NO hay servicios')}
+                    checked={selectedOption22 === 'NO hay servicios'}
+                    onPress={() => setSelectedOption22('NO hay servicios')}
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOption2 === "NO hay servicios"
+                      selectedOption22 === "NO hay servicios"
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
@@ -923,19 +1001,19 @@ export default function PreCinScreen(props) {
                   />
                   <CheckBox
                     title="NO sabe"
-                    checked={selectedOption2 === 'NO sabe'}
-                    onPress={() => handleOption2Select('NO sabe')}
+                    checked={selectedOption22 === 'NO sabe'}
+                    onPress={() => setSelectedOption22('NO sabe')}
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOption2 === "NO sabe"
+                      selectedOption22 === "NO sabe"
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
                     checkedColor="#BA0C2F"
                   />
 
-                  {(selectedOption2 === 'SI hay servicios' ||
-                    selectedOption2 === '') && (
+                  {(selectedOption22 === 'SI hay servicios'
+                  ) && (
                       <View style={styles.preguntaContainer}>
                         <Text style={styles.preguntas}>Nombre del municipio:</Text>
                         <TextInput
@@ -970,6 +1048,7 @@ export default function PreCinScreen(props) {
             <Text style={styles.pregunta}>Como consecuencia de su condición de salud, ¿recibió usted atención en rehabilitación (FISIOTERAPIA / TERAPIA FÍSICA, TERAPIA OCUPACIONAL,
               FONOAUDIOLOGÍA/ TERAPIA DEL LENGUAJE, PSICOLOGÍA, TERAPIA RESPIRATORIA, OPTOMETRÍA, TRABAJO SOCIAL) durante el último año?</Text>
             <View style={styles.optionContainer}>
+              <Text style={styles.advertencia}>*Sí* Verificar coherencia con PREGUNTAS 4.1 - 4.3. </Text>
               <CheckBox
                 title="Sí"
                 checked={selectedOption1 === 'Sí'}
@@ -1134,20 +1213,11 @@ export default function PreCinScreen(props) {
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
 
-            <View style={styles.preguntaContainer}>
-
-
-
-
-
-
-
-
-            </View>
 
             <View style={styles.preguntaContainer}>
+              <Text style={styles.advertencia}>Verificar coherencia con PREGUNTAS 4.1 - 4.3. </Text>
 
-              <Text style={styles.pregunta}>Indique cuál fue el servicio de rehabilitación
+              <Text style={styles.preguntas}>Indique cuál fue el servicio de rehabilitación
                 que le prestaron para atender su condición de salud o enfermedad:</Text>
 
               <View style={styles.optionContainer}>
@@ -1601,10 +1671,9 @@ export default function PreCinScreen(props) {
           <View style={styles.contenedor}>
 
             <View style={styles.preguntaContainer}>
+              <Text style={styles.advertencia}>Validar con la respuesta 4.3</Text>
 
-
-
-              <Text style={styles.pregunta}>Como consecuencia de su condición de salud ¿ha requerido productos de apoyo durante el último año? (ej.: sillas de ruedas, bastones de orientación
+              <Text style={styles.preguntas}>Como consecuencia de su condición de salud ¿ha requerido productos de apoyo durante el último año? (ej.: sillas de ruedas, bastones de orientación
                 visual, muletas, caminadores, audífonos, gafas, prótesis, etc.) </Text>
               <View style={styles.optionContainer}>
                 <CheckBox
@@ -1625,7 +1694,7 @@ export default function PreCinScreen(props) {
                   onPress={() => handleOption9Select('No')}
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOption8 === "No"
+                    selectedOption9 === "No"
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -1824,222 +1893,36 @@ export default function PreCinScreen(props) {
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
 
-            <View style={styles.preguntaContainer}>
 
+            <View style={styles.container}>
+              <Text style={styles.advertencia}>Validar con la respuesta a pregunta 5.5</Text>
 
+              <Text style={styles.preguntas}>Según su experiencia de atención en los servicios de rehabilitación
+                durante el último año califique: </Text>
 
-              <Text style={styles.pregunta}>Según su experiencia de atención en los servicios de rehabilitación durante el último año califique:</Text>
-              {/* Info row */}
-              <View style={styles.row}>
-                <View style={styles.cell}></View>
-
-                <View style={styles.cell}>
-                  <Text>Costo en dinero de la atención</Text>
+              {cellColors.map((rowColors, rowIndex) => (
+                <View key={rowIndex} style={styles.row}>
+                  {rowColors.map((color, colIndex) => (
+                    <TouchableOpacity
+                      key={colIndex}
+                      style={[styles.cell, { backgroundColor: color }]}
+                      onPress={() => handleCellSelection(rowIndex, colIndex)}
+                    >
+                      <Text
+                        style={{
+                          color: colIndex === selectedCells[rowIndex] ? 'white' : 'black',
+                          fontWeight: (colIndex === selectedCells[rowIndex] || colIndex === 0 || rowIndex === 0) ? 'bold' : 'normal',
+                        }}
+                      >
+                        {colIndex === 0 && rowIndex === 0 ? '  ACCESO\n\n\n DIFICULTAD' : cellTexts[rowIndex][colIndex]}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
                 </View>
-                <View style={styles.cell}>
-                  <Text>Costo en dinero del transporte</Text>
-                </View>
-                <View style={styles.cell}>
-                  <Text>Tiempo de desplazamiento</Text>
-                </View>
-              </View>
-
-              {/* row baja */}
-              <View style={styles.row}>
-                <View style={styles.cell}>
-                  <Text>BAJA</Text>
-                </View>
-                <View
-                  style={[
-                    styles.cell,
-                    selectedCell?.row === 0 && selectedCell?.col === 1 && styles.selectedCell,
-                  ]}
-                  onTouchStart={() => handleCellSelection(0, 1)}
-                >
-                  <Text>$0
-                    $2.900</Text>
-                  <CheckBox
-                    checked={selectedCell?.row === 0 && selectedCell?.col === 1}
-                    onPress={() => handleCellSelection(0, 1)}
-                  />
-                </View>
-                <View
-                  style={[
-                    styles.cell,
-                    selectedCell?.row === 0 && selectedCell?.col === 2 && styles.selectedCell,
-                  ]}
-                  onTouchStart={() => handleCellSelection(0, 2)}
-                >
-                  <Text>$0
-                    $2.900</Text>
-                  <CheckBox
-                    checked={selectedCell?.row === 0 && selectedCell?.col === 2}
-                    onPress={() => handleCellSelection(0, 2)}
-                  />
-                </View>
-                <View
-                  style={[
-                    styles.cell,
-                    selectedCell?.row === 0 && selectedCell?.col === 3 && styles.selectedCell,
-                  ]}
-                  onTouchStart={() => handleCellSelection(0, 3)}
-                >
-                  <Text>15 min
-                    30 min</Text>
-                  <CheckBox
-                    checked={selectedCell?.row === 0 && selectedCell?.col === 3}
-                    onPress={() => handleCellSelection(0, 3)}
-                  />
-                </View>
-              </View>
-
-              {/*row media */}
-              <View style={styles.row}>
-                <View style={styles.cell}>
-                  <Text>MEDIA</Text>
-                </View>
-                <View
-                  style={[
-                    styles.cell,
-                    selectedCell?.row === 1 && selectedCell?.col === 1 && styles.selectedCell,
-                  ]}
-                  onTouchStart={() => handleCellSelection(1, 1)}
-                >
-                  <Text>$3.000
-                    $14.900</Text>
-                  <CheckBox
-                    checked={selectedCell?.row === 1 && selectedCell?.col === 1}
-                    onPress={() => handleCellSelection(1, 1)}
-                  />
-                </View>
-                <View
-                  style={[
-                    styles.cell,
-                    selectedCell?.row === 1 && selectedCell?.col === 2 && styles.selectedCell,
-                  ]}
-                  onTouchStart={() => handleCellSelection(1, 2)}
-                >
-                  <Text>$3.000
-                    $9.900</Text>
-                  <CheckBox
-                    checked={selectedCell?.row === 1 && selectedCell?.col === 2}
-                    onPress={() => handleCellSelection(1, 2)}
-                  />
-                </View>
-                <View
-                  style={[
-                    styles.cell,
-                    selectedCell?.row === 1 && selectedCell?.col === 3 && styles.selectedCell,
-                  ]}
-                  onTouchStart={() => handleCellSelection(1, 3)}
-                >
-                  <Text>30 min
-                    60 min</Text>
-                  <CheckBox
-                    checked={selectedCell?.row === 1 && selectedCell?.col === 3}
-                    onPress={() => handleCellSelection(1, 3)}
-                  />
-                </View>
-              </View>
-
-
-              {/*row alta */}
-              <View style={styles.row}>
-                <View style={styles.cell}>
-                  <Text>ALTA</Text>
-                </View>
-                <View
-                  style={[
-                    styles.cell,
-                    selectedCell?.row === 2 && selectedCell?.col === 1 && styles.selectedCell,
-                  ]}
-                  onTouchStart={() => handleCellSelection(2, 1)}
-                >
-                  <Text>$15.000
-                    $29.900</Text>
-                  <CheckBox
-                    checked={selectedCell?.row === 2 && selectedCell?.col === 1}
-                    onPress={() => handleCellSelection(2, 1)}
-                  />
-                </View>
-                <View
-                  style={[
-                    styles.cell,
-                    selectedCell?.row === 2 && selectedCell?.col === 2 && styles.selectedCell,
-                  ]}
-                  onTouchStart={() => handleCellSelection(2, 2)}
-                >
-                  <Text>$10.000
-                    $29.900</Text>
-                  <CheckBox
-                    checked={selectedCell?.row === 2 && selectedCell?.col === 2}
-                    onPress={() => handleCellSelection(2, 2)}
-                  />
-                </View>
-                <View
-                  style={[
-                    styles.cell,
-                    selectedCell?.row === 2 && selectedCell?.col === 3 && styles.selectedCell,
-                  ]}
-                  onTouchStart={() => handleCellSelection(2, 3)}
-                >
-                  <Text>60 min
-                    90 min</Text>
-                  <CheckBox
-                    checked={selectedCell?.row === 2 && selectedCell?.col === 3}
-                    onPress={() => handleCellSelection(2, 3)}
-                  />
-                </View>
-              </View>
-
-              {/*row muy alta */}
-              <View style={styles.row}>
-                <View style={styles.cell}>
-                  <Text>Muy Alta</Text>
-                </View>
-                <View
-                  style={[
-                    styles.cell,
-                    selectedCell?.row === 3 && selectedCell?.col === 1 && styles.selectedCell,
-                  ]}
-                  onTouchStart={() => handleCellSelection(3, 1)}
-                >
-                  <Text>$30.000
-                    $60.000</Text>
-                  <CheckBox
-                    checked={selectedCell?.row === 3 && selectedCell?.col === 1}
-                    onPress={() => handleCellSelection(3, 1)}
-                  />
-                </View>
-                <View
-                  style={[
-                    styles.cell,
-                    selectedCell?.row === 3 && selectedCell?.col === 2 && styles.selectedCell,
-                  ]}
-                  onTouchStart={() => handleCellSelection(3, 2)}
-                >
-                  <Text>$29.900
-                    $60.000</Text>
-                  <CheckBox
-                    checked={selectedCell?.row === 3 && selectedCell?.col === 2}
-                    onPress={() => handleCellSelection(3, 2)}
-                  />
-                </View>
-                <View
-                  style={[
-                    styles.cell,
-                    selectedCell?.row === 3 && selectedCell?.col === 3 && styles.selectedCell,
-                  ]}
-                  onTouchStart={() => handleCellSelection(3, 3)}
-                >
-                  <Text> 90 min</Text>
-                  <CheckBox
-                    checked={selectedCell?.row === 3 && selectedCell?.col === 3}
-                    onPress={() => handleCellSelection(3, 3)}
-                  />
-                </View>
-              </View>
+              ))}
             </View>
+
+
 
           </View>
         </View>
@@ -2059,166 +1942,34 @@ export default function PreCinScreen(props) {
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
 
-            <View style={styles.preguntaContainer}>
+            <View style={styles.container}>
+              <Text style={styles.advertencia}>Validar con la respuesta a pregunta 5.5</Text>
+              <Text style={styles.preguntas}>Según su experiencia de atención en los servicios de rehabilitación
+                durante el último año califique: </Text>
 
-              <Text style={styles.pregunta}> Según su experiencia de atención en los servicios de rehabilitación durante el último año califique:</Text>
-              <View style={styles.optionContainer}>
-
-                {/* Info row */}
-                <View style={styles.row}>
-                  <View style={styles.cell}></View>
-
-                  <View style={styles.cell}>
-                    <Text>Oportunidad en la asignación de la cita</Text>
-                  </View>
-                  <View style={styles.cell}>
-                    <Text>Calidad en la atención por parte del profesional</Text>
-                  </View>
-                  <View style={styles.cell}>
-                    <Text>Satisfacción de la atención recibida </Text>
-                  </View>
+              {cellColors1.map((rowColors, rowIndex) => (
+                <View key={rowIndex} style={styles.row}>
+                  {rowColors.map((color, colIndex) => (
+                    <TouchableOpacity
+                      key={colIndex}
+                      style={[styles.cell, { backgroundColor: color }]}
+                      onPress={() => handleCellSelection1(rowIndex, colIndex)}
+                    >
+                      <Text
+                        style={{
+                          color: colIndex === selectedCells1[rowIndex] ? 'white' : 'black',
+                          fontWeight: (colIndex === selectedCells1[rowIndex] || colIndex === 0 || rowIndex === 0) ? 'bold' : 'normal',
+                        }}
+                      >
+                        {colIndex === 0 && rowIndex === 0 ? '  USO\n\n\n SATISFACCIÓN' : cellTexts1[rowIndex][colIndex]}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
                 </View>
-
-                {/*row alta */}
-                <View style={styles.row}>
-                  <View style={styles.cell}>
-                    <Text>ALTA</Text>
-                  </View>
-                  <View
-                    style={[
-                      styles.cell,
-                      selectedCell1?.row === 0 && selectedCell1?.col === 1 && styles.selectedCell,
-                    ]}
-                    onTouchStart={() => handleCellSelection1(0, 1)}
-                  >
-                    <Text>3 días</Text>
-                    <CheckBox
-                      checked={selectedCell1?.row === 0 && selectedCell1?.col === 1}
-                      onPress={() => handleCellSelection1(0, 1)}
-                    />
-                  </View>
-                  <View
-                    style={[
-                      styles.cell,
-                      selectedCell1?.row === 0 && selectedCell1?.col === 2 && styles.selectedCell,
-                    ]}
-                    onTouchStart={() => handleCellSelection1(0, 2)}
-                  >
-                    <Text>8 - 10</Text>
-                    <CheckBox
-                      checked={selectedCell1?.row === 0 && selectedCell1?.col === 2}
-                      onPress={() => handleCellSelection1(0, 2)}
-                    />
-                  </View>
-                  <View
-                    style={[
-                      styles.cell,
-                      selectedCell1?.row === 0 && selectedCell1?.col === 3 && styles.selectedCell,
-                    ]}
-                    onTouchStart={() => handleCellSelection1(0, 3)}
-                  >
-                    <Text>8 - 10</Text>
-                    <CheckBox
-                      checked={selectedCell1?.row === 0 && selectedCell1?.col === 3}
-                      onPress={() => handleCellSelection1(0, 3)}
-                    />
-                  </View>
-                </View>
-
-                {/* row media */}
-                <View style={styles.row}>
-                  <View style={styles.cell}>
-                    <Text>MEDIA</Text>
-                  </View>
-                  <View
-                    style={[
-                      styles.cell,
-                      selectedCell1?.row === 1 && selectedCell1?.col === 1 && styles.selectedCell,
-                    ]}
-                    onTouchStart={() => handleCellSelection1(1, 1)}
-                  >
-                    <Text>3 - 5 días</Text>
-                    <CheckBox
-                      checked={selectedCell1?.row === 1 && selectedCell1?.col === 1}
-                      onPress={() => handleCellSelection1(1, 1)}
-                    />
-                  </View>
-                  <View
-                    style={[
-                      styles.cell,
-                      selectedCell1?.row === 1 && selectedCell1?.col === 2 && styles.selectedCell,
-                    ]}
-                    onTouchStart={() => handleCellSelection1(1, 2)}
-                  >
-                    <Text>4 - 7</Text>
-                    <CheckBox
-                      checked={selectedCell1?.row === 1 && selectedCell1?.col === 2}
-                      onPress={() => handleCellSelection1(1, 2)}
-                    />
-                  </View>
-                  <View
-                    style={[
-                      styles.cell,
-                      selectedCell1?.row === 1 && selectedCell1?.col === 3 && styles.selectedCell,
-                    ]}
-                    onTouchStart={() => handleCellSelection1(1, 3)}
-                  >
-                    <Text>4 - 7</Text>
-                    <CheckBox
-                      checked={selectedCell1?.row === 1 && selectedCell1?.col === 3}
-                      onPress={() => handleCellSelection1(1, 3)}
-                    />
-                  </View>
-                </View>
-
-
-                {/* row baja */}
-                <View style={styles.row}>
-                  <View style={styles.cell}>
-                    <Text>BAJA</Text>
-                  </View>
-                  <View
-                    style={[
-                      styles.cell,
-                      selectedCell1?.row === 2 && selectedCell1?.col === 1 && styles.selectedCell,
-                    ]}
-                    onTouchStart={() => handleCellSelection1(2, 1)}
-                  >
-                    <Text> 5 días</Text>
-                    <CheckBox
-                      checked={selectedCell1?.row === 2 && selectedCell1?.col === 1}
-                      onPress={() => handleCellSelection1(2, 1)}
-                    />
-                  </View>
-                  <View
-                    style={[
-                      styles.cell,
-                      selectedCell1?.row === 2 && selectedCell1?.col === 2 && styles.selectedCell,
-                    ]}
-                    onTouchStart={() => handleCellSelection1(2, 2)}
-                  >
-                    <Text>1 - 3</Text>
-                    <CheckBox
-                      checked={selectedCell1?.row === 2 && selectedCell1?.col === 2}
-                      onPress={() => handleCellSelection1(2, 2)}
-                    />
-                  </View>
-                  <View
-                    style={[
-                      styles.cell,
-                      selectedCell1?.row === 2 && selectedCell1?.col === 3 && styles.selectedCell,
-                    ]}
-                    onTouchStart={() => handleCellSelection1(2, 3)}
-                  >
-                    <Text>1 - 3</Text>
-                    <CheckBox
-                      checked={selectedCell1?.row === 2 && selectedCell1?.col === 3}
-                      onPress={() => handleCellSelection1(2, 3)}
-                    />
-                  </View>
-                </View>
-              </View>
+              ))}
             </View>
+
+
 
           </View>
         </View>
@@ -2381,6 +2132,7 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
     marginTop: -15,
     fontWeight: "bold",
+    fontSize: 16,
 
   },
   preguntas: {
@@ -2388,27 +2140,28 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 10,
     fontWeight: "bold",
+    fontSize: 18,
   },
   question: {
     color: "#35669a",
     marginBottom: -20,
     marginTop: 15,
     fontWeight: "bold",
-    fontSize: 15,
+    fontSize: 18,
   },
   question1: {
     color: "#35669a",
     marginBottom: -80,
-    marginTop: -2,
+    marginTop: -22,
     fontWeight: "bold",
-    fontSize: 15,
+    fontSize: 18,
   },
   question2: {
     color: "#35669a",
     marginBottom: 20,
     marginTop: 2,
     fontWeight: "bold",
-    fontSize: 15,
+    fontSize: 18,
   },
   linea: {
     marginTop: "auto",
@@ -2456,50 +2209,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-  errorMsg: {
-    color: "red",
-    fontSize: 14,
-    marginTop: 10,
-  },
 
-  tablaContainer: {
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 5,
-    padding: 8,
-    alignSelf: 'stretch',
-    marginHorizontal: 8,
-  },
-  fila: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderColor: 'black',
-  },
-  celda: {
-    flex: 1,
-    padding: 8,
-    borderRightWidth: 1,
-    borderColor: 'black',
-  },
+
+
   tituloSeccion: {
     fontWeight: 'bold',
     marginBottom: 8,
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  cell: {
-    flex: 1,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#000',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  selectedCell: {
-    backgroundColor: 'white',
-    color: '#fff',
   },
 
   /* Estilo Formulario*/
@@ -2548,6 +2263,35 @@ const styles = StyleSheet.create({
     padding: 0,
     margin: 5,
     marginBottom: 10,
+  },
+
+
+  // Estilo Tabla
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  cell: {
+    width: 80,
+    height: 110,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  advertencia: {
+    marginBottom: 5,
+    textAlign: 'justify',
+    marginTop: 5,
+    fontWeight: "bold",
+    color: "#BA0C2F",
+    fontSize: 16,
+
   },
 
 });
