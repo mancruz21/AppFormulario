@@ -1,41 +1,47 @@
-import 'react-native-gesture-handler';
-import React from 'react';
-import { View, Text, Button, StyleSheet, Image, ScrollView, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { BlurView } from 'expo-blur';
+import "react-native-gesture-handler";
+import React from "react";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  Image,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import { BlurView } from "expo-blur";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from '@react-navigation/stack';
-import NavigationTab from './src/navigations/NavigationTab';
-import {createNativeStackNavigator} from "@react-navigation/native-stack"
-import UserLogin from './src/components/UserLogin';
-import AdminLogin from './src/components/AdminLogin';
+import { createStackNavigator } from "@react-navigation/stack";
+import NavigationTab from "./src/navigations/NavigationTab";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import UserLogin from "./src/components/UserLogin";
+import AdminLogin from "./src/components/AdminLogin";
+import TipoIdentificacionSection from "./src/components/TipoIdentificacioSection";
+import HealthConditionsSection from "./src/components/HealthConditionsSection";
+import { useNavigation } from "@react-navigation/native";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { initializeApp } from "firebase/app";
 
-import TipoIdentificacionSection from './src/components/TipoIdentificacioSection';
-import HealthConditionsSection from './src/components/HealthConditionsSection';
-import { useNavigation } from '@react-navigation/native';
+import StackNavigation from "./navigations/StackNavigation";
 
-
-
-
-
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { initializeApp } from 'firebase/app';
-import StackNavigation from './navigations/StackNavigation';
-
-
+import { RealmConfigContext } from "./utils/models/context";
+const { RealmProvider: RealmProviderConfig } = RealmConfigContext;
 
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <StackNavigation/>
-     
-
-     
-     
-
-   
-    </NavigationContainer>
-  )
+    <RealmProviderConfig>
+      <NavigationContainer>
+        <StackNavigation />
+      </NavigationContainer>
+    </RealmProviderConfig>
+  );
 }
 
 /*

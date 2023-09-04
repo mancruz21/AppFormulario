@@ -17,8 +17,13 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import appFirebase from "../components/firebase-config";
 import { addDoc, collection, getFirestore } from 'firebase/firestore';
 const db = getFirestore(appFirebase)
+import {RealmConfigContext} from "./../../utils/models/context";
+const {useRealm} = RealmConfigContext;
+
 export default function PreUnoScreen(props) {
+  const realm = useRealm();
   const { navigation } = props;
+  /* const realm = new Realm({ schema: [Persona] }); */
  // Función para guardar los datos en AsyncStorage
  const saveDataToStorage = async () => {
   try {
@@ -29,6 +34,9 @@ export default function PreUnoScreen(props) {
      
     };
     await AsyncStorage.setItem("formData", JSON.stringify(data));
+
+    
+
   } catch (error) {
     console.error("Error saving data:", error);
   }
@@ -193,6 +201,9 @@ useEffect(() => {
     return date.toLocaleDateString(undefined, options);
   }
   const goToPreguntaDos = () => {
+
+    
+
     if (
       selectedOption !== "" &&
       apellido.trim() !== "" &&
@@ -251,11 +262,26 @@ useEffect(() => {
 
 
       });
-
+      
 
     } catch (error) {
       console.error(error);
 
+    }
+
+    try {
+      realm.write(() => {
+        realm.create('Persona', {
+          pregunta1_1Apell: 'mazabuel',
+          pregunta1_1_2Nombres: 'jaider',
+          pregunta1_1_3_Sexo: 'Masculino', // Cambia esto al valor seleccionado
+          pregunta1_1_4Fecha: '2023-09-04', // Cambia esto a la fecha seleccionada
+          pregunta1_1_5Edad: 30
+        });
+      });
+      console.log('Los datos se han guardado correctamente en Realm.');
+    } catch (error) {
+      console.error('Error al guardar datos en Realm:', error);
     }
   };
   return (
