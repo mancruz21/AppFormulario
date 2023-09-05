@@ -20,8 +20,13 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "permissions": [
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ],
       "package": "com.appform.AppBeta"
     },
+    "jsEngine": "hermes",
     "web": {
       "favicon": "./assets/favicon.png"
     },
@@ -29,6 +34,9 @@
       "eas": {
         "projectId": "ce208560-88b5-4419-9d74-4f2a36271c09"
       }
-    }
+    },
+    "plugins": [
+      "expo-dev-client"
+    ]
   }
 }
