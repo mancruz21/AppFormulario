@@ -8,14 +8,11 @@
       "distribution": "internal"
     },
     "preview": {
-
-      "ios" : {
-        "simulator" : true
+      "ios": {
+        "simulator": true
       },
-
-    
       "android": {
-        "buildType":"apk"
+        "buildType": "apk"
       }
     },
     "production": {}
