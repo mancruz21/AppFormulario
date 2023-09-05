@@ -1,8 +1,8 @@
 Arguments: 
-  D:\node\node.exe C:\Users\WINDOWS\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @react-native-async-storage/async-storage@1.17.11 react-native-picker/picker@2.4.8
+  D:\node\node.exe C:\Users\WINDOWS\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add expo-dev-client@~2.2.1
 
 PATH: 
-  C:\Users\WINDOWS\AppData\Roaming\npm;D:\AppMovil\AppBeta\node_modules\.bin;D:\AppMovil\node_modules\.bin;D:\node_modules\.bin;C:\Users\WINDOWS\AppData\Roaming\npm\node_modules\npm\node_modules\@npmcli\run-script\lib\node-gyp-bin;C:\Python311\Scripts\;C:\Python311\;C:\Python310\Scripts\;C:\Python310\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\oraclexe\app\oracle\product\11.2.0\server\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Azure Data Studio\bin;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\ProgramData\chocolatey\bin;C:\MongoDB\bin;C:\xampp\php;C:\ProgramData\ComposerSetup\bin;C:\Program Files\Docker\Docker\resources\bin;C:\Users\WINDOWS\AppData\Roaming\nvm;C:\Program Files\nodejs;D:\node\;D:\Git\cmd;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\WINDOWS\AppData\Local\Programs\Python\Python37-32\Scripts\;C:\Users\WINDOWS\AppData\Local\Programs\Python\Python37-32\;C:\Users\WINDOWS\AppData\Local\Microsoft\WindowsApps;C:\Users\WINDOWS\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\Java\jdk1.8.0_241\bin;C:\Program Files\Azure Data Studio\bin;C:\DBsqlite\sqlite-tools-win32-x86-3360000;C:\Program Files\MongoDB\Server\5.0\bin;C:\xamp\php\php.exe;C:\Users\WINDOWS\AppData\Roaming\Composer\vendor\bin;C:\Program Files\Java\jdk-11.0.18\bin;D:\IntelliJ IDEA 2022.3.2\bin;;D:\nodejs;D:\Proyecto Davinci\Angular - Node\npm;D:\Proyecto Davinci\Angular - Node\npm\node_modules\@angular\cli\node_modules\.bin;C:\Users\WINDOWS\AppData\Local\Yarn\bin;C:\Users\WINDOWS\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\nodejs\node_modules\npm\bin;C:\ProgramData\Microsoft\Windows\Start Menu\Programs\NVM for Windows;C:\Users\WINDOWS\AppData\Roaming\npm
+  C:\Python311\Scripts\;C:\Python311\;C:\Python310\Scripts\;C:\Python310\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\oraclexe\app\oracle\product\11.2.0\server\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Azure Data Studio\bin;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\ProgramData\chocolatey\bin;C:\MongoDB\bin;C:\xampp\php;C:\ProgramData\ComposerSetup\bin;C:\Program Files\Docker\Docker\resources\bin;C:\Users\WINDOWS\AppData\Roaming\nvm;C:\Program Files\nodejs;D:\node\;D:\Git\cmd;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\WINDOWS\AppData\Local\Programs\Python\Python37-32\Scripts\;C:\Users\WINDOWS\AppData\Local\Programs\Python\Python37-32\;C:\Users\WINDOWS\AppData\Local\Microsoft\WindowsApps;C:\Users\WINDOWS\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\Java\jdk1.8.0_241\bin;C:\Program Files\Azure Data Studio\bin;C:\DBsqlite\sqlite-tools-win32-x86-3360000;C:\Program Files\MongoDB\Server\5.0\bin;C:\xamp\php\php.exe;C:\Users\WINDOWS\AppData\Roaming\Composer\vendor\bin;C:\Program Files\Java\jdk-11.0.18\bin;D:\IntelliJ IDEA 2022.3.2\bin;;D:\nodejs;D:\Proyecto Davinci\Angular - Node\npm;D:\Proyecto Davinci\Angular - Node\npm\node_modules\@angular\cli\node_modules\.bin;C:\Users\WINDOWS\AppData\Local\Yarn\bin;C:\Users\WINDOWS\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\nodejs\node_modules\npm\bin;C:\ProgramData\Microsoft\Windows\Start Menu\Programs\NVM for Windows;C:\Users\WINDOWS\AppData\Roaming\npm
 
 Yarn version: 
   1.22.19
@@ -14,17 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/react-native-picker%2fpicker: Request "https://registry.yarnpkg.com/react-native-picker%2fpicker" returned a 405
-      at Request.params.callback [as _callback] (C:\Users\WINDOWS\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66154:18)
-      at Request.self.callback (C:\Users\WINDOWS\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140890:22)
-      at Request.emit (node:events:513:28)
-      at Request.<anonymous> (C:\Users\WINDOWS\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141862:10)
-      at Request.emit (node:events:513:28)
-      at IncomingMessage.<anonymous> (C:\Users\WINDOWS\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141784:12)
-      at Object.onceWrapper (node:events:627:28)
-      at IncomingMessage.emit (node:events:525:35)
-      at endReadableNT (node:internal/streams/readable:1358:12)
-      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+  Error: EPERM: operation not permitted, unlink 'D:\AppMovil\AppBeta\node_modules\@babel\plugin-transform-runtime\node_modules\.bin'
 
 npm manifest: 
   {

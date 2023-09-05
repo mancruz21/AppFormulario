@@ -214,16 +214,38 @@ export default function PreSeisScreen(props) {
               />
               {seleccionoSi && (
                 <View>
-                  <Text style={styles.advertencia}>Escriba lo números de la respuesta 6.1 </Text>
+                  <Text style={styles.advertencia}>Escoja el que se escogio en la respuesta 6.1 </Text>
                   <Text style={styles.preguntas}>Indique Cúal</Text>
-                  <TextInput
-                
+                  <View style={styles.preguntaContainer}>
 
-                style={styles.input}
-                value={otroIndicacion}
-                onChangeText={handleOtroIndicacionChange}
-                placeholder="Indique cuál o cuáles:"
-              />
+
+             
+              {opciones.map((opcion, index) => (
+                <CheckBox
+                  key={index}
+                  title={opcion}
+                  checked={selectedOptions.includes(index)}
+                  onPress={() => handleCheckboxChange(index)}
+                  containerStyle={styles.checkBoxContainer}
+                  textStyle={
+                    selectedOptions.includes(index)
+
+                      ? styles.selectedOptionText
+                      : styles.checkBoxText
+                  }
+                  checkedColor="#BA0C2F"
+                />
+              ))}
+              {opcionOtro && (
+                <TextInput
+                  style={styles.input}
+                  value={otroTexto}
+                  onChangeText={handleOtroTextoChange}
+                  placeholder="Especifique otro"
+                />
+              )}
+
+            </View>
 
                 </View>
                 

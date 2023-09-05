@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import appFirebase from "../components/firebase-config";
-import {addDoc, collection, getFirestore} from 'firebase/firestore';
+import { addDoc, collection, getFirestore } from 'firebase/firestore';
 import PreSieScreen from "./PreSieScreen";
 
 
@@ -21,30 +21,10 @@ export default function LoginScreen(props) {
   const [password, setPassword] = useState("");
   const [selectedRole, setSelectedRole] = useState("user"); // Valor predeterminado: Usuario
 
-  
+
   const auth = getAuth(appFirebase);
 
-  const handleSignIn = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log("Signed in!");
-        const user = userCredential.user;
-        
-        console.log(user);
-        
-        navigation.navigate("Pregunta 2.5");        
-      })
-      .catch((error) => {
-        console.log(error);
-        
-      });
 
-    // Ejemplo: Mostrar los valores ingresados en la consola
-    console.log("Correo:", email);
-    console.log("Contraseña:", password);
-
-    
-  };
 
   const { navigation } = props;
 
@@ -64,6 +44,38 @@ export default function LoginScreen(props) {
   };
   const handleRoleButtonClick = (role) => {
     setSelectedRole((prevRole) => (prevRole === role ? "" : role));
+  };
+  const handleSignIn = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log("Signed in!");
+        const user = userCredential.user;
+
+        console.log(user);
+
+        navigation.navigate("Pregunta 2.5");
+      })
+      .catch((error) => {
+        console.log(error);
+
+        if (error.code === "auth/wrong-password" || error.code === "auth/user-not-found") {
+          // Mostrar una alerta de credenciales incorrectas
+          Alert.alert(
+            "Credenciales Incorrectas",
+            "El correo o la contraseña son incorrectos. Por favor, inténtalo nuevamente."
+          );
+        } else {
+          // Otro tipo de error, puedes mostrar un mensaje genérico o hacer algo diferente
+          Alert.alert("Error", "Hubo un error al iniciar sesión. Por favor, inténtalo nuevamente más tarde.");
+        }
+
+      });
+
+    // Ejemplo: Mostrar los valores ingresados en la consola
+    console.log("Correo:", email);
+    console.log("Contraseña:", password);
+
+
   };
 
   const goToRegistrate = () => {
@@ -107,43 +119,7 @@ export default function LoginScreen(props) {
         selectionColor="#efefef" // Color de la línea cuando se selecciona el campo
       />
 
-      <Text style={styles.text}>Tipo de Usuario</Text>
 
-      <View style={styles.roleButtonsContainer}>
-        <TouchableOpacity
-          style={[
-            styles.roleButton,
-            selectedRole === "user" && styles.selectedRoleButton,
-          ]}
-          onPress={() => handleRoleButtonClick("user")}
-        >
-          <Text
-            style={[
-              styles.roleButtonText,
-              selectedRole === "user" && styles.selectedRoleButtonText,
-            ]}
-
-          >
-            Usuario
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.roleButton,
-            selectedRole === "admin" && styles.selectedRoleButton,
-          ]}
-          onPress={() => handleRoleButtonClick("admin")}
-        >
-          <Text
-            style={[
-              styles.roleButtonText,
-              selectedRole === "admin" && styles.selectedRoleButtonText,
-            ]}
-          >
-            Administrador
-          </Text>
-        </TouchableOpacity>
-      </View>
 
 
 

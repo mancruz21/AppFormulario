@@ -19,51 +19,51 @@ import { addDoc, collection, getFirestore } from 'firebase/firestore';
 const db = getFirestore(appFirebase)
 export default function PreUnoScreen(props) {
   const { navigation } = props;
- // Función para guardar los datos en AsyncStorage
- const saveDataToStorage = async () => {
-  try {
-    const data = {
-      selectedOption, apellido,nombres, fecha,edad,departamento, municipio
-      , nombreCentroPoblado, nombreBarrioVereda, direccion,estratoSocial,Celular,
-      area
-     
-    };
-    await AsyncStorage.setItem("formData", JSON.stringify(data));
-  } catch (error) {
-    console.error("Error saving data:", error);
-  }
-};
+  // Función para guardar los datos en AsyncStorage
+  const saveDataToStorage = async () => {
+    try {
+      const data = {
+        selectedOption, apellido, nombres, fecha, edad, departamento, municipio
+        , nombreCentroPoblado, nombreBarrioVereda, direccion, estratoSocial, Celular,
+        area
 
-// Función para cargar los datos desde AsyncStorage
-const loadDataFromStorage = async () => {
-  try {
-    const data = await AsyncStorage.getItem("formData");
-    if (data) {
-      const parsedData = JSON.parse(data);
-      setSelectedOption(parsedData.selectedOption);
-      setApellido(parsedData.apellido);
-      setNombres(parsedData.nombres);
-      setFecha(parsedData.fecha);
-      setEdad(parsedData.edad);
-      setDepartamento(parsedData.departamento);
-      setMunicipio(parsedData.municipio);  
-      setNombreCentroPoblado(parsedData.nombreCentroPoblado);  
-      setNombreBarrioVereda(parsedData.nombreBarrioVereda); 
-      setDireccion(parsedData.direccion);
-      setEstratoSocial(parsedData.estratoSocial);
-      setCelular(parsedData.Celular);
-      
-      setArea(parsedData.area);
+      };
+      await AsyncStorage.setItem("formData", JSON.stringify(data));
+    } catch (error) {
+      console.error("Error saving data:", error);
     }
-  } catch (error) {
-    console.error("Error loading data:", error);
-  }
-};
+  };
 
-// Llama a la función para cargar los datos al montar el componente
-useEffect(() => {
-  loadDataFromStorage();
-}, []);
+  // Función para cargar los datos desde AsyncStorage
+  const loadDataFromStorage = async () => {
+    try {
+      const data = await AsyncStorage.getItem("formData");
+      if (data) {
+        const parsedData = JSON.parse(data);
+        setSelectedOption(parsedData.selectedOption);
+        setApellido(parsedData.apellido);
+        setNombres(parsedData.nombres);
+        setFecha(parsedData.fecha);
+        setEdad(parsedData.edad);
+        setDepartamento(parsedData.departamento);
+        setMunicipio(parsedData.municipio);
+        setNombreCentroPoblado(parsedData.nombreCentroPoblado);
+        setNombreBarrioVereda(parsedData.nombreBarrioVereda);
+        setDireccion(parsedData.direccion);
+        setEstratoSocial(parsedData.estratoSocial);
+        setCelular(parsedData.Celular);
+
+        setArea(parsedData.area);
+      }
+    } catch (error) {
+      console.error("Error loading data:", error);
+    }
+  };
+
+  // Llama a la función para cargar los datos al montar el componente
+  useEffect(() => {
+    loadDataFromStorage();
+  }, []);
 
   const [selectedOption, setSelectedOption] = useState("");
 
@@ -84,6 +84,8 @@ useEffect(() => {
   const [edadCalculada, setEdadCalculada] = useState("");
   const [area, setArea] = useState("");
 
+
+  
   // Departamentos y municipios
 
   const departamentosConMunicipios = [{
@@ -447,6 +449,10 @@ useEffect(() => {
               }
               checkedColor="#BA0C2F"
             />
+
+           
+
+
             <CheckBox
               title="Centro poblado (Inspección, Corregimiento, caserío)"
               checked={area === "Centro poblado (Inspección, Corregimiento, caserío)"}
@@ -478,18 +484,23 @@ useEffect(() => {
               checkedColor="#BA0C2F"
             />
             {/* Ubicación */}
-            <Text style={styles.preguntas}>
-              {" "}
-              Nombre del centro poblado (inspección, corregimiento, caserio)
-            </Text>
-            <TextInput
-              placeholder="Ingresa el nombre del centro poblado"
-              style={styles.input}
-              underlineColorAndroid="transparent" // Para Android
-              selectionColor="#efefef" // Color de la línea cuando se selecciona el campo
-              value={nombreCentroPoblado}
-              onChangeText={setNombreCentroPoblado}
-            />
+
+            {area === "Cabecera Municipal (Area urbana)" && (
+              <>
+                <Text style={styles.preguntas}>
+                  Nombre del centro poblado (inspección, corregimiento, caserio)
+                </Text>
+                <TextInput
+                  placeholder="Ingresa el nombre del centro poblado"
+                  style={styles.input}
+                  underlineColorAndroid="transparent"
+                  selectionColor="#efefef"
+                  value={nombreCentroPoblado}
+                  onChangeText={setNombreCentroPoblado}
+                />
+              </>
+            )}
+
             <Text style={styles.preguntas}>
               {" "}
               Nombre del barrio o vereda (vereda rural - barrio urbano)
@@ -818,7 +829,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
 
-  
+
 
   // Estilo para el texto de las opciones seleccionadas
   selectedOptionText: {

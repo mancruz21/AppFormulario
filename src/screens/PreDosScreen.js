@@ -12,15 +12,16 @@ import { CheckBox } from "react-native-elements";
 import appFirebase from "../components/firebase-config";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { findLastKey } from "lodash";
 
 const db = getFirestore(appFirebase);
 
 export default function PreDosScreen(props) {
   const { navigation } = props;
 
-  const [opcion1, setOpcion1] = useState(null);
-  const [opcion2, setOpcion2] = useState(null);
-  const [opcion3, setOpcion3] = useState(null);
+  const [opcion1, setOpcion1] = useState("");
+  const [opcion2, setOpcion2] = useState("");
+  const [opcion3, setOpcion3] = useState("");
   const [selectedOption4, setSelectedOption4] = useState([]);
   const [discapacidad, setDiscapacidad] = useState(null);
   const [OptionSelection, setOptionSelection] = useState("");
@@ -32,6 +33,46 @@ export default function PreDosScreen(props) {
   const [trabajo, setTrabajo] = useState([]);
   const [salario, setSalario] = useState(null);
   const [promedio, setPromedio] = useState(null);
+  const handleOption1Press = (opcion) => {
+    if (opcion === opcion1) {
+      // Si la opción seleccionada es la misma que se presionó, deselecciónala
+      setOpcion1('');
+    } else {
+      // De lo contrario, establece la opción seleccionada en la opción presionada
+      setOpcion1(opcion);
+    }
+  };
+
+  const handleOption2Press = (opcion) => {
+    if (opcion === opcion2) {
+      // Si la opción seleccionada es la misma que se presionó, deselecciónala
+      setOpcion2('');
+    } else {
+      // De lo contrario, establece la opción seleccionada en la opción presionada
+      setOpcion2(opcion);
+    }
+  };
+
+  const handleOption3Press = (opcion) => {
+    if (opcion === opcion3) {
+      // Si la opción seleccionada es la misma que se presionó, deselecciónala
+      setOpcion3('');
+    } else {
+      // De lo contrario, establece la opción seleccionada en la opción presionada
+      setOpcion3(opcion);
+    }
+
+  }
+  const handleOption4Press = (opcion) => {
+    if (opcion === selectedOption4) {
+      // Si la opción seleccionada es la misma que se presionó, deselecciónala
+      setSelectedOption4([]);
+    } else {
+      // De lo contrario, establece la opción seleccionada en la opción presionada
+      setSelectedOption4(opcion);
+    }
+
+  }
 
   useEffect(() => {
     async function fetchSavedData() {
@@ -39,7 +80,7 @@ export default function PreDosScreen(props) {
         const savedOpcion1 = await AsyncStorage.getItem("opcion1");
         const savedOpcion2 = await AsyncStorage.getItem("opcion2");
         const savedOpcion3 = await AsyncStorage.getItem("opcion3");
-        const savedSelectedOption4 = await AsyncStorage.getItem("selectedOption4");
+    
         const savedDiscapacidad = await AsyncStorage.getItem("discapacidad");
         const savedOptionSelection = await AsyncStorage.getItem("OptionSelection");
         const savedEtnia = await AsyncStorage.getItem("etnia");
@@ -54,7 +95,7 @@ export default function PreDosScreen(props) {
         setOpcion1(savedOpcion1 || null);
         setOpcion2(savedOpcion2 || null);
         setOpcion3(savedOpcion3 || null);
-        setSelectedOption4(savedSelectedOption4 || []);
+       
         setDiscapacidad(savedDiscapacidad || null);
         setOptionSelection(savedOptionSelection || "");
         setEtnia(savedEtnia || null);
@@ -65,7 +106,7 @@ export default function PreDosScreen(props) {
           const parsedOcupacion = JSON.parse(savedOcupacion);
           setOcupacion(Array.isArray(parsedOcupacion) ? parsedOcupacion : []);
         }
-  
+
         if (savedTrabajo) {
           const parsedTrabajo = JSON.parse(savedTrabajo);
           setTrabajo(Array.isArray(parsedTrabajo) ? parsedTrabajo : []);
@@ -82,12 +123,10 @@ export default function PreDosScreen(props) {
 
   const goToPreguntaTres = async () => {
     if (
-      opcion1 !== null &&
+
       opcion2 !== null &&
-      opcion3 !== null &&
-      (selectedOption4 === "Población con Discapacidad"
-        ? discapacidad !== null && OptionSelection !== ""
-        : true) &&
+
+
       (etnia === "Indígena" ? indigena !== "" : true) &&
       (educativo === "Educación Superior" ? educacionSuperior !== null : true) &&
       (ocupacion === "Trabajando - Trabajador Urbano - Rural"
@@ -103,7 +142,7 @@ export default function PreDosScreen(props) {
         if (opcion1 !== null) await AsyncStorage.setItem("opcion1", opcion1);
         if (opcion2 !== null) await AsyncStorage.setItem("opcion2", opcion2);
         if (opcion3 !== null) await AsyncStorage.setItem("opcion3", opcion3);
-        if (selectedOption4 !== null) await AsyncStorage.setItem("selectedOption4", selectedOption4);
+        
         if (discapacidad !== null) await AsyncStorage.setItem("discapacidad", discapacidad);
         if (OptionSelection !== null) await AsyncStorage.setItem("OptionSelection", OptionSelection);
         if (etnia !== null) await AsyncStorage.setItem("etnia", etnia);
@@ -175,7 +214,7 @@ export default function PreDosScreen(props) {
               <CheckBox
                 title="Población Migrante"
                 checked={opcion1 === "Población Migrante"}
-                onPress={() => setOpcion1("Población Migrante")}
+                onPress={() => handleOption1Press("Población Migrante")}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   opcion1 === "Población Migrante"
@@ -191,7 +230,7 @@ export default function PreDosScreen(props) {
                   "Población en proceso de reincorporación / reintegración"
                 }
                 onPress={() =>
-                  setOpcion1(
+                  handleOption1Press(
                     "Población en proceso de reincorporación / reintegración"
                   )
                 }
@@ -211,7 +250,7 @@ export default function PreDosScreen(props) {
                   opcion1 === "Víctima de Conflicto Armado - Ley 1448 del 2011"
                 }
                 onPress={() =>
-                  setOpcion1("Víctima de Conflicto Armado - Ley 1448 del 2011")
+                  handleOption1Press("Víctima de Conflicto Armado - Ley 1448 del 2011")
                 }
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
@@ -228,7 +267,7 @@ export default function PreDosScreen(props) {
               <CheckBox
                 title="Infancia (10 a 11 años)"
                 checked={opcion2 === "Infancia (10 a 11 años)"}
-                onPress={() => setOpcion2("Infancia (10 a 11 años)")}
+                onPress={() => handleOption2Press("Infancia (10 a 11 años)")}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   opcion2 === "Infancia (10 a 11 años)"
@@ -241,7 +280,7 @@ export default function PreDosScreen(props) {
               <CheckBox
                 title="Adolescente (12 a 17 años)"
                 checked={opcion2 === "Adolescente (12 a 17 años)"}
-                onPress={() => setOpcion2("Adolescente (12 a 17 años)")}
+                onPress={() => handleOption2Press("Adolescente (12 a 17 años)")}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   opcion2 === "Adolescente (12 a 17 años)"
@@ -253,7 +292,7 @@ export default function PreDosScreen(props) {
               <CheckBox
                 title="Juventud (18 a 28 años)"
                 checked={opcion2 === "Juventud (18 a 28 años)"}
-                onPress={() => setOpcion2("Juventud (18 a 28 años)")}
+                onPress={() => handleOption2Press("Juventud (18 a 28 años)")}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   opcion2 === "Juventud (18 a 28 años)"
@@ -265,7 +304,7 @@ export default function PreDosScreen(props) {
               <CheckBox
                 title="Adultez (29 a 59 años)"
                 checked={opcion2 === "Adultez (29 a 59 años)"}
-                onPress={() => setOpcion2("Adultez (29 a 59 años)")}
+                onPress={() => handleOption2Press("Adultez (29 a 59 años)")}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   opcion2 === "Adultez (29 a 59 años)"
@@ -277,7 +316,7 @@ export default function PreDosScreen(props) {
               <CheckBox
                 title="Vejez (60 y más)            "
                 checked={opcion2 === "Vejez (60 y más)"}
-                onPress={() => setOpcion2("Vejez (60 y más)")}
+                onPress={() => handleOption2Press("Vejez (60 y más)")}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   opcion2 === "Vejez (60 y más)"
@@ -295,7 +334,7 @@ export default function PreDosScreen(props) {
               <CheckBox
                 title="Mujer embarazada y/o lactante"
                 checked={opcion3 === "Mujer embarazada y/o lactante"}
-                onPress={() => setOpcion3("Mujer embarazada y/o lactante")}
+                onPress={() => handleOption3Press("Mujer embarazada y/o lactante")}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   opcion3 === "Mujer embarazada y/o lactante"
@@ -308,7 +347,7 @@ export default function PreDosScreen(props) {
               <CheckBox
                 title="Cabeza de Familia                 "
                 checked={opcion3 === "Cabeza de Familia"}
-                onPress={() => setOpcion3("Cabeza de Familia")}
+                onPress={() => handleOption3Press("Cabeza de Familia")}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   opcion3 === "Cabeza de Familia"
@@ -327,7 +366,7 @@ export default function PreDosScreen(props) {
                   title="Población con Discapacidad"
                   checked={selectedOption4 === "Población con Discapacidad"}
                   onPress={() =>
-                    setSelectedOption4("Población con Discapacidad")
+                    handleOption4Press("Población con Discapacidad")
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
@@ -340,7 +379,7 @@ export default function PreDosScreen(props) {
                 <CheckBox
                   title="Población LGBTI"
                   checked={selectedOption4 === "Población LGBTI"}
-                  onPress={() => setSelectedOption4("Población LGBTI")}
+                  onPress={() => handleOption4Press("Población LGBTI")}
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selectedOption4 === "Población LGBTI"
