@@ -13,6 +13,8 @@ import appFirebase from "../components/firebase-config";
 import { addDoc, collection, getFirestore } from 'firebase/firestore';
 import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {RealmConfigContext} from "./../../utils/models/context";
+const {useRealm} = RealmConfigContext;
 
 const db = getFirestore(appFirebase);
 
@@ -82,10 +84,28 @@ export default function PreTresScreen(props) {
         departamento_pregunta3_4: selectedOption3 === "No" ? nombreDepartamento : null,
       });
 
-     
+
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Hubo un error al guardar sus respuestas');
+    }
+
+    try {
+      realm.write(() => {
+        realm.create('Persona', {
+
+          pregunta3_1: selectedOption,
+          pregunta3_2: aseguradora,
+          pregunta3_3: selectedOption2,
+          municipio_pregunta3_3: municipio,
+          pregunta3_4: selectedOption3,
+          municipio_pregunta3_4: selectedOption3 === "No" ? municipio : null,
+          departamento_pregunta3_4: selectedOption3 === "No" ? nombreDepartamento : null,
+        });
+      });
+      console.log('Los datos se han guardado correctamente en Realm.');
+    } catch (error) {
+      console.error('Error al guardar datos en Realm:', error);
     }
   };
 

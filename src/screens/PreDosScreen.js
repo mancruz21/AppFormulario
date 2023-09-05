@@ -12,7 +12,8 @@ import { CheckBox } from "react-native-elements";
 import appFirebase from "../components/firebase-config";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { findLastKey } from "lodash";
+import {RealmConfigContext} from "./../../utils/models/context";
+const {useRealm} = RealmConfigContext;
 
 const db = getFirestore(appFirebase);
 
@@ -182,6 +183,32 @@ export default function PreDosScreen(props) {
       });
     } catch (error) {
       console.error(error);
+    }
+
+    try {
+      realm.write(() => {
+        realm.create('Persona', {
+
+          pregunta2_1: opcion1,
+          pregunta2_2: opcion2,
+          pregunta2_3: opcion3,
+          pregunta2_4: selectedOption4,
+          pregunta2_2_1: discapacidad,
+          pregunta2_2_2: OptionSelection,
+          pregunta2_4_1: etnia,
+          pregunta2_4_1_nombre: indigena,
+          pregunta2_5_2_UltimoNivel: educativo,
+          pregunta2_5_1EducaSuperior: educacionSuperior,
+          pregunta2_6_Ocupacion: ocupacion,
+          pregunta2_7_Trabajo: trabajo,
+          pregunta2_8_1_Salario: salario,
+          pregunta2_8_2_Ingreso: promedio, 
+          
+        });
+      });
+      console.log('Los datos se han guardado correctamente en Realm.');
+    } catch (error) {
+      console.error('Error al guardar datos en Realm:', error);
     }
   };
 

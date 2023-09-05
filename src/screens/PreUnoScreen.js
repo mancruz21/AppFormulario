@@ -280,7 +280,16 @@ export default function PreUnoScreen(props) {
           pregunta1_1_2Nombres: 'jaider',
           pregunta1_1_3_Sexo: 'Masculino', // Cambia esto al valor seleccionado
           pregunta1_1_4Fecha: '2023-09-04', // Cambia esto a la fecha seleccionada
-          pregunta1_1_5Edad: 30
+          pregunta1_1_5Edad: 30,
+          pregunta1_2_1: departamento,
+          pregunta1_2_2: municipiosDelDepartamento,
+          pregunta1_2_3_Mun: municipio,
+          pregunta1_2_4_Area: area,
+          pregunta1_2_5: nombreCentroPoblado,
+          pregunta1_2_6_Ver: nombreBarrioVereda,
+          pregunta1_2_7_Dir: direccion,
+          pregunta1_2_8_Tel: Celular,
+          pregunta1_2_9_Estr: estratoSocial,
         });
       });
       console.log('Los datos se han guardado correctamente en Realm.');

@@ -13,6 +13,8 @@ import { includes } from "lodash";
 import appFirebase from "../components/firebase-config";
 import { addDoc, collection, getFirestore } from 'firebase/firestore';
 const db = getFirestore(appFirebase)
+import {RealmConfigContext} from "./../../utils/models/context";
+const {useRealm} = RealmConfigContext;
 
 
 export default function PreCuaScreen(props) {
@@ -51,7 +53,6 @@ export default function PreCuaScreen(props) {
   const SaveComponente4 = async () => {
     try {
       await addDoc(collection(db, 'componentecuatro'), {
-
         pregunta4_1: selectedOption,
         pregunta4_2: selectedOptions,
         pregunta4_3_1Transtornos: selectedOptions1,
@@ -62,14 +63,30 @@ export default function PreCuaScreen(props) {
         pregunta4_3_5Less: lesiones,
         pregunta4_3_6_Auto: autoinmunes,
         pregunta4_4: selectedOption1,
-
-
       });
-
-
     } catch (error) {
       console.error(error);
 
+    }
+
+    try {
+      realm.write(() => {
+        realm.create('Persona', {
+          pregunta4_1: selectedOption,
+          pregunta4_2: selectedOptions,
+          pregunta4_3_1Transtornos: selectedOptions1,
+          pregunta4_3_Def: deficit,
+          pregunta4_3_Cron: cronicas,
+          pregunta4_3_Infec: infecciosas,
+          pregunta4_3_4_Sens: sensoriales,
+          pregunta4_3_5Less: lesiones,
+          pregunta4_3_6_Auto: autoinmunes,
+          pregunta4_4: selectedOption1,
+        });
+      });
+      console.log('Los datos se han guardado correctamente en Realm.');
+    } catch (error) {
+      console.error('Error al guardar datos en Realm:', error);
     }
   };
 

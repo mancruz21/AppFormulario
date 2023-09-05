@@ -5,6 +5,8 @@ import { ScrollView } from "react-native-gesture-handler";
 import appFirebase from "../components/firebase-config";
 import {addDoc, collection, getFirestore} from 'firebase/firestore';
 const db = getFirestore(appFirebase)
+import {RealmConfigContext} from "./../../utils/models/context";
+const {useRealm} = RealmConfigContext;
 
 export default function PreSeisScreen(props) {
   const { navigation } = props;
@@ -112,6 +114,26 @@ export default function PreSeisScreen(props) {
       console.error(error);
       Alert.alert('Error', 'Hubo un error al guardar sus respuestas');
     }
+
+    try {
+      realm.write(() => {
+        realm.create('Persona', {
+
+          pregunta6_1: selectedOptions.map(index => opciones[index]),
+          otroTexto6_1: opcionOtro ? otroTexto : "",
+          pregunta6_2: seleccionoSi ? "Si" : "No",
+          otroIndicacion6_2: seleccionoSi ? otroIndicacion : "",
+          pregunta6_3: selectedOption3,
+          municipio_pregunta6_3: selectedOption3 === "Sí" ? municipio : "",
+          departamento_pregunta6_3: selectedOption3 === "Sí" ? nombreDepartamento : "",
+        });
+      });
+      console.log('Los datos se han guardado correctamente en Realm.');
+    } catch (error) {
+      console.error('Error al guardar datos en Realm:', error);
+    }
+
+
   };
 
   return (
