@@ -1,19 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import {View,Text,TextInput,StyleSheet,ScrollView,TouchableOpacity,Alert,} from "react-native";
 import { CheckBox } from "react-native-elements";
 import appFirebase from "../components/firebase-config";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {RealmConfigContext} from "./../../utils/models/context";
-const {useRealm} = RealmConfigContext;
+import { RealmConfigContext } from "./../../utils/models/context";
+const { useRealm } = RealmConfigContext;
 
 const db = getFirestore(appFirebase);
 
@@ -32,6 +24,8 @@ export default function PreDosScreen(props) {
   const [educacionSuperior, setEducacionSuperior] = useState(null);
   const [ocupacion, setOcupacion] = useState([]);
   const [trabajo, setTrabajo] = useState([]);
+  const [urbano, setUrbano] = useState(false);
+  const [rural, setRural] = useState(false);
   const [salario, setSalario] = useState(null);
   const [promedio, setPromedio] = useState(null);
   const handleOption1Press = (opcion) => {
@@ -75,13 +69,24 @@ export default function PreDosScreen(props) {
 
   }
 
+  // Función para manejar la selección de la opción Urbano
+  const handleUrbanoPress = () => {
+    setUrbano(true);
+    setRural(false);
+  };
+
+  // Función para manejar la selección de la opción Rural
+  const handleRuralPress = () => {
+    setUrbano(false);
+    setRural(true);
+  };
+
   useEffect(() => {
     async function fetchSavedData() {
       try {
         const savedOpcion1 = await AsyncStorage.getItem("opcion1");
         const savedOpcion2 = await AsyncStorage.getItem("opcion2");
         const savedOpcion3 = await AsyncStorage.getItem("opcion3");
-    
         const savedDiscapacidad = await AsyncStorage.getItem("discapacidad");
         const savedOptionSelection = await AsyncStorage.getItem("OptionSelection");
         const savedEtnia = await AsyncStorage.getItem("etnia");
@@ -92,11 +97,9 @@ export default function PreDosScreen(props) {
         const savedTrabajo = await AsyncStorage.getItem("trabajo");
         const savedSalario = await AsyncStorage.getItem("salario");
         const savedPromedio = await AsyncStorage.getItem("promedio");
-
         setOpcion1(savedOpcion1 || null);
         setOpcion2(savedOpcion2 || null);
         setOpcion3(savedOpcion3 || null);
-       
         setDiscapacidad(savedDiscapacidad || null);
         setOptionSelection(savedOptionSelection || "");
         setEtnia(savedEtnia || null);
@@ -107,7 +110,6 @@ export default function PreDosScreen(props) {
           const parsedOcupacion = JSON.parse(savedOcupacion);
           setOcupacion(Array.isArray(parsedOcupacion) ? parsedOcupacion : []);
         }
-
         if (savedTrabajo) {
           const parsedTrabajo = JSON.parse(savedTrabajo);
           setTrabajo(Array.isArray(parsedTrabajo) ? parsedTrabajo : []);
@@ -122,15 +124,14 @@ export default function PreDosScreen(props) {
     fetchSavedData();
   }, []);
 
+
   const goToPreguntaTres = async () => {
+    //Condicion de no dejar a la proxima pantalla
     if (
-
       opcion2 !== null &&
-
-
       (etnia === "Indígena" ? indigena !== "" : true) &&
       (educativo === "Educación Superior" ? educacionSuperior !== null : true) &&
-      (ocupacion === "Trabajando - Trabajador Urbano - Rural"
+      (ocupacion === "Trabajando"
         ? trabajo.length > 0
         : true) &&
       (ocupacion ===
@@ -143,7 +144,6 @@ export default function PreDosScreen(props) {
         if (opcion1 !== null) await AsyncStorage.setItem("opcion1", opcion1);
         if (opcion2 !== null) await AsyncStorage.setItem("opcion2", opcion2);
         if (opcion3 !== null) await AsyncStorage.setItem("opcion3", opcion3);
-        
         if (discapacidad !== null) await AsyncStorage.setItem("discapacidad", discapacidad);
         if (OptionSelection !== null) await AsyncStorage.setItem("OptionSelection", OptionSelection);
         if (etnia !== null) await AsyncStorage.setItem("etnia", etnia);
@@ -202,8 +202,8 @@ export default function PreDosScreen(props) {
           pregunta2_6_Ocupacion: ocupacion,
           pregunta2_7_Trabajo: trabajo,
           pregunta2_8_1_Salario: salario,
-          pregunta2_8_2_Ingreso: promedio, 
-          
+          pregunta2_8_2_Ingreso: promedio,
+
         });
       });
       console.log('Los datos se han guardado correctamente en Realm.');
@@ -211,9 +211,6 @@ export default function PreDosScreen(props) {
       console.error('Error al guardar datos en Realm:', error);
     }
   };
-
-  // Resto de tu componente
-
 
 
   return (
@@ -844,19 +841,42 @@ export default function PreDosScreen(props) {
 
             <View style={styles.inputDate}>
               <CheckBox
-                title="Trabajando - Trabajador Urbano - Rural"
-                checked={ocupacion === "Trabajando - Trabajador Urbano - Rural"}
-                onPress={() =>
-                  setOcupacion("Trabajando - Trabajador Urbano - Rural")
-                }
+                title="Trabajando"
+                checked={ocupacion === "Trabajando"}
+                onPress={() => setOcupacion('Trabajando')}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
-                  ocupacion === "Trabajando - Trabajador Urbano - Rural"
+                  ocupacion === "Trabajando"
                     ? styles.selectedOptionText
                     : styles.checkBoxText
                 }
                 checkedColor="#BA0C2F"
               />
+ {ocupacion === "Trabajando" && (
+        <View style={styles.questionContainer}>
+          <Text style={styles.preguntas}>Seleccione el tipo de trabajo</Text>
+          <CheckBox
+            title="Urbano"
+            checked={urbano}
+            onPress={handleUrbanoPress}
+            containerStyle={styles.checkBoxContainer}
+            textStyle={urbano ? styles.selectedOptionText : styles.checkBoxText}
+            checkedColor="#BA0C2F"
+          />
+          <CheckBox
+            title="Rural"
+            checked={rural}
+            onPress={handleRuralPress}
+            containerStyle={styles.checkBoxContainer}
+            textStyle={rural ? styles.selectedOptionText : styles.checkBoxText}
+            checkedColor="#BA0C2F"
+          />
+
+          <View style={styles.linea} />
+        </View>
+      )}
+
+
             </View>
 
             <CheckBox
@@ -936,7 +956,9 @@ export default function PreDosScreen(props) {
               checkedColor="#BA0C2F"
             />
 
-            {ocupacion === "Trabajando - Trabajador Urbano - Rural" && (
+
+
+            {ocupacion === "Trabajando" && (
               <View style={styles.questionContainer}>
                 <Text style={styles.question2}> PREGUNTA 2.7 ( SELECCIÓN ÚNICA ) </Text>
                 <View style={styles.linea1} />
@@ -1021,7 +1043,7 @@ export default function PreDosScreen(props) {
               </View>
             )}
 
-            {(ocupacion.includes("Trabajando - Trabajador Urbano - Rural") ||
+            {(ocupacion.includes("Trabajando") ||
               ocupacion.includes(
                 "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
               ))

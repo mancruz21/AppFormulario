@@ -126,9 +126,9 @@ export default function PreCinScreen(props) {
 
   const cellTexts1 = [
     ['', 'Oportunidad en la asignación de la cita', 'Calidad en la atención por parte del profesional', 'Satisfacción de la atención recibida'],
-    ['ALTA', '< 3 días', '8 - 10 días', '8 - 10 días'],
-    ['MEDIA', '3 - 5 días', '4 - 7 días', '4 - 7 días'],
-    ['BAJA', '> 5 días', '1 - 3 días', '1 - 3 días'],
+    ['ALTA', '< 3 días', '8 - 10 ', '8 - 10 '],
+    ['MEDIA', '3 - 5 días', '4 - 7 ', '4 - 7 '],
+    ['BAJA', '> 5 días', '1 - 3 ', '1 - 3 '],
   ];
   const [opcionOtro, setOpcionOtro] = useState(false);
   const [otroTexto, setOtroTexto] = useState('');
@@ -226,26 +226,6 @@ export default function PreCinScreen(props) {
         setSelected1Option([...selected1Option, option]);
       }
     }
-
-
-    const updatedOptions = [...selected1Option];
-
-    // Actualiza las opciones seleccionadas
-    if (updatedOptions.includes(option)) {
-      updatedOptions.splice(updatedOptions.indexOf(option), 1);
-    } else {
-      updatedOptions.push(option);
-    }
-
-    // Verifica si una de las dos primeras opciones está seleccionada
-    const shouldShowQuestion5_6 = !(
-      updatedOptions.includes("Cree que ya no lo necesita") ||
-      updatedOptions.includes("No le gusta, no le interesa")
-    );
-
-    // Actualiza el estado y oculta/muestra la pregunta 5.6
-    setShowQuestion5_6(shouldShowQuestion5_6);
-    setSelected1Option(updatedOptions);
   };
   const handleOption4Select = (option) => {
     // Check if the option is already selected
@@ -335,7 +315,11 @@ export default function PreCinScreen(props) {
   //Metodo para campo de texto 5.10 Segundo-Otro motivo
   const handleMotivoChange = (text) => {
     setMotivo(text);
+
   }
+  const [showOtherServicesText, setShowOtherServicesText] = useState(false);
+  const [showOtherServices1Text, setShowOtherServices1Text] = useState(false);
+  const [showOtherServices2Text, setShowOtherServices2Text] = useState(false);
 
 
   //Metodo General checkBox 5.10 opciones que desglosan

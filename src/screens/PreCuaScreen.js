@@ -13,8 +13,8 @@ import { includes } from "lodash";
 import appFirebase from "../components/firebase-config";
 import { addDoc, collection, getFirestore } from 'firebase/firestore';
 const db = getFirestore(appFirebase)
-import {RealmConfigContext} from "./../../utils/models/context";
-const {useRealm} = RealmConfigContext;
+import { RealmConfigContext } from "./../../utils/models/context";
+const { useRealm } = RealmConfigContext;
 
 
 export default function PreCuaScreen(props) {
@@ -23,6 +23,7 @@ export default function PreCuaScreen(props) {
   const [selectedOption1, setSelectedOption1] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedOptions1, setSelectedOptions1] = useState([]);
+
   const [deficitOptions, setDeficitOptions] = useState(false); // Estado para mostrar/ocultar los CheckBox adicionales
   const [deficit, setDeficit] = useState("");
   const [cronicas, setCronicas] = useState("");
@@ -34,11 +35,14 @@ export default function PreCuaScreen(props) {
 
 
   const goToPreguntaCin = () => {
+
     if (
       selectedOption !== "" &&
+      (selectedOption === "No" || selectedOptions.length !== 0) && // Verifica que al menos una opción está seleccionada si es "No"
+      (selectedOption !== "Si" || selectedOptions.length !== 0) &&
+      (selectedOption !== "Si" || selectedOptions1.length !== 0)
 
-      selectedOptions.length !== 0 &&
-      selectedOption1.length !== 0
+
 
     ) {
       navigation.navigate("Pregunta 2.3");
@@ -153,6 +157,8 @@ export default function PreCuaScreen(props) {
 
 
   const handleOptionChange8 = (option) => {
+
+
     if (selectedOption1.includes(option)) {
       setSelectedOption1(selectedOption1.filter((item) => item !== option));
     } else {
@@ -160,6 +166,7 @@ export default function PreCuaScreen(props) {
         setSelectedOption1([...selectedOption1, option]);
       }
     }
+
   };
   const handleDeficitChange = (text) => {
     setDeficit(text);
@@ -654,18 +661,7 @@ export default function PreCuaScreen(props) {
                     2.Enfermedades Crónicas No Transmisibles
                   </Text>
 
-                  <CheckBox
-                    title="Trastornos de ansiedad"
-                    checked={selectedOptions1.includes("Trastornos de ansiedad")}
-                    onPress={() => handleOptionChange1("Trastornos de ansiedad")}
-                    containerStyle={styles.checkBoxContainer}
-                    textStyle={
-                      selectedOptions1.includes("Trastornos de ansiedad")
-                        ? styles.selectedOptionText
-                        : styles.checkBoxText
-                    }
-                    checkedColor="#BA0C2F"
-                  />
+
 
                   <CheckBox
                     title="Cáncer y Neoplasias en órganos y/o Tejidos"
@@ -700,6 +696,19 @@ export default function PreCuaScreen(props) {
                     textStyle={
                       selectedOptions1.includes("Cardiovasculares (corazón y sistema circulatorio)")
 
+                        ? styles.selectedOptionText
+                        : styles.checkBoxText
+                    }
+                    checkedColor="#BA0C2F"
+                  />
+
+                  <CheckBox
+                    title="Cerebrovasculares"
+                    checked={selectedOptions1.includes("Cerebrovasculares")}
+                    onPress={() => handleOptionChange1("Cerebrovasculares")}
+                    containerStyle={styles.checkBoxContainer}
+                    textStyle={
+                      selectedOptions1.includes("Cerebrovasculares")
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
@@ -1660,18 +1669,7 @@ export default function PreCuaScreen(props) {
                   2.Enfermedades Crónicas No Transmisibles
                 </Text>
 
-                <CheckBox
-                  title="Trastornos de ansiedad"
-                  checked={selectedOptions1.includes("Trastornos de ansiedad")}
-                  onPress={() => handleOptionChange1("Trastornos de ansiedad")}
-                  containerStyle={styles.checkBoxContainer}
-                  textStyle={
-                    selectedOptions1.includes("Trastornos de ansiedad")
-                      ? styles.selectedOptionText
-                      : styles.checkBoxText
-                  }
-                  checkedColor="#BA0C2F"
-                />
+
 
                 <CheckBox
                   title="Cáncer y Neoplasias en órganos y/o Tejidos"
@@ -1706,6 +1704,18 @@ export default function PreCuaScreen(props) {
                   textStyle={
                     selectedOptions1.includes("Cardiovasculares (corazón y sistema circulatorio)")
 
+                      ? styles.selectedOptionText
+                      : styles.checkBoxText
+                  }
+                  checkedColor="#BA0C2F"
+                />
+                <CheckBox
+                  title="Cerebrovasculares"
+                  checked={selectedOptions1.includes("Cerebrovasculares ")}
+                  onPress={() => handleOptionChange1("Cerebrovasculares ")}
+                  containerStyle={styles.checkBoxContainer}
+                  textStyle={
+                    selectedOptions1.includes("Cerebrovasculares ")
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }

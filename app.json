@@ -4,10 +4,10 @@
     "slug": "AppBeta",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/Logo_Color.png",
+    "icon": "./assets/001.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/001.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -20,10 +20,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": [
-        "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE"
-      ],
+      "permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
       "package": "com.appform.AppBeta"
     },
     "jsEngine": "hermes",
@@ -35,8 +32,6 @@
         "projectId": "ce208560-88b5-4419-9d74-4f2a36271c09"
       }
     },
-    "plugins": [
-      "expo-dev-client"
-    ]
+    "plugins": ["expo-dev-client"]
   }
 }

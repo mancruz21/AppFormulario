@@ -6,7 +6,9 @@ export class Persona extends Realm.Object {
   pregunta1_1_3_Sexo = "";
   pregunta1_1_4Fecha = "";
   pregunta1_1_5Edad = 0;
-  
+
+
+
 
   static schema = {
     name: "Persona",
@@ -26,7 +28,9 @@ export class Persona extends Realm.Object {
       pregunta1_2_7_Dir: "string",
       pregunta1_2_8_Tel: "int",
       pregunta1_2_9_Estr: "string",
-      
+
+
+
     },
     primaryKey: "_id",
   };

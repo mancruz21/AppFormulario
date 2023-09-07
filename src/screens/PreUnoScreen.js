@@ -205,9 +205,6 @@ export default function PreUnoScreen(props) {
     return date.toLocaleDateString(undefined, options);
   }
   const goToPreguntaDos = () => {
-
-    
-
     if (
       selectedOption !== "" &&
       apellido.trim() !== "" &&
@@ -216,8 +213,7 @@ export default function PreUnoScreen(props) {
       edad.trim() !== "" &&
       departamento.trim() !== "" &&
       municipio.trim() !== "" &&
-      area.trim() !== "" &&
-      nombreCentroPoblado.trim() !== "" &&
+      (area !== "Centro poblado (Inspección, Corregimiento, caserío)" || nombreCentroPoblado.trim() !== "") &&
       nombreBarrioVereda.trim() !== "" &&
       direccion.trim() !== "" &&
       Celular.trim() !== "" &&
@@ -487,9 +483,6 @@ export default function PreUnoScreen(props) {
               checkedColor="#BA0C2F"
             />
 
-           
-
-
             <CheckBox
               title="Centro poblado (Inspección, Corregimiento, caserío)"
               checked={area === "Centro poblado (Inspección, Corregimiento, caserío)"}
@@ -522,7 +515,7 @@ export default function PreUnoScreen(props) {
             />
             {/* Ubicación */}
 
-            {area === "Cabecera Municipal (Area urbana)" && (
+            {area === "Centro poblado (Inspección, Corregimiento, caserío)" && (
               <>
                 <Text style={styles.preguntas}>
                   Nombre del centro poblado (inspección, corregimiento, caserio)

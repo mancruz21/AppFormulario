@@ -1,20 +1,25 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity,Alert } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from "react-native";
 import React, { useState } from "react";
 import { CheckBox } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import appFirebase from "../components/firebase-config";
-import {addDoc, collection, getFirestore} from 'firebase/firestore';
+import { addDoc, collection, getFirestore } from 'firebase/firestore';
 const db = getFirestore(appFirebase)
-import {RealmConfigContext} from "./../../utils/models/context";
-const {useRealm} = RealmConfigContext;
+import { RealmConfigContext } from "./../../utils/models/context";
+const { useRealm } = RealmConfigContext;
 
 export default function PreSeisScreen(props) {
   const { navigation } = props;
   const [opcionOtro, setOpcionOtro] = useState(false);
+  const [opcionOtro1, setOpcionOtro1] = useState(false);
   const [otroTexto, setOtroTexto] = useState("");
+  const [otroTexto1, setOtroTexto1] = useState("");
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [selectedOptions1, setSelectedOptions1] = useState([]);
+  const [seleccionoSi1, setSeleccionoSi1] = useState(false);
   const [seleccionoSi, setSeleccionoSi] = useState(false);
   const [otroIndicacion, setOtroIndicacion] = useState("");
+  const [otroIndicacion1, setOtroIndicacion1] = useState("");
   const [selectedOption3, setSelectedOption3] = useState(null);
   const [nombreDepartamento, setNombreDepartamento] = useState("");
   const [municipio, setMunicipio] = useState("");
@@ -51,6 +56,30 @@ export default function PreSeisScreen(props) {
     setSelectedOptions(options);
   };
 
+  const handleCheckboxChange1 = (index) => {
+    if (selectedOptions1.includes(4) && index !== 4) {
+      return;
+    }
+
+    if (index === 3) {
+      setOpcionOtro1(!opcionOtro1);
+    } else {
+      setOpcionOtro1(false);
+    }
+
+    const options1 = [...selectedOptions1];
+
+    if (options1.includes(index)) {
+      options1.splice(options1.indexOf(index), 1);
+    } else {
+      if (options1.length < 2) {
+        options1.push(index);
+      }
+    }
+
+    setSelectedOptions1(options1);
+  };
+
   const handleSiCheckboxChange = () => {
     setSeleccionoSi(true);
   };
@@ -58,13 +87,27 @@ export default function PreSeisScreen(props) {
   const handleNoCheckboxChange = () => {
     setSeleccionoSi(false);
   };
+  const handleSiCheckboxChange1 = () => {
+    setSeleccionoSi1(true);
+  };
+
+  const handleNoCheckboxChange1 = () => {
+    setSeleccionoSi1(false);
+  };
+
 
   const handleOtroTextoChange = (text) => {
     setOtroTexto(text);
   };
+  const handleOtroTextoChange1 = (text) => {
+    setOtroTexto1(text);
+  };
 
   const handleOtroIndicacionChange = (text) => {
     setOtroIndicacion(text);
+  };
+  const handleOtroIndicacionChange1 = (text) => {
+    setOtroIndicacion1(text);
   };
   const handleOption3Select = (option) => {
     setSelectedOption3(option);
@@ -86,9 +129,12 @@ export default function PreSeisScreen(props) {
     if (
       (selectedOptions.length > 0 &&
         (!selectedOptions.includes(3) || otroTexto !== "")) && // Validación de opciones y campo de texto
-  
+
+      (selectedOptions1.length > 0 && // Verifica que al menos una opción esté seleccionada si es "Sí"
+        (!seleccionoSi1 || (seleccionoSi1 !== ""))) &&
+
       ((seleccionoSi && otroIndicacion !== "") || !seleccionoSi) && // Validación de checkboxes y campo de texto
-  
+
       ((selectedOption3 === "Sí" && municipio !== "" && nombreDepartamento !== "") ||
         selectedOption3 === "No") // Validación de la selección única y campos de texto
     ) {
@@ -108,8 +154,8 @@ export default function PreSeisScreen(props) {
         municipio_pregunta6_3: selectedOption3 === "Sí" ? municipio : "",
         departamento_pregunta6_3: selectedOption3 === "Sí" ? nombreDepartamento : "",
       });
-  
-      
+
+
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Hubo un error al guardar sus respuestas');
@@ -212,11 +258,11 @@ export default function PreSeisScreen(props) {
               </Text>
               <CheckBox
                 title="Si"
-                checked={seleccionoSi}
-                onPress={handleSiCheckboxChange}
+                checked={seleccionoSi1}
+                onPress={handleSiCheckboxChange1}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
-                  seleccionoSi
+                  seleccionoSi1
                     ? styles.selectedOptionText
                     : styles.checkBoxText
                 }
@@ -224,53 +270,53 @@ export default function PreSeisScreen(props) {
               />
               <CheckBox
                 title="No"
-                checked={!seleccionoSi}
-                onPress={handleNoCheckboxChange}
+                checked={!seleccionoSi1}
+                onPress={handleNoCheckboxChange1}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
-                  !seleccionoSi
+                  !seleccionoSi1
                     ? styles.selectedOptionText
                     : styles.checkBoxText
                 }
                 checkedColor="#BA0C2F"
               />
-              {seleccionoSi && (
+              {seleccionoSi1 && (
                 <View>
                   <Text style={styles.advertencia}>Escoja el que se escogio en la respuesta 6.1 </Text>
                   <Text style={styles.preguntas}>Indique Cúal</Text>
                   <View style={styles.preguntaContainer}>
 
 
-             
-              {opciones.map((opcion, index) => (
-                <CheckBox
-                  key={index}
-                  title={opcion}
-                  checked={selectedOptions.includes(index)}
-                  onPress={() => handleCheckboxChange(index)}
-                  containerStyle={styles.checkBoxContainer}
-                  textStyle={
-                    selectedOptions.includes(index)
 
-                      ? styles.selectedOptionText
-                      : styles.checkBoxText
-                  }
-                  checkedColor="#BA0C2F"
-                />
-              ))}
-              {opcionOtro && (
-                <TextInput
-                  style={styles.input}
-                  value={otroTexto}
-                  onChangeText={handleOtroTextoChange}
-                  placeholder="Especifique otro"
-                />
-              )}
+                    {opciones.map((opcion, index) => (
+                      <CheckBox
+                        key={index}
+                        title={opcion}
+                        checked={selectedOptions1.includes(index)}
+                        onPress={() => handleCheckboxChange1(index)}
+                        containerStyle={styles.checkBoxContainer}
+                        textStyle={
+                          selectedOptions1.includes(index)
 
-            </View>
+                            ? styles.selectedOptionText
+                            : styles.checkBoxText
+                        }
+                        checkedColor="#BA0C2F"
+                      />
+                    ))}
+                    {opcionOtro1 && (
+                      <TextInput
+                        style={styles.input}
+                        value={otroTexto1}
+                        onChangeText={handleOtroTextoChange1}
+                        placeholder="Especifique otro"
+                      />
+                    )}
+
+                  </View>
 
                 </View>
-                
+
               )}
 
             </View>
@@ -349,12 +395,12 @@ export default function PreSeisScreen(props) {
             </View>
             {/* Boton */}
             <TouchableOpacity style={styles.boton} onPress={() => {
-             goToPreguntaSeis();
-             SaveComponente6();
-             }}
-             >
-          <Text style={styles.textoBoton}>Siguiente</Text>
-        </TouchableOpacity>
+              goToPreguntaSeis();
+              SaveComponente6();
+            }}
+            >
+              <Text style={styles.textoBoton}>Siguiente</Text>
+            </TouchableOpacity>
 
 
           </View>
@@ -518,7 +564,7 @@ const styles = StyleSheet.create({
   },
 
   advertencia: {
-    marginBottom:5,
+    marginBottom: 5,
     textAlign: 'justify',
     marginTop: 5,
     fontWeight: "bold",
