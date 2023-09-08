@@ -13,6 +13,7 @@ import RecuperacioScreen from "../src/screens/RecuperacioScreen";
 import PreSeisScreen from "../src/screens/PreSeisScreen";
 import PreSieScreen from "../src/screens/PreSieScreen";
 import EnvioScreen from "../src/screens/EnvioScreen";
+import AdminScreen from "../src/screens/AdminScreen";
 
 const Stack = createStackNavigator();
 
@@ -34,6 +35,19 @@ export default function StackNavigation() {
         component={InicioScreen}
         options={{
           title: "Instrucciones ",
+          headerTitleAlign: "center",
+          headerStyle: { backgroundColor: "#D2D4DF" },
+          
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Administrador"
+        component={AdminScreen}
+        options={{
+          title: "Administrador",
           headerTitleAlign: "center",
           headerStyle: { backgroundColor: "#D2D4DF" },
           

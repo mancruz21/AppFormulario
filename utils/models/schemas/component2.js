@@ -4,7 +4,7 @@ export class Component2 extends Realm.Object {
   pregunta2_1 = "";
   pregunta2_2 = "";
   pregunta2_3 = "";
-  pregunta2_4 = "";
+  pregunta2_4 = { type: "list", objectType: "string" }; // Cambio a "list";
   pregunta2_2_1 = "";
   pregunta2_2_2 = "";
   pregunta2_4_1 = "";

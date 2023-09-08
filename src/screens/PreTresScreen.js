@@ -13,12 +13,13 @@ import appFirebase from "../components/firebase-config";
 import { addDoc, collection, getFirestore } from 'firebase/firestore';
 import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {RealmConfigContext} from "./../../utils/models/context";
-const {useRealm} = RealmConfigContext;
+import { RealmConfigContext } from "./../../utils/models/context";
+const { useRealm } = RealmConfigContext;
 
 const db = getFirestore(appFirebase);
 
 export default function PreTresScreen(props) {
+  const realm = useRealm();
   const { navigation } = props;
   const [selectedOption, setSelectedOption] = useState(null);
   const [aseguradora, setAseguradora] = useState("option1");
@@ -27,12 +28,16 @@ export default function PreTresScreen(props) {
   const [municipio1, setMunicipio1] = useState("");
   const [selectedOption3, setSelectedOption3] = useState(null);
   const [nombreDepartamento, setNombreDepartamento] = useState("");
+  const [otraAseguradora, setOtraAseguradora] = useState("");
+
+
 
   useEffect(() => {
     async function fetchSavedData() {
       try {
         const savedSelectedOption = await AsyncStorage.getItem("selectedOption");
         const savedAseguradora = await AsyncStorage.getItem("aseguradora");
+        const savedOtraAseguradora= await AsyncStorage.getItem("otraAseguradora");
         const savedSelectedOption2 = await AsyncStorage.getItem("selectedOption2");
         const savedMunicipio = await AsyncStorage.getItem("municipio");
         const savedSelectedOption3 = await AsyncStorage.getItem("selectedOption3");
@@ -41,6 +46,7 @@ export default function PreTresScreen(props) {
 
         setSelectedOption(savedSelectedOption || null);
         setAseguradora(savedAseguradora || "option1");
+        setOtraAseguradora(savedOtraAseguradora || "")
         setSelectedOption2(savedSelectedOption2 || null);
         setMunicipio(savedMunicipio || "");
         setSelectedOption3(savedSelectedOption3 || null);
@@ -58,6 +64,7 @@ export default function PreTresScreen(props) {
     try {
       await AsyncStorage.setItem("selectedOption", selectedOption);
       await AsyncStorage.setItem("aseguradora", aseguradora);
+      await AsyncStorage.setItem("otraAseguradora", otraAseguradora);
       await AsyncStorage.setItem("selectedOption2", selectedOption2);
       await AsyncStorage.setItem("municipio", municipio);
       await AsyncStorage.setItem("selectedOption3", selectedOption3);
@@ -77,6 +84,7 @@ export default function PreTresScreen(props) {
       await addDoc(collection(db, 'componentetres'), {
         pregunta3_1: selectedOption,
         pregunta3_2: aseguradora,
+        pregunta3_2_1:otraAseguradora,
         pregunta3_3: selectedOption2,
         municipio_pregunta3_3: municipio,
         pregunta3_4: selectedOption3,
@@ -112,8 +120,13 @@ export default function PreTresScreen(props) {
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
   };
-  const handleAseguradoraChange = (text) => {
-    setAseguradora(text);
+  const handleAseguradoraChange = (itemValue, itemIndex) => {
+    setAseguradora(itemValue);
+
+    // Si el usuario selecciona "OTRA", habilitar el campo de texto
+    if (itemValue === "OTRA") {
+      setOtraAseguradora(""); // Limpia el valor anterior
+    }
   };
   const handleOption2Select = (option) => {
     setSelectedOption2(option);
@@ -243,7 +256,7 @@ export default function PreTresScreen(props) {
               <Picker
                 selectedValue={aseguradora}
                 style={{ height: 70, width: 300 }}
-                onValueChange={(itemValue, itemIndex) => setAseguradora(itemValue)}
+                onValueChange={handleAseguradoraChange}
               >
                 <Picker.Item label="COOSALUD EPS-S" value="COOSALUD EPS-S" />
                 <Picker.Item label="NUEVA EPS" value="NUEVA EPS" />
@@ -251,6 +264,7 @@ export default function PreTresScreen(props) {
                 <Picker.Item label="ALIANSALUD EPS " value="ALIANSALUD EPS " />
                 <Picker.Item label="SALUD TOTAL EPS S.A" value="SALUD TOTAL EPS S.A" />
                 <Picker.Item label="EPS SANITAS" value="EPS SANITAS" />
+                <Picker.Item label="EPS SURA" value="EPS SURA" />
                 <Picker.Item label="FAMISANAR" value="FAMISANAR" />
                 <Picker.Item label="SERVICIO OCCIDENTAL DE SALUD EPS SOS" value="SERVICIO OCCIDENTAL DE SALUD EPS SOS" />
                 <Picker.Item label="SALUD MIA" value="SALUD MIA" />
@@ -273,14 +287,27 @@ NACIONALES DE COLOMBIA" />
                 <Picker.Item label="ASOCIACION INDIGENA DEL CAUCA EPSI" value="ASOCIACION INDIGENA DEL CAUCA EPSI" />
                 <Picker.Item label="ANAS WAYUU EPSI" value="ANAS WAYUU EPSI" />
                 <Picker.Item label="MALLAMAS EPSI" value="MALLAMAS EPSI " />
-
                 <Picker.Item label="PIJAOS SALUD EPSI" value="PIJAOS SALUD EPSI" />
                 <Picker.Item label="SALUD BÓLIVAR EPS SAS" value="SALUD BÓLIVAR EPS SAS" />
+                <Picker.Item label="OTRA" value="OTRA" />
+                
 
 
 
               </Picker>
+              
               <Text style={styles.preguntas} >Opción seleccionada: {aseguradora}</Text>
+              {aseguradora === "OTRA" && (
+                  <View>
+                    <Text style={styles.preguntas}>Ingrese otra aseguradora:</Text>
+                    <TextInput
+                      value={otraAseguradora}
+                      onChangeText={(text) => setOtraAseguradora(text)}
+                      style={styles.input}
+                      placeholder="Escribe aquí la aseguradora"
+                    />
+                  </View>
+                )}
             </View>
           </View>
 

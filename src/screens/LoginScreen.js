@@ -20,14 +20,8 @@ export default function LoginScreen(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [selectedRole, setSelectedRole] = useState("user"); // Valor predeterminado: Usuario
-
-
   const auth = getAuth(appFirebase);
-
-
-
   const { navigation } = props;
-
   const goToInicio = () => {
     if (!emailIsValid(email)) {
 
@@ -42,41 +36,40 @@ export default function LoginScreen(props) {
     }
 
   };
-  const handleRoleButtonClick = (role) => {
-    setSelectedRole((prevRole) => (prevRole === role ? "" : role));
-  };
-  const handleSignIn = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log("Signed in!");
+  const handleSignIn = async () => {
+    try {
+      // Establece las credenciales de administrador predefinidas
+      const adminEmail = "rehabcoadmin@gmail.com";
+      const adminPassword = "adminrehabco2023";
+
+      if (email === adminEmail && password === adminPassword) {
+        // Es un administrador, redirigir a AdminScreen
+        props.navigation.navigate('Administrador');
+      } else {
+        // No es un administrador, intentar inicio de sesión normal
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        console.log(user);
+        // Redirigir a Inicio
+        props.navigation.navigate('Inicio');
+      }
+    } catch (error) {
+      console.log(error);
+      setError("Hubo un error al iniciar sesión");
+      console.log(error);
 
-        navigation.navigate("Pregunta 2.5");
-      })
-      .catch((error) => {
-        console.log(error);
-
-        if (error.code === "auth/wrong-password" || error.code === "auth/user-not-found") {
-          // Mostrar una alerta de credenciales incorrectas
-          Alert.alert(
-            "Credenciales Incorrectas",
-            "El correo o la contraseña son incorrectos. Por favor, inténtalo nuevamente."
-          );
-        } else {
-          // Otro tipo de error, puedes mostrar un mensaje genérico o hacer algo diferente
-          Alert.alert("Error", "Hubo un error al iniciar sesión. Por favor, inténtalo nuevamente más tarde.");
-        }
-
-      });
-
-    // Ejemplo: Mostrar los valores ingresados en la consola
-    console.log("Correo:", email);
-    console.log("Contraseña:", password);
-
-
-  };
+      if (error.code === "auth/wrong-password" || error.code === "auth/user-not-found") {
+        // Mostrar una alerta de credenciales incorrectas
+        Alert.alert(
+          "Credenciales Incorrectas",
+          "El correo o la contraseña son incorrectos. Por favor, inténtalo nuevamente."
+        );
+      } else {
+        // Otro tipo de error, puedes mostrar un mensaje genérico o hacer algo diferente
+        Alert.alert("Error", "Hubo un error al iniciar sesión. Por favor, inténtalo nuevamente más tarde.");
+      }
+    }
+  }
 
   const goToRegistrate = () => {
     navigation.navigate("Registrate");
@@ -129,6 +122,7 @@ export default function LoginScreen(props) {
         onPress={() => {
           goToInicio();
           handleSignIn();
+
         }}
       >
         <Text style={styles.textoBoton}> Iniciar Sesión </Text>
