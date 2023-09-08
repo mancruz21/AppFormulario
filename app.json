@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/Logo_Color.png",
     "userInterfaceStyle": "light",
+    "platforms": ["ios", "android"],
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -13,7 +14,11 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.appform.AppBeta",
+      "buildNumber": "1.0.0",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
