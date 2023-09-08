@@ -17,6 +17,7 @@ export default function PreCinScreen(props) {
 
   const [selectedOption1, setSelectedOption1] = useState("");
   const [selected1Option, setSelected1Option] = useState([]);
+  const [selected1Option2, setSelected1Option2] = useState([]);
 
   const [selectedOptions1, setSelectedOptions1] = useState([]);
 
@@ -227,6 +228,13 @@ export default function PreCinScreen(props) {
       }
     }
   };
+  const handleOption1Select2 = (option) => {
+    // Deselecciona todas las opciones
+    setSelected1Option2([]);
+  
+    // Luego selecciona la opción actual
+    setSelected1Option2([option]);
+  };
   const handleOption4Select = (option) => {
     // Check if the option is already selected
     const isOptionSelected = selectedOptions4.includes(option);
@@ -264,6 +272,47 @@ export default function PreCinScreen(props) {
     }
   };
 
+  SaveComponente5 = async () => {
+    try {
+      const dataToSave = {
+        pregunta5_1: selectedOption,
+        pregunta5_1_SI: selectedOptions,
+        pregunta5_1_OtrosServi: selectedOptions5,
+        pregunta5_1_Otro: otro,
+        pregunta5_2: selectedOption3,
+        pregunta5_3: selectedOption2,
+        pregunta5_3_1_OtrosServ: selectedOptions1,
+        pregunta5_3_2_Otro: otro1,
+        pregunta5_4: selectedOption22,
+        pregunta5_4_1: municipio,
+        pregunta5_5: selectedOption1,
+        pregunta5_6: selectedOption222,
+        pregunta5_6_1_OtroServ: selectedOption11,
+        pregunta5_6_2_Otro: otro2,
+        pregunta5_7: selectedOptions4,
+        pregunta5_8: selectedOption8,
+        pregunta5_8_1: nombre,
+        pregunta5_8_2: lugar,
+        pregunta5_9: selectedOption9,
+        pregunta5_10: selectedOption0,
+        pregunta5_10_1: selectedOptions0,
+        pregunta5_10_2: motivo,
+        pregunta5_11: selected1Option,
+        pregunta5_12: cellTexts,
+        pregunta5_13: cellTexts1,
+        pregunta5_14: transporte,
+        pregunta5_14_1: otro3,
+      };
+
+      // Agregar un nuevo documento a la colección "respuestas"
+      await addDoc(respuestasCollectionRef, dataToSave);
+
+      Alert.alert('Alerta', 'Sus respuestas fueron guardadas con éxito');
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Hubo un error al guardar sus respuestas');
+    }
+  };
 
 
   //Metodo General checkBox 5.1 opciones que desglosan al presionar SI
@@ -978,7 +1027,68 @@ export default function PreCinScreen(props) {
                       )}
                     </View>
                   )}
+
+                  <View style={styles.questionContainer}>
+                    <Text style={styles.question2}>PREGUNTA 5.4 (SELECCIÓN ÚNICA)</Text>
+                    <View style={styles.linea1} />
+                    <Text style={styles.preguntas}>Sabe usted si ¿existen servicios de rehabilitación ubicados en otro municipio cercano que se encuentren en funcionamiento?</Text>
+                    <CheckBox
+                      title="SI hay servicios"
+                      checked={selectedOption22 === 'SI hay servicios'}
+                      onPress={() => setSelectedOption22('SI hay servicios')}
+                      containerStyle={styles.checkBoxContainer}
+                      textStyle={
+                        selectedOption22 === "SI hay servicios"
+                          ? styles.selectedOptionText
+                          : styles.checkBoxText
+                      }
+                      checkedColor="#BA0C2F"
+                    />
+                    <CheckBox
+                      title="NO hay servicios"
+                      checked={selectedOption22 === 'NO hay servicios'}
+                      onPress={() => setSelectedOption22('NO hay servicios')}
+                      containerStyle={styles.checkBoxContainer}
+                      textStyle={
+                        selectedOption22 === "NO hay servicios"
+                          ? styles.selectedOptionText
+                          : styles.checkBoxText
+                      }
+                      checkedColor="#BA0C2F"
+
+                    />
+                    <CheckBox
+                      title="NO sabe"
+                      checked={selectedOption22 === 'NO sabe'}
+                      onPress={() => setSelectedOption22('NO sabe')}
+                      containerStyle={styles.checkBoxContainer}
+                      textStyle={
+                        selectedOption22 === "NO sabe"
+                          ? styles.selectedOptionText
+                          : styles.checkBoxText
+                      }
+                      checkedColor="#BA0C2F"
+                    />
+
+                    {(selectedOption22 === 'SI hay servicios'
+                    ) && (
+                        <View style={styles.preguntaContainer}>
+                          <Text style={styles.preguntas}>Nombre del municipio:</Text>
+                          <TextInput
+                            style={styles.input}
+                            value={municipio}
+                            onChangeText={handleMunicipioChange}
+                            placeholder="Indique el nombre del municipio"
+                          />
+                        </View>
+                      )}
+                  </View>
+
                 </View>
+
+
+
+
               )}
 
               {selectedOption3 === "No" && (
@@ -2159,16 +2269,18 @@ export default function PreCinScreen(props) {
 
 
 
+
+
                 <Text style={styles.preguntas}>Si ha presentado una condición de salud o enfermedad durante el último año
                   y no recibió atención por parte de los servicios de salud /rehabilitación, indique cuál fue la razón:</Text>
 
                 <CheckBox
                   title="Cree que ya no lo necesita"
-                  checked={selected1Option.includes("Cree que ya no lo necesita")}
-                  onPress={() => handleOption1Select("Cree que ya no lo necesita")}
+                  checked={selected1Option2.includes("Cree que ya no lo necesita")}
+                  onPress={() => handleOption1Select2("Cree que ya no lo necesita")}
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selected1Option.includes("Cree que ya no lo necesita")
+                    selected1Option2.includes("Cree que ya no lo necesita")
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -2177,11 +2289,11 @@ export default function PreCinScreen(props) {
 
                 <CheckBox
                   title="No le gusta, no le interesa"
-                  checked={selected1Option.includes("No le gusta, no le interesa")}
-                  onPress={() => handleOption1Select("No le gusta, no le interesa")}
+                  checked={selected1Option2.includes("No le gusta, no le interesa")}
+                  onPress={() => handleOption1Select2("No le gusta, no le interesa")}
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selected1Option.includes("No le gusta, no le interesa")
+                    selected1Option2.includes("No le gusta, no le interesa")
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -2189,11 +2301,11 @@ export default function PreCinScreen(props) {
                 />
                 <CheckBox
                   title="Falta de dinero"
-                  checked={selected1Option.includes("Falta de dinero")}
-                  onPress={() => handleOption1Select("Falta de dinero")}
+                  checked={selected1Option2.includes("Falta de dinero")}
+                  onPress={() => handleOption1Select2("Falta de dinero")}
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selected1Option.includes("Falta de dinero")
+                    selected1Option2.includes("Falta de dinero")
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -2201,11 +2313,11 @@ export default function PreCinScreen(props) {
                 />
                 <CheckBox
                   title="El centro de atención queda muy lejos"
-                  checked={selected1Option.includes("El centro de atención queda muy lejos")}
-                  onPress={() => handleOption1Select("El centro de atención queda muy lejos")}
+                  checked={selected1Option2.includes("El centro de atención queda muy lejos")}
+                  onPress={() => handleOption1Select2("El centro de atención queda muy lejos")}
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selected1Option.includes("El centro de atención queda muy lejos")
+                    selected1Option2.includes("El centro de atención queda muy lejos")
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -2213,11 +2325,11 @@ export default function PreCinScreen(props) {
                 />
                 <CheckBox
                   title="No hay quién lo lleve"
-                  checked={selected1Option.includes("No hay quién lo lleve")}
-                  onPress={() => handleOption1Select("No hay quién lo lleve")}
+                  checked={selected1Option2.includes("No hay quién lo lleve")}
+                  onPress={() => handleOption1Select2("No hay quién lo lleve")}
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selected1Option.includes("No hay quién lo lleve")
+                    selected1Option2.includes("No hay quién lo lleve")
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -2225,11 +2337,11 @@ export default function PreCinScreen(props) {
                 />
                 <CheckBox
                   title="No ha sido autorizado por el asegurador "
-                  checked={selected1Option.includes("No ha sido autorizado por el asegurador ")}
-                  onPress={() => handleOption1Select("No ha sido autorizado por el asegurador ")}
+                  checked={selected1Option2.includes("No ha sido autorizado por el asegurador ")}
+                  onPress={() => handleOption1Select2("No ha sido autorizado por el asegurador ")}
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selected1Option.includes("No ha sido autorizado por el asegurador ")
+                    selected1Option2.includes("No ha sido autorizado por el asegurador ")
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -2237,12 +2349,12 @@ export default function PreCinScreen(props) {
                 />
                 <CheckBox
                   title="No ha sido remitido por el médico tratante"
-                  checked={selected1Option.includes("No ha sido remitido por el médico tratante")}
+                  checked={selected1Option2.includes("No ha sido remitido por el médico tratante")}
                   onPress={() =>
-                    handleOption1Select("No ha sido remitido por el médico tratante")}
+                    handleOption1Select2("No ha sido remitido por el médico tratante")}
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selected1Option.includes("No ha sido remitido por el médico tratante")
+                    selected1Option2.includes("No ha sido remitido por el médico tratante")
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -2250,10 +2362,10 @@ export default function PreCinScreen(props) {
                 />
                 <CheckBox
                   title="No sabe"
-                  checked={selected1Option.includes("No sabe")} onPress={() => handleOption1Select("No sabe")}
+                  checked={selected1Option2.includes("No sabe")} onPress={() => handleOption1Select("No sabe")}
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selected1Option.includes("No sabe")
+                    selected1Option2.includes("No sabe")
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -2261,16 +2373,19 @@ export default function PreCinScreen(props) {
                 />
                 <CheckBox
                   title="Cierre del servicio por pandemia COVID-19"
-                  checked={selected1Option.includes("Cierre del servicio por pandemia COVID-19")}
-                  onPress={() => handleOption1Select("Cierre del servicio por pandemia COVID-19")}
+                  checked={selected1Option2.includes("Cierre del servicio por pandemia COVID-19")}
+                  onPress={() => handleOption1Select2("Cierre del servicio por pandemia COVID-19")}
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selected1Option.includes("Cierre del servicio por pandemia COVID-19")
+                    selected1Option2.includes("Cierre del servicio por pandemia COVID-19")
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
                   checkedColor="#BA0C2F"
                 />
+
+
+
 
 
 

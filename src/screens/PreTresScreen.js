@@ -19,6 +19,7 @@ const { useRealm } = RealmConfigContext;
 const db = getFirestore(appFirebase);
 
 export default function PreTresScreen(props) {
+  const realm = useRealm();
   const { navigation } = props;
   const [selectedOption, setSelectedOption] = useState(null);
   const [aseguradora, setAseguradora] = useState("option1");

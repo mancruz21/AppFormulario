@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {View,Text,TextInput,StyleSheet,ScrollView,TouchableOpacity,Alert,} from "react-native";
+import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Alert, } from "react-native";
 import { CheckBox } from "react-native-elements";
 import appFirebase from "../components/firebase-config";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
@@ -7,9 +7,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { RealmConfigContext } from "./../../utils/models/context";
 const { useRealm } = RealmConfigContext;
 
+
 const db = getFirestore(appFirebase);
 
 export default function PreDosScreen(props) {
+  const realm = useRealm();
   const { navigation } = props;
 
   const [opcion1, setOpcion1] = useState("");
@@ -165,11 +167,13 @@ export default function PreDosScreen(props) {
   };
   const SaveComponente2 = async () => {
     try {
+      const pregunta2_4 = selectedOption4.toString();
+
       await addDoc(collection(db, "componentedos"), {
         pregunta2_1: opcion1,
         pregunta2_2: opcion2,
         pregunta2_3: opcion3,
-        pregunta2_4: selectedOption4,
+        pregunta2_4: pregunta2_4,
         pregunta2_2_1: discapacidad,
         pregunta2_2_2: OptionSelection,
         pregunta2_4_1: etnia,
@@ -186,8 +190,18 @@ export default function PreDosScreen(props) {
     }
 
     try {
+      // Convierte selectedOption4 en una cadena (si es necesario)
+      let pregunta2_4 = selectedOption4;
+
+      if (typeof pregunta2_4 !== 'string') {
+        // Si selectedOption4 no es una cadena, intenta convertirlo en cadena
+        pregunta2_4 = String(selectedOption4);
+      }
+
+
       realm.write(() => {
-        realm.create('Persona', {
+        realm.create('component2', {
+
 
           pregunta2_1: opcion1,
           pregunta2_2: opcion2,
@@ -852,29 +866,29 @@ export default function PreDosScreen(props) {
                 }
                 checkedColor="#BA0C2F"
               />
- {ocupacion === "Trabajando" && (
-        <View style={styles.questionContainer}>
-          <Text style={styles.preguntas}>Seleccione el tipo de trabajo</Text>
-          <CheckBox
-            title="Urbano"
-            checked={urbano}
-            onPress={handleUrbanoPress}
-            containerStyle={styles.checkBoxContainer}
-            textStyle={urbano ? styles.selectedOptionText : styles.checkBoxText}
-            checkedColor="#BA0C2F"
-          />
-          <CheckBox
-            title="Rural"
-            checked={rural}
-            onPress={handleRuralPress}
-            containerStyle={styles.checkBoxContainer}
-            textStyle={rural ? styles.selectedOptionText : styles.checkBoxText}
-            checkedColor="#BA0C2F"
-          />
+              {ocupacion === "Trabajando" && (
+                <View style={styles.questionContainer}>
+                  <Text style={styles.preguntas}>Seleccione el tipo de trabajo</Text>
+                  <CheckBox
+                    title="Urbano"
+                    checked={urbano}
+                    onPress={handleUrbanoPress}
+                    containerStyle={styles.checkBoxContainer}
+                    textStyle={urbano ? styles.selectedOptionText : styles.checkBoxText}
+                    checkedColor="#BA0C2F"
+                  />
+                  <CheckBox
+                    title="Rural"
+                    checked={rural}
+                    onPress={handleRuralPress}
+                    containerStyle={styles.checkBoxContainer}
+                    textStyle={rural ? styles.selectedOptionText : styles.checkBoxText}
+                    checkedColor="#BA0C2F"
+                  />
 
-          <View style={styles.linea} />
-        </View>
-      )}
+                  <View style={styles.linea} />
+                </View>
+              )}
 
 
             </View>

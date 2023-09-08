@@ -18,6 +18,7 @@ const { useRealm } = RealmConfigContext;
 
 
 export default function PreCuaScreen(props) {
+  const realm = useRealm();
   const { navigation } = props;
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedOption1, setSelectedOption1] = useState([]);

@@ -9,6 +9,7 @@ import { RealmConfigContext } from "./../../utils/models/context";
 const { useRealm } = RealmConfigContext;
 
 export default function PreSeisScreen(props) {
+  const realm = useRealm();
   const { navigation } = props;
   const [opcionOtro, setOpcionOtro] = useState(false);
   const [opcionOtro1, setOpcionOtro1] = useState(false);
