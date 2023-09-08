@@ -9,7 +9,7 @@
     },
     "preview": {
       "ios": {
-        "buildType": "app" 
+        "resourceClass": "m1-medium"
       },
       "android": {
         "buildType": "apk"
