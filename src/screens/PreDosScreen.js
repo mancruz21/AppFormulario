@@ -201,22 +201,20 @@ export default function PreDosScreen(props) {
 
       realm.write(() => {
         realm.create('component2', {
-
-
           pregunta2_1: opcion1,
           pregunta2_2: opcion2,
           pregunta2_3: opcion3,
-          pregunta2_4: selectedOption4,
+          pregunta2_4: selectedOption4.toString(),
           pregunta2_2_1: discapacidad,
-          pregunta2_2_2: OptionSelection,
+          pregunta2_2_2: OptionSelection.toString(),
           pregunta2_4_1: etnia,
           pregunta2_4_1_nombre: indigena,
           pregunta2_5_2_UltimoNivel: educativo,
-          pregunta2_5_1EducaSuperior: educacionSuperior,
-          pregunta2_6_Ocupacion: ocupacion,
-          pregunta2_7_Trabajo: trabajo,
-          pregunta2_8_1_Salario: salario,
-          pregunta2_8_2_Ingreso: promedio,
+          pregunta2_5_1EducaSuperior: educacionSuperior ? educacionSuperior : "NULL" ,
+          pregunta2_6_Ocupacion: ocupacion.toString(),
+          pregunta2_7_Trabajo: trabajo.toString(),
+          pregunta2_8_1_Salario: salario  ? salario : "NULL",
+          pregunta2_8_2_Ingreso: promedio ? promedio : "NULL",
 
         });
       });

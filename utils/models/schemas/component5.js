@@ -1,6 +1,6 @@
 import { Realm } from "@realm/react";
 export class Component5 extends Realm.Object {
-  _id = Realm.BSON.ObjectID();
+  _id = new Realm.BSON.ObjectID();
   pregunta4_1 = "";
   pregunta4_2 = "";
   pregunta4_3_1Transtornos = "";

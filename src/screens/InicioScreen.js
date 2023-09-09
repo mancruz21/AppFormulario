@@ -1,10 +1,9 @@
 import {  View, Text, ScrollView, StyleSheet, TouchableOpacity} from "react-native";
-
+import NetInfo from '@react-native-community/netinfo';
 export default function InicioScreen(props) {
   const { navigation } = props;
   const goToIdentificacion = () => {
     navigation.navigate("Identificacion");
-    
   }
 
   return (

@@ -76,17 +76,17 @@ export default function PreCuaScreen(props) {
 
     try {
       realm.write(() => {
-        realm.create('Persona', {
-          pregunta4_1: selectedOption,
-          pregunta4_2: selectedOptions,
-          pregunta4_3_1Transtornos: selectedOptions1,
+        realm.create('component4', {
+          pregunta4_1: selectedOption.toString(),
+          pregunta4_2: selectedOptions.toString(),
+          pregunta4_3_1Transtornos: selectedOptions1.toString(),
           pregunta4_3_Def: deficit,
           pregunta4_3_Cron: cronicas,
           pregunta4_3_Infec: infecciosas,
           pregunta4_3_4_Sens: sensoriales,
           pregunta4_3_5Less: lesiones,
           pregunta4_3_6_Auto: autoinmunes,
-          pregunta4_4: selectedOption1,
+          pregunta4_4: selectedOption1.toString(),
         });
       });
       console.log('Los datos se han guardado correctamente en Realm.');

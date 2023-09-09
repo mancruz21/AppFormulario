@@ -10,8 +10,8 @@ import {
 import { CheckBox } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import appFirebase from "../components/firebase-config";
-import { addDoc, collection, getFirestore } from 'firebase/firestore';
-import { Picker } from '@react-native-picker/picker';
+import { addDoc, collection, getFirestore } from "firebase/firestore";
+import { Picker } from "@react-native-picker/picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { RealmConfigContext } from "./../../utils/models/context";
 const { useRealm } = RealmConfigContext;
@@ -30,23 +30,31 @@ export default function PreTresScreen(props) {
   const [nombreDepartamento, setNombreDepartamento] = useState("");
   const [otraAseguradora, setOtraAseguradora] = useState("");
 
-
-
   useEffect(() => {
     async function fetchSavedData() {
       try {
-        const savedSelectedOption = await AsyncStorage.getItem("selectedOption");
+        const savedSelectedOption = await AsyncStorage.getItem(
+          "selectedOption"
+        );
         const savedAseguradora = await AsyncStorage.getItem("aseguradora");
-        const savedOtraAseguradora= await AsyncStorage.getItem("otraAseguradora");
-        const savedSelectedOption2 = await AsyncStorage.getItem("selectedOption2");
+        const savedOtraAseguradora = await AsyncStorage.getItem(
+          "otraAseguradora"
+        );
+        const savedSelectedOption2 = await AsyncStorage.getItem(
+          "selectedOption2"
+        );
         const savedMunicipio = await AsyncStorage.getItem("municipio");
-        const savedSelectedOption3 = await AsyncStorage.getItem("selectedOption3");
+        const savedSelectedOption3 = await AsyncStorage.getItem(
+          "selectedOption3"
+        );
         const savedMunicipio1 = await AsyncStorage.getItem("municipio1");
-        const savedNombreDepartamento = await AsyncStorage.getItem("nombreDepartamento");
+        const savedNombreDepartamento = await AsyncStorage.getItem(
+          "nombreDepartamento"
+        );
 
         setSelectedOption(savedSelectedOption || null);
         setAseguradora(savedAseguradora || "option1");
-        setOtraAseguradora(savedOtraAseguradora || "")
+        setOtraAseguradora(savedOtraAseguradora || "");
         setSelectedOption2(savedSelectedOption2 || null);
         setMunicipio(savedMunicipio || "");
         setSelectedOption3(savedSelectedOption3 || null);
@@ -81,39 +89,41 @@ export default function PreTresScreen(props) {
 
   const SaveComponente3 = async () => {
     try {
-      await addDoc(collection(db, 'componentetres'), {
+      await addDoc(collection(db, "componentetres"), {
         pregunta3_1: selectedOption,
         pregunta3_2: aseguradora,
-        pregunta3_2_1:otraAseguradora,
+        pregunta3_2_1: otraAseguradora,
         pregunta3_3: selectedOption2,
         municipio_pregunta3_3: municipio,
         pregunta3_4: selectedOption3,
         municipio_pregunta3_4: selectedOption3 === "No" ? municipio : null,
-        departamento_pregunta3_4: selectedOption3 === "No" ? nombreDepartamento : null,
+        departamento_pregunta3_4:
+          selectedOption3 === "No" ? nombreDepartamento : null,
       });
-
-
     } catch (error) {
       console.error(error);
-      Alert.alert('Error', 'Hubo un error al guardar sus respuestas');
+      Alert.alert("Error", "Hubo un error al guardar sus respuestas");
     }
 
     try {
       realm.write(() => {
-        realm.create('Persona', {
-
+        realm.create("component3", {
           pregunta3_1: selectedOption,
           pregunta3_2: aseguradora,
           pregunta3_3: selectedOption2,
           municipio_pregunta3_3: municipio,
-          pregunta3_4: selectedOption3,
-          municipio_pregunta3_4: selectedOption3 === "No" ? municipio : null,
-          departamento_pregunta3_4: selectedOption3 === "No" ? nombreDepartamento : null,
+          pregunta3_4: selectedOption3 ? selectedOption3 : "Null",
+          municipio_pregunta3_4: selectedOption3 === "No" ? municipio : "null",
+          departamento_pregunta3_4:
+            selectedOption3 === "No" ? nombreDepartamento : "null",
+          municipio: "string",
+          departamento_pregunta3_4: "string",
+          nombreDepartamento: "string",
         });
       });
-      console.log('Los datos se han guardado correctamente en Realm.');
+      console.log("Los datos se han guardado correctamente en Realm.");
     } catch (error) {
-      console.error('Error al guardar datos en Realm:', error);
+      console.error("Error al guardar datos en Realm:", error);
     }
   };
 
@@ -151,16 +161,16 @@ export default function PreTresScreen(props) {
 
   return (
     <ScrollView>
-
       {/* Pregunta 3.1 */}
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-
             <Text style={styles.titulo}> ASEGURAMIENTO EN LA SALUD </Text>
 
-            <Text style={styles.question}> PREGUNTA 3.1 ( SELECCIÓN ÚNICA) </Text>
-
+            <Text style={styles.question}>
+              {" "}
+              PREGUNTA 3.1 ( SELECCIÓN ÚNICA){" "}
+            </Text>
           </View>
           <View style={styles.linea} />
         </View>
@@ -229,29 +239,23 @@ export default function PreTresScreen(props) {
         </View>
       </View>
 
-
       {/* Pregunta 3.2 */}
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-
-
-
-            <Text style={styles.question1}> PREGUNTA 3.2  </Text>
-
+            <Text style={styles.question1}> PREGUNTA 3.2 </Text>
           </View>
           <View style={styles.linea} />
         </View>
       </View>
-
 
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
             <View style={styles.preguntaContainer}>
               <Text style={styles.pregunta}>
-                Indique cuál es el nombre de la Aseguradora en Salud / EAPB a
-                la que se encuentra afiliado en la actualidad:
+                Indique cuál es el nombre de la Aseguradora en Salud / EAPB a la
+                que se encuentra afiliado en la actualidad:
               </Text>
               <Picker
                 selectedValue={aseguradora}
@@ -262,55 +266,87 @@ export default function PreTresScreen(props) {
                 <Picker.Item label="NUEVA EPS" value="NUEVA EPS" />
                 <Picker.Item label="MUTUAL SER" value="MUTUAL SER" />
                 <Picker.Item label="ALIANSALUD EPS " value="ALIANSALUD EPS " />
-                <Picker.Item label="SALUD TOTAL EPS S.A" value="SALUD TOTAL EPS S.A" />
+                <Picker.Item
+                  label="SALUD TOTAL EPS S.A"
+                  value="SALUD TOTAL EPS S.A"
+                />
                 <Picker.Item label="EPS SANITAS" value="EPS SANITAS" />
                 <Picker.Item label="EPS SURA" value="EPS SURA" />
                 <Picker.Item label="FAMISANAR" value="FAMISANAR" />
-                <Picker.Item label="SERVICIO OCCIDENTAL DE SALUD EPS SOS" value="SERVICIO OCCIDENTAL DE SALUD EPS SOS" />
+                <Picker.Item
+                  label="SERVICIO OCCIDENTAL DE SALUD EPS SOS"
+                  value="SERVICIO OCCIDENTAL DE SALUD EPS SOS"
+                />
                 <Picker.Item label="SALUD MIA" value="SALUD MIA" />
-                <Picker.Item label="COMFENALCO VALLE" value="COMFENALCO VALLE" />
+                <Picker.Item
+                  label="COMFENALCO VALLE"
+                  value="COMFENALCO VALLE"
+                />
                 <Picker.Item label="COMPENSAR EPS" value="COMPENSAR EPS" />
-                <Picker.Item label="EPM - EMPRESAS PUBLICAS DE MEDELLIN" value="EPM - EMPRESAS PUBLICAS DE MEDELLIN" />
-                <Picker.Item label="FONDO DE PASIVO SOCIAL DE FERROCARRILES
-NACIONALES DE COLOMBIA" value="FONDO DE PASIVO SOCIAL DE FERROCARRILES
-NACIONALES DE COLOMBIA" />
-                <Picker.Item label="CAJACOPI ATLANTICO" value="CAJACOPI ATLANTICO " />
+                <Picker.Item
+                  label="EPM - EMPRESAS PUBLICAS DE MEDELLIN"
+                  value="EPM - EMPRESAS PUBLICAS DE MEDELLIN"
+                />
+                <Picker.Item
+                  label="FONDO DE PASIVO SOCIAL DE FERROCARRILES
+NACIONALES DE COLOMBIA"
+                  value="FONDO DE PASIVO SOCIAL DE FERROCARRILES
+NACIONALES DE COLOMBIA"
+                />
+                <Picker.Item
+                  label="CAJACOPI ATLANTICO"
+                  value="CAJACOPI ATLANTICO "
+                />
                 <Picker.Item label="CAPRESOCA" value="CAPRESOCA" />
                 <Picker.Item label="COMFACHOCO" value="COMFACHOCO" />
                 <Picker.Item label="COMFAORIENTE" value="COMFAORIENTE" />
-                <Picker.Item label="EPS FAMILIAR DE COLOMBIA" value="EPS FAMILIAR DE COLOMBIA" />
+                <Picker.Item
+                  label="EPS FAMILIAR DE COLOMBIA"
+                  value="EPS FAMILIAR DE COLOMBIA"
+                />
                 <Picker.Item label="ASMET SALUD" value="ASMET SALUD" />
                 <Picker.Item label="EMSSANAR E.S.S" value="EMSSANAR E.S.S" />
-                <Picker.Item label="CAPITAL SALUD EPS-S" value="CAPITAL SALUD EPS-S" />
+                <Picker.Item
+                  label="CAPITAL SALUD EPS-S"
+                  value="CAPITAL SALUD EPS-S"
+                />
                 <Picker.Item label="SAVIA SALUD EPS" value="SAVIA SALUD EPS" />
                 <Picker.Item label="DUSAKAWI EPSI" value="DUSAKAWI EPSI" />
-                <Picker.Item label="ASOCIACION INDIGENA DEL CAUCA EPSI" value="ASOCIACION INDIGENA DEL CAUCA EPSI" />
+                <Picker.Item
+                  label="ASOCIACION INDIGENA DEL CAUCA EPSI"
+                  value="ASOCIACION INDIGENA DEL CAUCA EPSI"
+                />
                 <Picker.Item label="ANAS WAYUU EPSI" value="ANAS WAYUU EPSI" />
                 <Picker.Item label="MALLAMAS EPSI" value="MALLAMAS EPSI " />
-                <Picker.Item label="PIJAOS SALUD EPSI" value="PIJAOS SALUD EPSI" />
-                <Picker.Item label="SALUD BÓLIVAR EPS SAS" value="SALUD BÓLIVAR EPS SAS" />
+                <Picker.Item
+                  label="PIJAOS SALUD EPSI"
+                  value="PIJAOS SALUD EPSI"
+                />
+                <Picker.Item
+                  label="SALUD BÓLIVAR EPS SAS"
+                  value="SALUD BÓLIVAR EPS SAS"
+                />
                 <Picker.Item label="OTRA" value="OTRA" />
-                
-
-
-
               </Picker>
-              
-              <Text style={styles.preguntas} >Opción seleccionada: {aseguradora}</Text>
+
+              <Text style={styles.preguntas}>
+                Opción seleccionada: {aseguradora}
+              </Text>
               {aseguradora === "OTRA" && (
-                  <View>
-                    <Text style={styles.preguntas}>Ingrese otra aseguradora:</Text>
-                    <TextInput
-                      value={otraAseguradora}
-                      onChangeText={(text) => setOtraAseguradora(text)}
-                      style={styles.input}
-                      placeholder="Escribe aquí la aseguradora"
-                    />
-                  </View>
-                )}
+                <View>
+                  <Text style={styles.preguntas}>
+                    Ingrese otra aseguradora:
+                  </Text>
+                  <TextInput
+                    value={otraAseguradora}
+                    onChangeText={(text) => setOtraAseguradora(text)}
+                    style={styles.input}
+                    placeholder="Escribe aquí la aseguradora"
+                  />
+                </View>
+              )}
             </View>
           </View>
-
         </View>
       </View>
 
@@ -318,7 +354,10 @@ NACIONALES DE COLOMBIA" />
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-            <Text style={styles.question1}> PREGUNTA 3.3 ( SELECCIÓN ÚNICA)  </Text>
+            <Text style={styles.question1}>
+              {" "}
+              PREGUNTA 3.3 ( SELECCIÓN ÚNICA){" "}
+            </Text>
           </View>
           <View style={styles.linea} />
         </View>
@@ -329,8 +368,8 @@ NACIONALES DE COLOMBIA" />
           <View style={styles.contenedor}>
             <View style={styles.preguntaContainer}>
               <Text style={styles.pregunta}>
-                Sobre el acceso que garantiza la aseguradora
-                (EAPB) a los usuarios en el área de influencia
+                Sobre el acceso que garantiza la aseguradora (EAPB) a los
+                usuarios en el área de influencia
               </Text>
 
               <Text style={styles.preguntas}>
@@ -354,7 +393,7 @@ NACIONALES DE COLOMBIA" />
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selectedOption2 ===
-                      "Centro de Salud y/o Hospital del Municipio"
+                    "Centro de Salud y/o Hospital del Municipio"
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -374,7 +413,7 @@ NACIONALES DE COLOMBIA" />
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selectedOption2 ===
-                      "Centro de Salud y/o Hospital en otro Municipio"
+                    "Centro de Salud y/o Hospital en otro Municipio"
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -394,7 +433,7 @@ NACIONALES DE COLOMBIA" />
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selectedOption2 ===
-                      "Consultorio Particular u otro servicio dentro del Municipio"
+                    "Consultorio Particular u otro servicio dentro del Municipio"
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -414,7 +453,7 @@ NACIONALES DE COLOMBIA" />
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selectedOption2 ===
-                      "Consultorio Particular u otro servicio fuera del Municipio"
+                    "Consultorio Particular u otro servicio fuera del Municipio"
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -434,7 +473,7 @@ NACIONALES DE COLOMBIA" />
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selectedOption2 ===
-                      "Medicina Tradicional (Quilombo, Maloka, Sobandero, Taita … etc.)"
+                    "Medicina Tradicional (Quilombo, Maloka, Sobandero, Taita … etc.)"
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -445,23 +484,21 @@ NACIONALES DE COLOMBIA" />
               {(selectedOption2 ===
                 "Centro de Salud y/o Hospital en otro Municipio" ||
                 selectedOption2 ===
-                "Consultorio Particular u otro servicio fuera del Municipio") && (
-                  <View style={styles.preguntaContainer}>
-                    <Text style={styles.preguntas}>
-                      Ingrese el nombre del municipio:
-                    </Text>
-                    <TextInput
-                      style={styles.input}
-                      value={municipio}
-                      onChangeText={handleMunicipioChange}
-                      placeholder="Nombre del municipio"
-                    />
-                  </View>
-                )}
+                  "Consultorio Particular u otro servicio fuera del Municipio") && (
+                <View style={styles.preguntaContainer}>
+                  <Text style={styles.preguntas}>
+                    Ingrese el nombre del municipio:
+                  </Text>
+                  <TextInput
+                    style={styles.input}
+                    value={municipio}
+                    onChangeText={handleMunicipioChange}
+                    placeholder="Nombre del municipio"
+                  />
+                </View>
+              )}
             </View>
-
           </View>
-
         </View>
       </View>
 
@@ -469,19 +506,19 @@ NACIONALES DE COLOMBIA" />
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-            <Text style={styles.question1}> PREGUNTA 3.4 ( SELECCIÓN ÚNICA )  </Text>
+            <Text style={styles.question1}>
+              {" "}
+              PREGUNTA 3.4 ( SELECCIÓN ÚNICA ){" "}
+            </Text>
           </View>
           <View style={styles.linea} />
         </View>
       </View>
 
-
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
             <View style={styles.preguntaContainer}>
-
-
               <Text style={styles.pregunta}>
                 ¿El lugar donde su aseguradora (EAPB) realiza la autorización
                 para la atención especializada en salud (hospitalización,
@@ -539,10 +576,12 @@ NACIONALES DE COLOMBIA" />
               )}
             </View>
             {/* Boton */}
-            <TouchableOpacity style={styles.boton} onPress={() => {
-              goToPreguntaCua();
-              SaveComponente3();
-            }}
+            <TouchableOpacity
+              style={styles.boton}
+              onPress={() => {
+                goToPreguntaCua();
+                SaveComponente3();
+              }}
             >
               <Text style={styles.textoBoton}>Siguiente</Text>
             </TouchableOpacity>
@@ -554,7 +593,6 @@ NACIONALES DE COLOMBIA" />
 }
 
 const styles = StyleSheet.create({
-
   titulo: {
     textAlign: "center",
     justifyContent: "center",
@@ -566,11 +604,10 @@ const styles = StyleSheet.create({
 
   pregunta: {
     marginBottom: 5,
-    textAlign: 'justify',
+    textAlign: "justify",
     marginTop: -15,
     fontWeight: "bold",
     fontSize: 16,
-
   },
   preguntas: {
     color: "#000000",
@@ -624,7 +661,6 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 20,
     marginBottom: 15,
-
   },
   textoBoton: {
     textAlign: "center",
@@ -703,20 +739,20 @@ const styles = StyleSheet.create({
 
   linea: {
     marginTop: "auto",
-    height: 6,              // Altura de la línea
-    backgroundColor: "#BA0C2F",  // Color de la línea (rojo en este caso)
-    position: 'absolute',   // Posición absoluta para que se superponga al contenido
-    bottom: 0,              // Se coloca en la parte inferior de la tarjeta
-    left: 8,                // Alinear a la izquierda
-    right: 8,               // Alinear a la derecha
+    height: 6, // Altura de la línea
+    backgroundColor: "#BA0C2F", // Color de la línea (rojo en este caso)
+    position: "absolute", // Posición absoluta para que se superponga al contenido
+    bottom: 0, // Se coloca en la parte inferior de la tarjeta
+    left: 8, // Alinear a la izquierda
+    right: 8, // Alinear a la derecha
   },
   linea1: {
     marginTop: 8,
-    height: 6,              // Altura de la línea
-    backgroundColor: "#BA0C2F",  // Color de la línea (rojo en este caso)
-    position: 'relative',   // Posición absoluta para que se superponga al contenido
-    bottom: 20,              // Se coloca en la parte inferior de la tarjeta
-    left: 0,                // Alinear a la izquierda
-    right: 0,               // Alinear a la derecha
+    height: 6, // Altura de la línea
+    backgroundColor: "#BA0C2F", // Color de la línea (rojo en este caso)
+    position: "relative", // Posición absoluta para que se superponga al contenido
+    bottom: 20, // Se coloca en la parte inferior de la tarjeta
+    left: 0, // Alinear a la izquierda
+    right: 0, // Alinear a la derecha
   },
 });

@@ -1,10 +1,17 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import React, { useState } from "react";
 import { CheckBox } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import appFirebase from "../components/firebase-config";
-import { addDoc, collection, getFirestore } from 'firebase/firestore';
-const db = getFirestore(appFirebase)
+import { addDoc, collection, getFirestore } from "firebase/firestore";
+const db = getFirestore(appFirebase);
 import { RealmConfigContext } from "./../../utils/models/context";
 const { useRealm } = RealmConfigContext;
 
@@ -96,7 +103,6 @@ export default function PreSeisScreen(props) {
     setSeleccionoSi1(false);
   };
 
-
   const handleOtroTextoChange = (text) => {
     setOtroTexto(text);
   };
@@ -128,70 +134,71 @@ export default function PreSeisScreen(props) {
 
   const goToPreguntaSeis = () => {
     if (
-      (selectedOptions.length > 0 &&
-        (!selectedOptions.includes(3) || otroTexto !== "")) && // Validación de opciones y campo de texto
-
-      (selectedOptions1.length > 0 && // Verifica que al menos una opción esté seleccionada si es "Sí"
-        (!seleccionoSi1 || (seleccionoSi1 !== ""))) &&
-
+      selectedOptions.length > 0 &&
+      (!selectedOptions.includes(3) || otroTexto !== "") && // Validación de opciones y campo de texto
+      selectedOptions1.length > 0 && // Verifica que al menos una opción esté seleccionada si es "Sí"
+      (!seleccionoSi1 || seleccionoSi1 !== "") &&
       ((seleccionoSi && otroIndicacion !== "") || !seleccionoSi) && // Validación de checkboxes y campo de texto
-
-      ((selectedOption3 === "Sí" && municipio !== "" && nombreDepartamento !== "") ||
+      ((selectedOption3 === "Sí" &&
+        municipio !== "" &&
+        nombreDepartamento !== "") ||
         selectedOption3 === "No") // Validación de la selección única y campos de texto
     ) {
       navigation.navigate("Pregunta 2.6");
     } else {
       Alert.alert("Error", "Por favor completa todos los campos.");
+      {navigation.navigate("Pregunta 2.6");} // esto no va solo se deja para seguir flujo
     }
   };
   const SaveComponente6 = async () => {
     try {
-      await addDoc(collection(db, 'componenteseis'), {
-        pregunta6_1: selectedOptions.map(index => opciones[index]),
+      await addDoc(collection(db, "componenteseis"), {
+        pregunta6_1: selectedOptions.map((index) => opciones[index]),
         otroTexto6_1: opcionOtro ? otroTexto : "",
         pregunta6_2: seleccionoSi ? "Si" : "No",
         otroIndicacion6_2: seleccionoSi ? otroIndicacion : "",
         pregunta6_3: selectedOption3,
         municipio_pregunta6_3: selectedOption3 === "Sí" ? municipio : "",
-        departamento_pregunta6_3: selectedOption3 === "Sí" ? nombreDepartamento : "",
+        departamento_pregunta6_3:
+          selectedOption3 === "Sí" ? nombreDepartamento : "",
       });
-
-
     } catch (error) {
       console.error(error);
-      Alert.alert('Error', 'Hubo un error al guardar sus respuestas');
+      Alert.alert("Error", "Hubo un error al guardar sus respuestas");
     }
 
     try {
       realm.write(() => {
-        realm.create('Persona', {
-
-          pregunta6_1: selectedOptions.map(index => opciones[index]),
-          otroTexto6_1: opcionOtro ? otroTexto : "",
-          pregunta6_2: seleccionoSi ? "Si" : "No",
-          otroIndicacion6_2: seleccionoSi ? otroIndicacion : "",
-          pregunta6_3: selectedOption3,
-          municipio_pregunta6_3: selectedOption3 === "Sí" ? municipio : "",
-          departamento_pregunta6_3: selectedOption3 === "Sí" ? nombreDepartamento : "",
+        realm.create("component6", {
+          pregunta4_1: "string",
+          pregunta4_2: "string",
+          pregunta4_3_1Transtornos: "string",
+          pregunta4_3_Def: "string",
+          pregunta4_3_Cron: "string",
+          pregunta4_3_Infec: "string",
+          pregunta4_3_4_Sens: "string",
+          pregunta4_3_5Less: "string",
+          pregunta4_3_6_Auto: "string",
+          pregunta4_4: "string",
         });
       });
-      console.log('Los datos se han guardado correctamente en Realm.');
+      console.log("Los datos se han guardado correctamente en Realm.");
     } catch (error) {
-      console.error('Error al guardar datos en Realm:', error);
+      console.error("Error al guardar datos en Realm:", error);
     }
-
-
   };
 
   return (
-    <ScrollView >
-
+    <ScrollView>
       {/* Pregunta 6.1 */}
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
             <Text style={styles.titulo}>SALUD PÚBLICA</Text>
-            <Text style={styles.question}> PREGUNTA 6.1 ( SELECCIÓN MÚLTIPLE - MÁXIMO 2 OPCIONES) </Text>
+            <Text style={styles.question}>
+              {" "}
+              PREGUNTA 6.1 ( SELECCIÓN MÚLTIPLE - MÁXIMO 2 OPCIONES){" "}
+            </Text>
           </View>
           <View style={styles.linea} />
         </View>
@@ -201,8 +208,6 @@ export default function PreSeisScreen(props) {
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
             <View style={styles.preguntaContainer}>
-
-
               <Text style={styles.pregunta}>
                 Cuáles de las siguientes intervenciones de Salud Pública
                 asociadas a la Rehabilitación conoce:
@@ -216,7 +221,6 @@ export default function PreSeisScreen(props) {
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selectedOptions.includes(index)
-
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -231,7 +235,6 @@ export default function PreSeisScreen(props) {
                   placeholder="Especifique otro"
                 />
               )}
-
             </View>
           </View>
         </View>
@@ -241,17 +244,18 @@ export default function PreSeisScreen(props) {
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-            <Text style={styles.question1}> PREGUNTA 6.2 ( SELECCIÓN ÚNICA ) </Text>
+            <Text style={styles.question1}>
+              {" "}
+              PREGUNTA 6.2 ( SELECCIÓN ÚNICA ){" "}
+            </Text>
           </View>
           <View style={styles.linea} />
         </View>
       </View>
 
-
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-
             <View style={styles.preguntaContainer}>
               <Text style={styles.pregunta}>
                 ¿Ha participado en alguna de las anteriores intervenciones en
@@ -283,12 +287,11 @@ export default function PreSeisScreen(props) {
               />
               {seleccionoSi1 && (
                 <View>
-                  <Text style={styles.advertencia}>Escoja el que se escogio en la respuesta 6.1 </Text>
+                  <Text style={styles.advertencia}>
+                    Escoja el que se escogio en la respuesta 6.1{" "}
+                  </Text>
                   <Text style={styles.preguntas}>Indique Cúal</Text>
                   <View style={styles.preguntaContainer}>
-
-
-
                     {opciones.map((opcion, index) => (
                       <CheckBox
                         key={index}
@@ -298,7 +301,6 @@ export default function PreSeisScreen(props) {
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
                           selectedOptions1.includes(index)
-
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -313,15 +315,10 @@ export default function PreSeisScreen(props) {
                         placeholder="Especifique otro"
                       />
                     )}
-
                   </View>
-
                 </View>
-
               )}
-
             </View>
-
           </View>
         </View>
       </View>
@@ -330,7 +327,10 @@ export default function PreSeisScreen(props) {
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-            <Text style={styles.question1}> PREGUNTA 6.3 ( SELECCIÓN ÚNICA ) </Text>
+            <Text style={styles.question1}>
+              {" "}
+              PREGUNTA 6.3 ( SELECCIÓN ÚNICA ){" "}
+            </Text>
           </View>
           <View style={styles.linea} />
         </View>
@@ -340,11 +340,10 @@ export default function PreSeisScreen(props) {
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
             <View style={styles.preguntaContainer}>
-
               <Text style={styles.pregunta}>
-                Conoce sobre un lugar de suministro de productos de apoyo en
-                el municipio o en el departamento que beneficie a la población
-                con elementos como: sillas de ruedas, bastones de orientación
+                Conoce sobre un lugar de suministro de productos de apoyo en el
+                municipio o en el departamento que beneficie a la población con
+                elementos como: sillas de ruedas, bastones de orientación
                 visual, muletas, caminadores, bastones, etc.
               </Text>
               <View style={styles.optionContainer}>
@@ -381,7 +380,6 @@ export default function PreSeisScreen(props) {
                     value={municipio}
                     onChangeText={handleMunicipioChange}
                     placeholder=""
-
                   />
                   <Text style={styles.preguntas}>Dónde se ubica:</Text>
                   <TextInput
@@ -392,18 +390,17 @@ export default function PreSeisScreen(props) {
                   />
                 </View>
               )}
-
             </View>
             {/* Boton */}
-            <TouchableOpacity style={styles.boton} onPress={() => {
-              goToPreguntaSeis();
-              SaveComponente6();
-            }}
+            <TouchableOpacity
+              style={styles.boton}
+              onPress={() => {
+                goToPreguntaSeis();
+                SaveComponente6();
+              }}
             >
               <Text style={styles.textoBoton}>Siguiente</Text>
             </TouchableOpacity>
-
-
           </View>
         </View>
       </View>
@@ -423,11 +420,10 @@ const styles = StyleSheet.create({
   },
   pregunta: {
     marginBottom: 5,
-    textAlign: 'justify',
+    textAlign: "justify",
     marginTop: -15,
     fontWeight: "bold",
     fontSize: 16,
-
   },
   preguntas: {
     color: "#000000",
@@ -459,21 +455,21 @@ const styles = StyleSheet.create({
   },
   linea: {
     marginTop: "auto",
-    height: 6,              // Altura de la línea
-    backgroundColor: "#BA0C2F",  // Color de la línea (rojo en este caso)
-    position: 'absolute',   // Posición absoluta para que se superponga al contenido
-    bottom: 0,              // Se coloca en la parte inferior de la tarjeta
-    left: 8,                // Alinear a la izquierda
-    right: 8,               // Alinear a la derecha
+    height: 6, // Altura de la línea
+    backgroundColor: "#BA0C2F", // Color de la línea (rojo en este caso)
+    position: "absolute", // Posición absoluta para que se superponga al contenido
+    bottom: 0, // Se coloca en la parte inferior de la tarjeta
+    left: 8, // Alinear a la izquierda
+    right: 8, // Alinear a la derecha
   },
   linea1: {
     marginTop: 8,
-    height: 6,              // Altura de la línea
-    backgroundColor: "#BA0C2F",  // Color de la línea (rojo en este caso)
-    position: 'relative',   // Posición absoluta para que se superponga al contenido
-    bottom: 20,              // Se coloca en la parte inferior de la tarjeta
-    left: 0,                // Alinear a la izquierda
-    right: 0,               // Alinear a la derecha
+    height: 6, // Altura de la línea
+    backgroundColor: "#BA0C2F", // Color de la línea (rojo en este caso)
+    position: "relative", // Posición absoluta para que se superponga al contenido
+    bottom: 20, // Se coloca en la parte inferior de la tarjeta
+    left: 0, // Alinear a la izquierda
+    right: 0, // Alinear a la derecha
   },
 
   input: {
@@ -496,7 +492,6 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 20,
     marginBottom: 15,
-
   },
   textoBoton: {
     textAlign: "center",
@@ -505,7 +500,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-
 
   titulo: {
     textAlign: "center",
@@ -559,18 +553,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 
-
   checkBoxText: {
     fontSize: 16,
   },
 
   advertencia: {
     marginBottom: 5,
-    textAlign: 'justify',
+    textAlign: "justify",
     marginTop: 5,
     fontWeight: "bold",
     color: "#BA0C2F",
     fontSize: 16,
-
   },
 });

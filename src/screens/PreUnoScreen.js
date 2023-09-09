@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
-
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import { useEffect, useState } from "react";
@@ -15,34 +14,38 @@ import { Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/FontAwesome";
 import appFirebase from "../components/firebase-config";
-import { addDoc, collection, getFirestore } from 'firebase/firestore';
-const db = getFirestore(appFirebase)
-import {RealmConfigContext} from "./../../utils/models/context";
-const {useRealm} = RealmConfigContext;
+import { addDoc, collection, getFirestore } from "firebase/firestore";
+const db = getFirestore(appFirebase);
+import { RealmConfigContext } from "./../../utils/models/context";
+const { useRealm } = RealmConfigContext;
 
 export default function PreUnoScreen(props) {
   const realm = useRealm();
   const { navigation } = props;
   /* const realm = new Realm({ schema: [Persona] }); */
- // Función para guardar los datos en AsyncStorage
- const saveDataToStorage = async () => {
-  try {
-    const data = {
-      selectedOption, apellido,nombres, fecha,edad,departamento, municipio
-      , nombreCentroPoblado, nombreBarrioVereda, direccion,estratoSocial,Celular,
-      area
-     
-    };
-    await AsyncStorage.setItem("formData", JSON.stringify(data));
-
-    
-
-  } catch (error) {
-    console.error("Error saving data:", error);
-  }
-};
-
-   
+  // Función para guardar los datos en AsyncStorage
+  const saveDataToStorage = async () => {
+    try {
+      const data = {
+        selectedOption,
+        apellido,
+        nombres,
+        fecha,
+        edad,
+        departamento,
+        municipio,
+        nombreCentroPoblado,
+        nombreBarrioVereda,
+        direccion,
+        estratoSocial,
+        Celular,
+        area,
+      };
+      await AsyncStorage.setItem("formData", JSON.stringify(data));
+    } catch (error) {
+      console.error("Error saving data:", error);
+    }
+  };
 
   // Función para cargar los datos desde AsyncStorage
   const loadDataFromStorage = async () => {
@@ -94,44 +97,54 @@ export default function PreUnoScreen(props) {
   const [edadCalculada, setEdadCalculada] = useState("");
   const [area, setArea] = useState("");
 
-
-  
   // Departamentos y municipios
 
-  const departamentosConMunicipios = [{
-    departamento: "Antioquia",
-    municipios: ["Cáceres", "Caucasia", "El Bagre", "Tarazá", "Valdivia", "Yarumal",
-    ],
-  },
-  {
-    departamento: "Bolívar",
-    municipios: ["San Jacinto", "San Juan Nepomuceno"],
-  },
+  const departamentosConMunicipios = [
+    {
+      departamento: "Antioquia",
+      municipios: [
+        "Cáceres",
+        "Caucasia",
+        "El Bagre",
+        "Tarazá",
+        "Valdivia",
+        "Yarumal",
+      ],
+    },
+    {
+      departamento: "Bolívar",
+      municipios: ["San Jacinto", "San Juan Nepomuceno"],
+    },
 
-  {
-    departamento: "Cauca",
-    municipios: ["Cajibío", "Piendamo - Tunía", "Santander de Quilichao", "Toribío",
-    ],
-  },
-  {
-    departamento: "Meta",
-    municipios: ["San Martín"],
-  },
-  {
-    departamento: "Putumayo",
-    municipios: ["Orito"],
-  },
-  {
-    departamento: "Sucre",
-    municipios: ["Colosó"],
-  },
-  {
-    departamento: "Valle del Cauca",
-    municipios: ["Buenaventura"],
-  },
+    {
+      departamento: "Cauca",
+      municipios: [
+        "Cajibío",
+        "Piendamo - Tunía",
+        "Santander de Quilichao",
+        "Toribío",
+      ],
+    },
+    {
+      departamento: "Meta",
+      municipios: ["San Martín"],
+    },
+    {
+      departamento: "Putumayo",
+      municipios: ["Orito"],
+    },
+    {
+      departamento: "Sucre",
+      municipios: ["Colosó"],
+    },
+    {
+      departamento: "Valle del Cauca",
+      municipios: ["Buenaventura"],
+    },
   ];
-  ;
-  const [municipiosDelDepartamento, setMunicipiosDelDepartamento] = useState([]);
+  const [municipiosDelDepartamento, setMunicipiosDelDepartamento] = useState(
+    []
+  );
   const filtrarMunicipiosPorDepartamento = (departamentoSeleccionado) => {
     const departamentoEncontrado = departamentosConMunicipios.find(
       (dep) => dep.departamento === departamentoSeleccionado
@@ -141,7 +154,6 @@ export default function PreUnoScreen(props) {
     }
     return [];
   };
-
 
   {
     /* Para que atrape la inf de la hora y fecha */
@@ -161,8 +173,9 @@ export default function PreUnoScreen(props) {
     setDate(currentDate);
 
     // Formateamos la fecha en "DD/MM/AAAA" antes de asignarla al estado "fecha"
-    const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1
-      }/${currentDate.getFullYear()}`;
+    const formattedDate = `${currentDate.getDate()}/${
+      currentDate.getMonth() + 1
+    }/${currentDate.getFullYear()}`;
     setFecha(formattedDate);
 
     // Calculamos la edad y la establecemos en el estado "edad"
@@ -201,7 +214,7 @@ export default function PreUnoScreen(props) {
 
   // Función para formatear la fecha
   function formatDate(date) {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const options = { year: "numeric", month: "long", day: "numeric" };
     return date.toLocaleDateString(undefined, options);
   }
   const goToPreguntaDos = () => {
@@ -213,7 +226,8 @@ export default function PreUnoScreen(props) {
       edad.trim() !== "" &&
       departamento.trim() !== "" &&
       municipio.trim() !== "" &&
-      (area !== "Centro poblado (Inspección, Corregimiento, caserío)" || nombreCentroPoblado.trim() !== "") &&
+      (area !== "Centro poblado (Inspección, Corregimiento, caserío)" ||
+        nombreCentroPoblado.trim() !== "") &&
       nombreBarrioVereda.trim() !== "" &&
       direccion.trim() !== "" &&
       Celular.trim() !== "" &&
@@ -242,8 +256,7 @@ export default function PreUnoScreen(props) {
   };
   const SaveComponente1 = async () => {
     try {
-      await addDoc(collection(db, 'componenteuno'), {
-
+      await addDoc(collection(db, "componenteuno"), {
         pregunta1_1Apell: apellido,
         pregunta1_1_2Nombres: nombres,
         pregunta1_1_3_Sexo: selectedOption,
@@ -259,47 +272,43 @@ export default function PreUnoScreen(props) {
         pregunta1_2_7_Dir: direccion,
         pregunta1_2_8_Tel: Celular,
         pregunta1_2_9_Estr: estratoSocial,
-
-
       });
-      
-
     } catch (error) {
       console.error(error);
-
     }
 
-    telefono = parseInt(Celular)
+    Celular_parse = parseInt(Celular);
+    edad_parse = parseInt(edadCalculada);
     try {
       realm.write(() => {
-        realm.create('Persona', {
+        realm.create("Persona", {
           tipoID: "CC",
           id_document: 1002965852,
-          component1:{
-            pregunta1_1Apell: 'mazabuel',
-            pregunta1_1_2Nombres: 'jaider',
-            pregunta1_1_3_Sexo: 'Masculino', // Cambia esto al valor seleccionado
-            pregunta1_1_4Fecha: '2023-09-04', // Cambia esto a la fecha seleccionada
-            pregunta1_1_5Edad: 30,
-            pregunta1_2_1: departamento,
-            pregunta1_2_2: "Cauca",
-            pregunta1_2_3_Mun: municipio,
-            pregunta1_2_4_Area: area,
-            pregunta1_2_5: nombreCentroPoblado,
-            pregunta1_2_6_Ver: nombreBarrioVereda,
-            pregunta1_2_7_Dir: direccion,
-            pregunta1_2_8_Tel: telefono,
-            pregunta1_2_9_Estr: estratoSocial,
-          }  
+          component1: {
+            pregunta1_1Apell: apellido.toString(),
+            pregunta1_1_2Nombres: nombres.toString(),
+            pregunta1_1_3_Sexo: selectedOption.toString(), // Cambia esto al valor seleccionado
+            pregunta1_1_4Fecha: fecha.toString(), // Cambia esto a la fecha seleccionada
+            pregunta1_1_5Edad: edad_parse,
+            pregunta1_2_1: departamento.toString(),
+            pregunta1_2_2: municipiosDelDepartamento.toString(),
+            pregunta1_2_3_Mun: municipio.toString(),
+            pregunta1_2_4_Area: area.toString(),
+            pregunta1_2_5: nombreCentroPoblado.toString(),
+            pregunta1_2_6_Ver: nombreBarrioVereda.toString(),
+            pregunta1_2_7_Dir: direccion.toString(),
+            pregunta1_2_8_Tel: Celular_parse,
+            pregunta1_2_9_Estr: estratoSocial.toString(),
+          },
         });
       });
-      console.log('Los datos se han guardado correctamente en Realm.');
+      console.log("Los datos se han guardado correctamente en Realm.");
     } catch (error) {
-      console.error('Error al guardar datos en Realm:', error);
+      console.error("Error al guardar datos en Realm:", error);
     }
   };
   return (
-    <ScrollView >
+    <ScrollView>
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
@@ -311,7 +320,9 @@ export default function PreUnoScreen(props) {
           <View style={styles.linea} />
         </View>
         <View style={styles.FechaContainer}>
-          <Text style={styles.fechaText} >Fecha de dilingeciamiento         {formatDate(new Date())} </Text>
+          <Text style={styles.fechaText}>
+            Fecha de dilingeciamiento {formatDate(new Date())}{" "}
+          </Text>
         </View>
       </View>
       <View style={styles.contenedorPadre}>
@@ -347,14 +358,12 @@ export default function PreUnoScreen(props) {
                   styles.checkBoxContainer,
                   styles.checkBoxWidth,
                 ]}
-
                 textStyle={
                   selectedOption === "Masculino"
                     ? styles.selectedOptionText
                     : styles.checkBoxText
                 }
                 checkedColor="#BA0C2F"
-
               />
               <CheckBox
                 title="Femenino"
@@ -444,11 +453,17 @@ export default function PreUnoScreen(props) {
                   setDepartamento(dep.departamento);
                   setMunicipiosDelDepartamento(dep.municipios); // Actualiza los municipios del departamento seleccionado
                 }}
-                style={[
-                  { paddingVertical: 10 },
-                ]}
+                style={[{ paddingVertical: 10 }]}
               >
-                <Text style={departamento === dep.departamento ? styles.selectedOptionText : null}>{dep.departamento}</Text>
+                <Text
+                  style={
+                    departamento === dep.departamento
+                      ? styles.selectedOptionText
+                      : null
+                  }
+                >
+                  {dep.departamento}
+                </Text>
               </TouchableOpacity>
             ))}
             {/* Municipio */}
@@ -458,16 +473,17 @@ export default function PreUnoScreen(props) {
                 <TouchableOpacity
                   key={mun}
                   onPress={() => setMunicipio(mun)}
-                  style={[
-                    { paddingVertical: 10 },
-
-                  ]}
+                  style={[{ paddingVertical: 10 }]}
                 >
-                  <Text style={municipio === mun ? styles.selectedOptionText : null}>{mun}</Text>
+                  <Text
+                    style={municipio === mun ? styles.selectedOptionText : null}
+                  >
+                    {mun}
+                  </Text>
                 </TouchableOpacity>
               ))
             ) : (
-              <Text >No hay municipios disponibles para este departamento.</Text>
+              <Text>No hay municipios disponibles para este departamento.</Text>
             )}
             {/* Area */}
 
@@ -476,10 +492,7 @@ export default function PreUnoScreen(props) {
               title="Cabecera Municipal (Area urbana)"
               checked={area === "Cabecera Municipal (Area urbana)"}
               onPress={() => setArea("Cabecera Municipal (Area urbana)")}
-              containerStyle={[
-                styles.checkBoxContainer,
-                styles.checkBoxWidth,
-              ]}
+              containerStyle={[styles.checkBoxContainer, styles.checkBoxWidth]}
               textStyle={
                 area === "Cabecera Municipal (Area urbana)"
                   ? styles.selectedOptionText
@@ -490,12 +503,13 @@ export default function PreUnoScreen(props) {
 
             <CheckBox
               title="Centro poblado (Inspección, Corregimiento, caserío)"
-              checked={area === "Centro poblado (Inspección, Corregimiento, caserío)"}
-              onPress={() => setArea("Centro poblado (Inspección, Corregimiento, caserío)")}
-              containerStyle={[
-                styles.checkBoxContainer,
-                styles.checkBoxWidth,
-              ]}
+              checked={
+                area === "Centro poblado (Inspección, Corregimiento, caserío)"
+              }
+              onPress={() =>
+                setArea("Centro poblado (Inspección, Corregimiento, caserío)")
+              }
+              containerStyle={[styles.checkBoxContainer, styles.checkBoxWidth]}
               textStyle={
                 area === "Centro poblado (Inspección, Corregimiento, caserío)"
                   ? styles.selectedOptionText
@@ -507,10 +521,7 @@ export default function PreUnoScreen(props) {
               title="Rural disperso"
               checked={area === "Rural disperso"}
               onPress={() => setArea("Rural disperso")}
-              containerStyle={[
-                styles.checkBoxContainer,
-                styles.checkBoxWidth,
-              ]}
+              containerStyle={[styles.checkBoxContainer, styles.checkBoxWidth]}
               textStyle={
                 area === "Rural disperso"
                   ? styles.selectedOptionText
@@ -573,10 +584,7 @@ export default function PreUnoScreen(props) {
               title="1"
               checked={estratoSocial === "1"}
               onPress={() => setEstratoSocial("1")}
-              containerStyle={[
-                styles.checkBoxContainer,
-                styles.checkBoxWidth,
-              ]}
+              containerStyle={[styles.checkBoxContainer, styles.checkBoxWidth]}
               textStyle={
                 estratoSocial === "1"
                   ? styles.selectedOptionText
@@ -588,80 +596,67 @@ export default function PreUnoScreen(props) {
               title="2"
               checked={estratoSocial === "2"}
               onPress={() => setEstratoSocial("2")}
-              containerStyle={[
-                styles.checkBoxContainer,
-                styles.checkBoxWidth,
-              ]}
+              containerStyle={[styles.checkBoxContainer, styles.checkBoxWidth]}
               textStyle={
                 estratoSocial === "2"
                   ? styles.selectedOptionText
                   : styles.checkBoxText
               }
               checkedColor="#BA0C2F"
-            /><CheckBox
+            />
+            <CheckBox
               title="3"
               checked={estratoSocial === "3"}
               onPress={() => setEstratoSocial("3")}
-              containerStyle={[
-                styles.checkBoxContainer,
-                styles.checkBoxWidth,
-              ]}
+              containerStyle={[styles.checkBoxContainer, styles.checkBoxWidth]}
               textStyle={
                 estratoSocial === "3"
                   ? styles.selectedOptionText
                   : styles.checkBoxText
               }
               checkedColor="#BA0C2F"
-            /><CheckBox
+            />
+            <CheckBox
               title="4"
               checked={estratoSocial === "4"}
               onPress={() => setEstratoSocial("4")}
-              containerStyle={[
-                styles.checkBoxContainer,
-                styles.checkBoxWidth,
-              ]}
+              containerStyle={[styles.checkBoxContainer, styles.checkBoxWidth]}
               textStyle={
                 estratoSocial === "4"
                   ? styles.selectedOptionText
                   : styles.checkBoxText
               }
               checkedColor="#BA0C2F"
-            /><CheckBox
+            />
+            <CheckBox
               title="5"
               checked={estratoSocial === "5"}
               onPress={() => setEstratoSocial("5")}
-              containerStyle={[
-                styles.checkBoxContainer,
-                styles.checkBoxWidth,
-              ]}
+              containerStyle={[styles.checkBoxContainer, styles.checkBoxWidth]}
               textStyle={
                 estratoSocial === "5"
                   ? styles.selectedOptionText
                   : styles.checkBoxText
               }
               checkedColor="#BA0C2F"
-            /><CheckBox
+            />
+            <CheckBox
               title="6"
               checked={estratoSocial === "6"}
               onPress={() => setEstratoSocial("6")}
-              containerStyle={[
-                styles.checkBoxContainer,
-                styles.checkBoxWidth,
-              ]}
+              containerStyle={[styles.checkBoxContainer, styles.checkBoxWidth]}
               textStyle={
                 estratoSocial === "6"
                   ? styles.selectedOptionText
                   : styles.checkBoxText
               }
               checkedColor="#BA0C2F"
-            /><CheckBox
+            />
+            <CheckBox
               title="Sin Estrato"
               checked={estratoSocial === "Sin Estrato"}
               onPress={() => setEstratoSocial("Sin Estrato")}
-              containerStyle={[
-                styles.checkBoxContainer,
-                styles.checkBoxWidth,
-              ]}
+              containerStyle={[styles.checkBoxContainer, styles.checkBoxWidth]}
               textStyle={
                 estratoSocial === "Sin Estrato"
                   ? styles.selectedOptionText
@@ -670,18 +665,16 @@ export default function PreUnoScreen(props) {
               checkedColor="#BA0C2F"
             />
 
-
-
             {/* Boton */}
-            <TouchableOpacity style={styles.boton} onPress={() => {
-              goToPreguntaDos();
-              SaveComponente1();
-            }}
+            <TouchableOpacity
+              style={styles.boton}
+              onPress={() => {
+                goToPreguntaDos();
+                SaveComponente1();
+              }}
             >
               <Text style={styles.textoBoton}>Siguiente</Text>
             </TouchableOpacity>
-
-
           </View>
         </View>
       </View>
@@ -699,7 +692,6 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 20,
     marginBottom: 15,
-
   },
   textoBoton: {
     textAlign: "center",
@@ -718,15 +710,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 0,
     marginTop: -20,
-
   },
   pregunta: {
     marginBottom: 5,
-    textAlign: 'justify',
+    textAlign: "justify",
     marginTop: -15,
     fontWeight: "bold",
     fontSize: 16,
-
   },
   preguntas: {
     color: "#000000",
@@ -763,7 +753,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-
   },
 
   tarjeta: {
@@ -864,8 +853,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
 
-
-
   // Estilo para el texto de las opciones seleccionadas
   selectedOptionText: {
     color: "#BA0C2F", // Color de texto para la opción seleccionada
@@ -874,49 +861,46 @@ const styles = StyleSheet.create({
   },
   linea: {
     marginTop: "auto",
-    height: 6,              // Altura de la línea
-    backgroundColor: "#BA0C2F",  // Color de la línea (rojo en este caso)
-    position: 'absolute',   // Posición absoluta para que se superponga al contenido
-    bottom: 0,              // Se coloca en la parte inferior de la tarjeta
-    left: 8,                // Alinear a la izquierda
-    right: 8,               // Alinear a la derecha
-
-
+    height: 6, // Altura de la línea
+    backgroundColor: "#BA0C2F", // Color de la línea (rojo en este caso)
+    position: "absolute", // Posición absoluta para que se superponga al contenido
+    bottom: 0, // Se coloca en la parte inferior de la tarjeta
+    left: 8, // Alinear a la izquierda
+    right: 8, // Alinear a la derecha
   },
   /* Estilo fecha de dilingeciamiento */
   fechaContainer: {
-    flexDirection: 'row',   // Mostrar elementos en una fila
-    justifyContent: 'space-between', // Espacio entre los elementos
-    alignItems: 'center',   // Centrar elementos verticalmente
-    marginTop: 10,          // Espacio opcional entre la línea roja y la fecha
+    flexDirection: "row", // Mostrar elementos en una fila
+    justifyContent: "space-between", // Espacio entre los elementos
+    alignItems: "center", // Centrar elementos verticalmente
+    marginTop: 10, // Espacio opcional entre la línea roja y la fecha
     fontWeight: "bold",
   },
   fechaText: {
     color: "#35669a",
     fontWeight: "bold",
     fontSize: 14,
-
   },
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
   },
   label: {
     fontSize: 16,
     fontWeight: "bold",
-    marginBottom: 10
+    marginBottom: 10,
   },
   dropdownButton: {
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#ccc"
+    borderBottomColor: "#ccc",
   },
   modalContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)"
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   inputAndroid: {
     fontSize: 16,
@@ -927,7 +911,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     color: "#333",
     paddingRight: 30,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
   },
   inputIOS: {
     fontSize: 16,
@@ -938,7 +922,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     color: "#333",
     paddingRight: 30,
-    backgroundColor: "#fff"
-  }
-
+    backgroundColor: "#fff",
+  },
 });

@@ -1,29 +1,21 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Button } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
-export default function EnvioScreen() {
-
-
+export default function EnvioScreen(props) {
+  const { navigation } = props;
   return (
-
-
-
-
-
-
-
-
-    <ScrollView >
-
+    <ScrollView>
       {/* Pregunta 6.1 */}
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
+            <Text style={styles.question}>
+              {" "}
+              Se han enviado los datos correctamente{" "}
+            </Text>
 
-            <Text style={styles.question}> Se han enviado los datos correctamente </Text>
-
-            <TouchableOpacity onPress={goToRegistrate}>
+            <TouchableOpacity onPress={navigation.navigate("Registrate")}>
               <Text style={styles.registrateText}>
                 Quieres voolver a lenar una encuesta?{" "}
                 <Text style={styles.registrate}> Dale aquí </Text>
@@ -33,14 +25,11 @@ export default function EnvioScreen() {
           <View style={styles.linea} />
         </View>
       </View>
-
-
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-
   /* Estilo Contenedor */
   contenedorPadre: {
     flex: 1,
@@ -78,12 +67,11 @@ const styles = StyleSheet.create({
   },
   linea: {
     marginTop: "auto",
-    height: 6,              // Altura de la línea
-    backgroundColor: "#BA0C2F",  // Color de la línea (rojo en este caso)
-    position: 'absolute',   // Posición absoluta para que se superponga al contenido
-    bottom: 0,              // Se coloca en la parte inferior de la tarjeta
-    left: 8,                // Alinear a la izquierda
-    right: 8,               // Alinear a la derecha
+    height: 6, // Altura de la línea
+    backgroundColor: "#BA0C2F", // Color de la línea (rojo en este caso)
+    position: "absolute", // Posición absoluta para que se superponga al contenido
+    bottom: 0, // Se coloca en la parte inferior de la tarjeta
+    left: 8, // Alinear a la izquierda
+    right: 8, // Alinear a la derecha
   },
-
 });

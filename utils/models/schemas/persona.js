@@ -1,6 +1,6 @@
 import { Realm } from "@realm/react";
 export class Persona extends Realm.Object {
-  _id = Realm.BSON.ObjectID();
+  _id = new Realm.BSON.ObjectID();
   tipoID = "";
   id_document = 0;
   component1 = {};

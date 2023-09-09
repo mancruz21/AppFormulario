@@ -5,10 +5,11 @@ import { ScrollView } from 'react-native-gesture-handler';
 import appFirebase from "../components/firebase-config";
 import { addDoc, collection, getFirestore } from 'firebase/firestore';
 const db = getFirestore(appFirebase)
-
+import { RealmConfigContext } from "./../../utils/models/context";
+const { useRealm } = RealmConfigContext;
 
 export default function PreCinScreen(props) {
-
+  const realm = useRealm();
   const [selectedOption3, setSelectedOption3] = useState("");
   const [selectedOption2, setSelectedOption2] = useState([]);
 
@@ -170,7 +171,27 @@ export default function PreCinScreen(props) {
       navigation.navigate("Pregunta 2.4");
       console.log("Opcion 1:", selectedOption11);
     } else {
+      navigation.navigate("Pregunta 2.4");
       Alert.alert("Error", "Por favor completa todos los campos.");
+    }
+    try {
+      realm.write(() => {
+        realm.create('component5', {
+          pregunta4_1: "string",
+          pregunta4_2: "string",
+          pregunta4_3_1Transtornos: "string",
+          pregunta4_3_Def: "string",
+          pregunta4_3_Cron: "string",
+          pregunta4_3_Infec: "string",
+          pregunta4_3_4_Sens: "string",
+          pregunta4_3_5Less: "string",
+          pregunta4_3_6_Auto: "string",
+          pregunta4_4: "string",
+        });
+      });
+      console.log('Los datos se han guardado correctamente en Realm.');
+    } catch (error) {
+      console.error('Error al guardar datos en Realm:', error);
     }
   };
 
@@ -312,6 +333,9 @@ export default function PreCinScreen(props) {
       console.error(error);
       Alert.alert('Error', 'Hubo un error al guardar sus respuestas');
     }
+
+    
+
   };
 
 
