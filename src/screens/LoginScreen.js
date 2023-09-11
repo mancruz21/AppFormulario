@@ -26,12 +26,12 @@ export default function LoginScreen(props) {
   const handleSignIn = async () => {
     try {
       // Establece las credenciales de administrador predefinidas
-      const adminEmail = "adminrehabco2023";
+      const adminEmail = "rehabcoadmin@gmail.com";
       const adminPassword = "adminrehabco2023";
 
       if (email === adminEmail && password === adminPassword) {
         // Es un administrador, redirigir a AdminScreen
-        props.navigation.navigate('AdminScreen');
+        props.navigation.navigate('Administrador');
       } else {
         // No es un administrador, intentar inicio de sesión normal
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -42,7 +42,7 @@ export default function LoginScreen(props) {
         await AsyncStorage.setItem('password', password);
 
         // Redirigir a Inicio
-        props.navigation.navigate('Inicio');
+        props.navigation.navigate('Pregunta 2.5');
       }
     } catch (error) {
       console.log(error);
@@ -68,7 +68,7 @@ export default function LoginScreen(props) {
 
     // Comprueba las credenciales guardadas localmente
     if (email === storedEmail && password === storedPassword) {
-      props.navigation.navigate('Inicio');
+      props.navigation.navigate('Pregunta 2.5');
     } else {
       Alert.alert("CREDENCIALES INCORRECTAS", "Por favor, verifica tus credenciales.");
     }
@@ -141,7 +141,7 @@ export default function LoginScreen(props) {
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={PreSieScreen}>
+      <TouchableOpacity onPress={goToRecuperala}>
         <Text style={styles.registrateText}>
           ¿Olvidaste tu contraseña?{" "}
           <Text style={styles.registrate}> Recupérala </Text>

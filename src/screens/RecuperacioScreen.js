@@ -18,14 +18,14 @@ export default function RecuperacioScreen(props) {
 
   const handleResetEmail = () => {
 
-    
+
 
     // Validar correo electrónico
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       Alert.alert('Error', 'Por favor, introduce un correo electrónico válido');
       return;
-      
+
     }
     const auth = getAuth(appFirebase);
 
@@ -70,12 +70,15 @@ export default function RecuperacioScreen(props) {
         }
 
       />
-      <Button
-        title="Recuperar Contraseña"
-        containerStyle={styles.btnContainer}
-        buttonStyle={styles.btnRecover}
-        onPress={handleResetEmail}
-      />
+
+      <TouchableOpacity
+        style={styles.boton}
+        onPress={() => {
+          handleResetEmail();
+        }}
+      >
+        <Text style={styles.textoBoton}> Recuperar contraseña </Text>
+      </TouchableOpacity>
 
       {showMessage && (
         <Text style={styles.messageText}>Verifica tu correo electrónico para restablecer la contraseña.</Text>
@@ -87,6 +90,11 @@ export default function RecuperacioScreen(props) {
 }
 
 const styles = StyleSheet.create({
+  messageText: {
+    fontSize: 16,
+    fontWeight: "bold"
+
+  },
 
   formContainer: {
     flex: 1,
@@ -120,5 +128,24 @@ const styles = StyleSheet.create({
     color: "#442484",
     fontSize: 16,
     textAlign: "center"
-  }
+  },
+  /*Estilo boton y enlaces */
+  boton: {
+    backgroundColor: "#1b3f90",
+    borderColor: "#D2D4DF",
+    borderWidth: 1,
+    borderRadius: 5,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 20,
+    marginBottom: 15,
+
+
+  },
+  textoBoton: {
+    textAlign: "center",
+    padding: 10,
+    color: "white",
+    fontSize: 16,
+  },
 })
