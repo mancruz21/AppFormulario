@@ -13,7 +13,6 @@
     "@react-native-community/checkbox": "^0.5.16",
     "@react-native-community/datetimepicker": "6.7.3",
     "@react-native-community/netinfo": "^9.4.1",
-    "@react-native-firebase/firestore": "^18.3.1",
     "@react-native-picker/picker": "^2.5.0",
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/drawer": "^6.6.3",

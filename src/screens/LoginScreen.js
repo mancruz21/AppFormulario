@@ -26,8 +26,8 @@ export default function LoginScreen(props) {
   const handleSignIn = async () => {
     try {
       // Establece las credenciales de administrador predefinidas
-      const adminEmail = "rebhab@gmail.com";
-      const adminPassword = "Admin123";
+      const adminEmail = "adminrehabco2023";
+      const adminPassword = "adminrehabco2023";
 
       if (email === adminEmail && password === adminPassword) {
         // Es un administrador, redirigir a AdminScreen
@@ -127,7 +127,7 @@ export default function LoginScreen(props) {
         onPress={() => {
           handleSignIn();
           goToInicio();
-          
+
 
         }}
       >
