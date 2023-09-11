@@ -4,46 +4,36 @@
     "slug": "AppBeta",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/Logo_Color.png",
+    "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.appform.AppBeta"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": [
-        "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE"
-      ],
+      "permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
       "package": "com.appform.AppBeta"
     },
     "jsEngine": "hermes",
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/logo.png"
     },
     "extra": {
       "eas": {
         "projectId": "ce208560-88b5-4419-9d74-4f2a36271c09"
       }
     },
-    "plugins": [
-      "expo-dev-client"
-    ]
+    "plugins": ["expo-dev-client"]
   }
 }

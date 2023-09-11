@@ -14,16 +14,20 @@ export default function RecuperacioScreen(props) {
   const [showMessage, setShowMessage] = useState(false);
 
 
-  const auth = getAuth(appFirebase);
+
 
   const handleResetEmail = () => {
+
+    
 
     // Validar correo electrónico
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       Alert.alert('Error', 'Por favor, introduce un correo electrónico válido');
       return;
+      
     }
+    const auth = getAuth(appFirebase);
 
 
     sendPasswordResetEmail(auth, email)

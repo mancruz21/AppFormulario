@@ -27,7 +27,7 @@ export default function StackNavigation() {
           title: "Iniciar Sesión",
           headerTitleAlign: "center",
           headerStyle: { backgroundColor: "#D2D4DF" },
-           
+
         }}
       />
       <Stack.Screen
@@ -37,7 +37,7 @@ export default function StackNavigation() {
           title: "Instrucciones ",
           headerTitleAlign: "center",
           headerStyle: { backgroundColor: "#D2D4DF" },
-          
+
           headerTitleStyle: {
             fontWeight: "bold",
           },
@@ -50,7 +50,7 @@ export default function StackNavigation() {
           title: "Administrador",
           headerTitleAlign: "center",
           headerStyle: { backgroundColor: "#D2D4DF" },
-          
+
           headerTitleStyle: {
             fontWeight: "bold",
           },
@@ -148,7 +148,8 @@ export default function StackNavigation() {
           headerStyle: { backgroundColor: "#651D32" },
           headerTintColor: "white", // Cambia este valor a "white" para cambiar el color del texto del header a blanco
           headerTitleStyle: {
-            fontWeight: "bold",}
+            fontWeight: "bold",
+          }
         }}
       />
       <Stack.Screen
@@ -162,7 +163,7 @@ export default function StackNavigation() {
           headerTitleStyle: {
             fontWeight: "bold",
           },
-          
+
         }}
       />
       <Stack.Screen
@@ -172,13 +173,27 @@ export default function StackNavigation() {
           title: "Consentimiento",
           headerTitleAlign: "center",
           headerStyle: { backgroundColor: "#D2D4DF" },
-          
+
           headerTitleStyle: {
             fontWeight: "bold",
           },
         }}
       />
-      <Stack.Screen name="Pregunta 2.6" component={EnvioScreen} />
+      <Stack.Screen
+        name="Envio"
+        component={EnvioScreen}
+        options={{
+          title: "Envio de datos",
+          headerTitleAlign: "center",
+          headerStyle: { backgroundColor: "#D2D4DF" },
+
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        }}
+
+      />
+
     </Stack.Navigator>
   );
 }

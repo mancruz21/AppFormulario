@@ -40,6 +40,7 @@ export default function PreCinScreen(props) {
   const [otro, setOtro] = useState('');
   const [otro1, setOtro1] = useState('');
   const [otro2, setOtro2] = useState('');
+  const [otro3, setOtro3] = useState('');
   const [nombre, setNombre] = useState('');
   const [lugar, setLugar] = useState('');
   const [showTextInput, setShowTextInput] = useState(false);
@@ -156,37 +157,46 @@ export default function PreCinScreen(props) {
       (selectedOption3 === "Si" ? (selectedOption2.length !== 0) : true) &&
       (selectedOption3 === "No" ? (selectedOption22.length !== 0) : true) &&
       selectedOption1 !== "" &&
-      (selectedOption1 === "No" ? (selected1Option.length !== 0) : true) &&
-      (selectedOption222.length !== 0 &&
-        selectedOption222 === "Otros servicios de salud"
-        ? (selectedOption11.length !== 0)
-        : true) &&
-      selectedOptions4.length !== 0 &&
-      selectedOption8 !== null &&
-      selectedOption9 !== null &&
-      (selectedOption0 === "No" ? (selectedOptions0.length !== 0) : true) &&
-      transporte.length !== 0 &&
-      (transporte === "Otro ¿Cuál?" ? (otro !== "") : true)
+      (selectedOption1 === "No" ? (selected1Option.length !== 0) : true) 
+      
+      
     ) {
       navigation.navigate("Pregunta 2.4");
       console.log("Opcion 1:", selectedOption11);
     } else {
-      navigation.navigate("Pregunta 2.4");
+      
       Alert.alert("Error", "Por favor completa todos los campos.");
     }
     try {
       realm.write(() => {
         realm.create('component5', {
-          pregunta4_1: "string",
-          pregunta4_2: "string",
-          pregunta4_3_1Transtornos: "string",
-          pregunta4_3_Def: "string",
-          pregunta4_3_Cron: "string",
-          pregunta4_3_Infec: "string",
-          pregunta4_3_4_Sens: "string",
-          pregunta4_3_5Less: "string",
-          pregunta4_3_6_Auto: "string",
-          pregunta4_4: "string",
+          pregunta5_1: "string",
+          pregunta5_1_SI: "string",
+          pregunta5_1_OtrosServi: "string",
+          pregunta5_1_Otro: "string",
+          pregunta5_2: "string",
+          pregunta5_3: "string",
+          pregunta5_3_1_OtrosServ: "string",
+          pregunta5_3_2_Otro: "string",
+          pregunta5_4: "string",
+          pregunta5_4_1: "string",
+          pregunta5_5: "string",
+          pregunta5_6: "string",
+          pregunta5_6_1_OtroServ: "string",
+          pregunta5_6_2_Otro: "string",
+          pregunta5_7: "string",
+          pregunta5_8: "string",
+          pregunta5_8_1: "string",
+          pregunta5_8_2: "string",
+          pregunta5_9: "string",
+          pregunta5_10: "string",
+          pregunta5_10_1: "string",
+          pregunta5_10_2: "string",
+          pregunta5_11: "string",
+          pregunta5_12: "string",
+          pregunta5_13: "string",
+          pregunta5_14: "string",
+          pregunta5_14_1: "string",
         });
       });
       console.log('Los datos se han guardado correctamente en Realm.');
@@ -194,9 +204,6 @@ export default function PreCinScreen(props) {
       console.error('Error al guardar datos en Realm:', error);
     }
   };
-
-
-
   const handleMunicipioChange = (text) => {
     setMunicipio(text);
   }
@@ -210,7 +217,7 @@ export default function PreCinScreen(props) {
     setOtro2(text);
   }
   const handleOtro3 = (text) => {
-    setOtro(text);
+    setOtro3(text);
   }
   const handleOption2Select = (option) => {
 
@@ -252,7 +259,7 @@ export default function PreCinScreen(props) {
   const handleOption1Select2 = (option) => {
     // Deselecciona todas las opciones
     setSelected1Option2([]);
-  
+
     // Luego selecciona la opción actual
     setSelected1Option2([option]);
   };
@@ -333,9 +340,6 @@ export default function PreCinScreen(props) {
       console.error(error);
       Alert.alert('Error', 'Hubo un error al guardar sus respuestas');
     }
-
-    
-
   };
 
 
@@ -2620,7 +2624,7 @@ export default function PreCinScreen(props) {
                         <Text style={styles.preguntas}>¿Cuál?</Text>
                         <TextInput
                           style={styles.input}
-                          value={otro}
+                          value={otro3}
                           onChangeText={handleOtro3}
                           placeholder="Indique cuál"
                         />

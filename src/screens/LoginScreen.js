@@ -10,8 +10,9 @@ import {
 } from "react-native";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import appFirebase from "../components/firebase-config";
-import { addDoc, collection, getFirestore } from 'firebase/firestore';
+import { addDoc, collection, getFirestore, getDoc, doc } from 'firebase/firestore';
 import PreSieScreen from "./PreSieScreen";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -19,12 +20,42 @@ export default function LoginScreen(props) {
   const db = getFirestore(appFirebase)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [selectedRole, setSelectedRole] = useState("user"); // Valor predeterminado: Usuario
-  const auth = getAuth(appFirebase);
-  const { navigation } = props;
-  const goToInicio = () => {
-    if (!emailIsValid(email)) {
 
+  const auth = getAuth(appFirebase);
+
+  const handleSignIn = async () => {
+    try {
+      // Establece las credenciales de administrador predefinidas
+      const adminEmail = "rebhab@gmail.com";
+      const adminPassword = "Admin123";
+
+      if (email === adminEmail && password === adminPassword) {
+        // Es un administrador, redirigir a AdminScreen
+        props.navigation.navigate('AdminScreen');
+      } else {
+        // No es un administrador, intentar inicio de sesión normal
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Guardar credenciales localmente
+        await AsyncStorage.setItem('email', email);
+        await AsyncStorage.setItem('password', password);
+
+        // Redirigir a Inicio
+        props.navigation.navigate('Inicio');
+      }
+    } catch (error) {
+      console.log(error);
+      setError("Hubo un error al iniciar sesión");
+    }
+  }
+  const { navigation } = props;
+  const goToInicio = async () => {
+    const storedEmail = await AsyncStorage.getItem('email');
+    const storedPassword = await AsyncStorage.getItem('password');
+
+    if (!emailIsValid(email)) {
+      Alert.alert("CORREO INVALIDO", "Por favor, ingresa un correo válido.");
       return;
     }
     if (password.length < 6) {
@@ -35,41 +66,15 @@ export default function LoginScreen(props) {
       return;
     }
 
-  };
-  const handleSignIn = async () => {
-    try {
-      // Establece las credenciales de administrador predefinidas
-      const adminEmail = "rehabcoadmin@gmail.com";
-      const adminPassword = "adminrehabco2023";
-
-      if (email === adminEmail && password === adminPassword) {
-        // Es un administrador, redirigir a AdminScreen
-        props.navigation.navigate('Administrador');
-      } else {
-        // No es un administrador, intentar inicio de sesión normal
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-
-        // Redirigir a Inicio
-        props.navigation.navigate('Inicio');
-      }
-    } catch (error) {
-      console.log(error);
-      setError("Hubo un error al iniciar sesión");
-      console.log(error);
-
-      if (error.code === "auth/wrong-password" || error.code === "auth/user-not-found") {
-        // Mostrar una alerta de credenciales incorrectas
-        Alert.alert(
-          "Credenciales Incorrectas",
-          "El correo o la contraseña son incorrectos. Por favor, inténtalo nuevamente."
-        );
-      } else {
-        // Otro tipo de error, puedes mostrar un mensaje genérico o hacer algo diferente
-        Alert.alert("Error", "Hubo un error al iniciar sesión. Por favor, inténtalo nuevamente más tarde.");
-      }
+    // Comprueba las credenciales guardadas localmente
+    if (email === storedEmail && password === storedPassword) {
+      props.navigation.navigate('Inicio');
+    } else {
+      Alert.alert("CREDENCIALES INCORRECTAS", "Por favor, verifica tus credenciales.");
     }
-  }
+  };
+
+
 
   const goToRegistrate = () => {
     navigation.navigate("Registrate");
@@ -120,8 +125,9 @@ export default function LoginScreen(props) {
       <TouchableOpacity
         style={styles.boton}
         onPress={() => {
-          goToInicio();
           handleSignIn();
+          goToInicio();
+          
 
         }}
       >

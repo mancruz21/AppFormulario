@@ -15,6 +15,7 @@ import { addDoc, collection, getFirestore } from 'firebase/firestore';
 const db = getFirestore(appFirebase)
 import { RealmConfigContext } from "./../../utils/models/context";
 const { useRealm } = RealmConfigContext;
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function PreCuaScreen(props) {
@@ -47,14 +48,16 @@ export default function PreCuaScreen(props) {
 
     ) {
       navigation.navigate("Pregunta 2.3");
-
+    
     } else {
       Alert.alert("Error", "Por favor completa todos los campos.");
     }
+ 
 
 
   };
 
+ 
   const SaveComponente4 = async () => {
     try {
       await addDoc(collection(db, 'componentecuatro'), {

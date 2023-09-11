@@ -31,6 +31,9 @@ export default function PreSeisScreen(props) {
   const [selectedOption3, setSelectedOption3] = useState(null);
   const [nombreDepartamento, setNombreDepartamento] = useState("");
   const [municipio, setMunicipio] = useState("");
+  const [formCounter, setFormCounter] = useState(1);
+
+  
 
   const opciones = [
     "Educación para la salud (cuidado de niños, mujeres y adulto mayor)",
@@ -136,7 +139,7 @@ export default function PreSeisScreen(props) {
     if (
       selectedOptions.length > 0 &&
       (!selectedOptions.includes(3) || otroTexto !== "") && // Validación de opciones y campo de texto
-      selectedOptions1.length > 0 && // Verifica que al menos una opción esté seleccionada si es "Sí"
+      // Verifica que al menos una opción esté seleccionada si es "Sí"
       (!seleccionoSi1 || seleccionoSi1 !== "") &&
       ((seleccionoSi && otroIndicacion !== "") || !seleccionoSi) && // Validación de checkboxes y campo de texto
       ((selectedOption3 === "Sí" &&
@@ -144,10 +147,11 @@ export default function PreSeisScreen(props) {
         nombreDepartamento !== "") ||
         selectedOption3 === "No") // Validación de la selección única y campos de texto
     ) {
-      navigation.navigate("Pregunta 2.6");
+     
+      navigation.navigate("Envio", { formCounter: formCounter });
     } else {
       Alert.alert("Error", "Por favor completa todos los campos.");
-      {navigation.navigate("Pregunta 2.6");} // esto no va solo se deja para seguir flujo
+
     }
   };
   const SaveComponente6 = async () => {
@@ -170,16 +174,12 @@ export default function PreSeisScreen(props) {
     try {
       realm.write(() => {
         realm.create("component6", {
-          pregunta4_1: "string",
-          pregunta4_2: "string",
-          pregunta4_3_1Transtornos: "string",
-          pregunta4_3_Def: "string",
-          pregunta4_3_Cron: "string",
-          pregunta4_3_Infec: "string",
-          pregunta4_3_4_Sens: "string",
-          pregunta4_3_5Less: "string",
-          pregunta4_3_6_Auto: "string",
-          pregunta4_4: "string",
+          pregunta6_1: "string",
+          otroTexto6_1: "string",
+          pregunta6_2: "string",
+          otroIndicacion6_2:"string",
+          pregunta6_3: "string",
+          municipio_pregunta6_3: "string",
         });
       });
       console.log("Los datos se han guardado correctamente en Realm.");
@@ -399,7 +399,7 @@ export default function PreSeisScreen(props) {
                 SaveComponente6();
               }}
             >
-              <Text style={styles.textoBoton}>Siguiente</Text>
+              <Text style={styles.textoBoton}>Enviar</Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -1,12 +1,22 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { useRoute } from '@react-navigation/native';
 
-export default function EnvioScreen(props) {
+export default function
+  EnvioScreen(props) {
   const { navigation } = props;
+  const goToFormulario = () => {
+    navigation.navigate("Pregunta 2.5", { formCounter: formCounter });
+  };
+  const goToSalida = () => {
+    navigation.navigate("Login");
+  };
+  const route = useRoute();
+  const { formCounter } = route.params;
   return (
     <ScrollView>
-      {/* Pregunta 6.1 */}
+
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
@@ -14,13 +24,30 @@ export default function EnvioScreen(props) {
               {" "}
               Se han enviado los datos correctamente{" "}
             </Text>
+            <Text style={styles.texto}>
 
-            <TouchableOpacity onPress={navigation.navigate("Registrate")}>
-              <Text style={styles.registrateText}>
-                Quieres voolver a lenar una encuesta?{" "}
-                <Text style={styles.registrate}> Dale aquí </Text>
-              </Text>
-            </TouchableOpacity>
+              El{formCounter > 1 ? 's' : ''} formulario{formCounter > 1 ? 's' : ''} se ha enviado con numero{formCounter === 1 ? '' : 'n'}  {formCounter}
+            </Text>
+
+            <View style={styles.container}>
+              <TouchableOpacity onPress={goToFormulario}>
+                <Text style={styles.registrateText}>
+                  ¿Quieres llenar un nuevo formulario?{" "}
+                  <Text style={styles.registrate}> Presione aquí </Text>
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.container}>
+              <TouchableOpacity onPress={goToSalida}>
+                <Text style={styles.registrateText}>
+                  Si desea salir del formulario{" "}
+                  <Text style={styles.registrate}> Presione aquí </Text>
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+
           </View>
           <View style={styles.linea} />
         </View>
@@ -74,4 +101,27 @@ const styles = StyleSheet.create({
     left: 8, // Alinear a la izquierda
     right: 8, // Alinear a la derecha
   },
+  registrate: {
+    fontSize: 16,
+    marginBottom: 8,
+    fontWeight: "bold",
+    color: "#1b3f90",
+
+
+  },
+  registrateText: {
+    fontSize: 16,
+    marginBottom: 8,
+    marginTop: 30,
+
+  },
+  container: {
+    marginTop: 0,
+  },
+  texto: {
+    marginTop: 40,
+
+    fontWeight: "bold",
+    fontSize: 18,
+  }
 });
