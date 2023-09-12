@@ -5,7 +5,7 @@ import { useRoute } from '@react-navigation/native';
 
 export default function
   EnvioScreen(props) {
-  const { navigation } = props;
+  const { navigation } = props ;
   const goToFormulario = () => {
     navigation.navigate("Pregunta 2.5", { formCounter: formCounter });
   };
