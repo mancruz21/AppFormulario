@@ -11,12 +11,11 @@ import { CheckBox } from "react-native-elements";
 import { useState } from "react";
 import { includes } from "lodash";
 import appFirebase from "../components/firebase-config";
-import { addDoc, collection, getFirestore } from 'firebase/firestore';
-const db = getFirestore(appFirebase)
+import { addDoc, collection, getFirestore } from "firebase/firestore";
+const db = getFirestore(appFirebase);
 import { RealmConfigContext } from "./../../utils/models/context";
 const { useRealm } = RealmConfigContext;
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function PreCuaScreen(props) {
   const realm = useRealm();
@@ -35,31 +34,21 @@ export default function PreCuaScreen(props) {
   const [autoinmunes, setAutoinmunes] = useState("");
   const [mental, setMental] = useState(""); // Estado para capturar el texto del TextInput
 
-
   const goToPreguntaCin = () => {
-
     if (
       selectedOption !== "" &&
       (selectedOption === "No" || selectedOptions.length !== 0) && // Verifica que al menos una opción está seleccionada si es "No"
       (selectedOption !== "Si" || selectedOptions.length !== 0) &&
       (selectedOption !== "Si" || selectedOptions1.length !== 0)
-
-
-
     ) {
       navigation.navigate("Pregunta 2.3");
-    
     } else {
       Alert.alert("Error", "Por favor completa todos los campos.");
     }
- 
-
-
   };
 
- 
   const SaveComponente4 = async () => {
-    try {
+    /* try {
       await addDoc(collection(db, 'componentecuatro'), {
         pregunta4_1: selectedOption,
         pregunta4_2: selectedOptions,
@@ -75,26 +64,32 @@ export default function PreCuaScreen(props) {
     } catch (error) {
       console.error(error);
 
-    }
+    } */
 
     try {
       realm.write(() => {
-        realm.create('component4', {
-          pregunta4_1: selectedOption.toString(),
-          pregunta4_2: selectedOptions.toString(),
-          pregunta4_3_1Transtornos: selectedOptions1.toString(),
-          pregunta4_3_Def: deficit,
-          pregunta4_3_Cron: cronicas,
-          pregunta4_3_Infec: infecciosas,
-          pregunta4_3_4_Sens: sensoriales,
-          pregunta4_3_5Less: lesiones,
-          pregunta4_3_6_Auto: autoinmunes,
-          pregunta4_4: selectedOption1.toString(),
-        });
+        const personaToUpdate = realm
+          .objects("Persona")
+          .filtered("id_document = 1002965852");
+        if (personaToUpdate.length > 0) {
+          const persona = personaToUpdate[0];
+          persona.component4 = {
+            pregunta4_1: selectedOption.toString(),
+            pregunta4_2: selectedOptions.toString(),
+            pregunta4_3_1Transtornos: selectedOptions1.toString(),
+            pregunta4_3_Def: deficit,
+            pregunta4_3_Cron: cronicas,
+            pregunta4_3_Infec: infecciosas,
+            pregunta4_3_4_Sens: sensoriales,
+            pregunta4_3_5Less: lesiones,
+            pregunta4_3_6_Auto: autoinmunes,
+            pregunta4_4: selectedOption1.toString(),
+          };
+        }
       });
-      console.log('Los datos se han guardado correctamente en Realm.');
+      console.log("Los datos se han guardado correctamente en Realm.");
     } catch (error) {
-      console.error('Error al guardar datos en Realm:', error);
+      console.error("Error al guardar datos en Realm:", error);
     }
   };
 
@@ -159,10 +154,7 @@ export default function PreCuaScreen(props) {
     }
   };
 
-
   const handleOptionChange8 = (option) => {
-
-
     if (selectedOption1.includes(option)) {
       setSelectedOption1(selectedOption1.filter((item) => item !== option));
     } else {
@@ -170,7 +162,6 @@ export default function PreCuaScreen(props) {
         setSelectedOption1([...selectedOption1, option]);
       }
     }
-
   };
   const handleDeficitChange = (text) => {
     setDeficit(text);
@@ -182,8 +173,11 @@ export default function PreCuaScreen(props) {
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-            <Text style={styles.titulo}>  CONDICIONES DE SALUD </Text>
-            <Text style={styles.question}> PREGUNTA 4.1 ( SELECCIÓN ÚNICA) </Text>
+            <Text style={styles.titulo}> CONDICIONES DE SALUD </Text>
+            <Text style={styles.question}>
+              {" "}
+              PREGUNTA 4.1 ( SELECCIÓN ÚNICA){" "}
+            </Text>
           </View>
           <View style={styles.linea} />
         </View>
@@ -229,22 +223,19 @@ export default function PreCuaScreen(props) {
         </View>
       </View>
 
-
-
       {/* Pregunta 4.2 */}
-
-
 
       {selectedOption === "Si" && (
         <View style={styles.contenedorPadre}>
           <View style={styles.tarjeta}>
             <View style={styles.contenedor}>
-              <Text style={styles.question2}> PREGUNTA 4.2 (SELECCIÓN MÚLTIPLE - MÁXIMO 3 OPCIONES) </Text>
+              <Text style={styles.question2}>
+                {" "}
+                PREGUNTA 4.2 (SELECCIÓN MÚLTIPLE - MÁXIMO 3 OPCIONES){" "}
+              </Text>
               <View style={styles.linea1} />
 
-
               <View style={styles.questionContainer}>
-
                 <Text style={styles.pregunta}>
                   Indique en cuál(es) de las siguientes “actividades de la vida
                   diaria” ha presenta- do mayor dificultad durante el último año
@@ -262,7 +253,6 @@ export default function PreCuaScreen(props) {
                   }
                   checkedColor="#BA0C2F"
                 />
-
 
                 <CheckBox
                   title="	Hablar o conversar"
@@ -286,7 +276,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions.includes("Ver de cerca, de lejos o alrededor")
+                    selectedOptions.includes(
+                      "Ver de cerca, de lejos o alrededor"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -304,8 +296,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions.includes("Mover el cuerpo, caminar, subir o bajar escaleras")
-
+                    selectedOptions.includes(
+                      "Mover el cuerpo, caminar, subir o bajar escaleras"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -321,7 +314,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions.includes("Agarrar o mover objetos con las manos")
+                    selectedOptions.includes(
+                      "Agarrar o mover objetos con las manos"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -339,8 +334,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions.includes("Entender, recordar o tomar decisiones por sí mismo/a")
-
+                    selectedOptions.includes(
+                      "Entender, recordar o tomar decisiones por sí mismo/a"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -358,8 +354,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions.includes("Comer, vestirse o bañarse por sí mismo/a")
-
+                    selectedOptions.includes(
+                      "Comer, vestirse o bañarse por sí mismo/a"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -377,8 +374,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions.includes("Relacionarse o interactuar con los demás (salud mental)")
-
+                    selectedOptions.includes(
+                      "Relacionarse o interactuar con los demás (salud mental)"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -396,8 +394,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions.includes("Hacer las tareas diarias sin mostrar problemas cardiacos respiratorios o renales")
-
+                    selectedOptions.includes(
+                      "Hacer las tareas diarias sin mostrar problemas cardiacos respiratorios o renales"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -421,8 +420,10 @@ export default function PreCuaScreen(props) {
                 />
 
                 <View style={styles.questionContainer}>
-
-                  <Text style={styles.question2}> PREGUNTA 4.3 (SELECCIÓN MÚLTIPLE - MÁXIMO 2 OPCIONES) </Text>
+                  <Text style={styles.question2}>
+                    {" "}
+                    PREGUNTA 4.3 (SELECCIÓN MÚLTIPLE - MÁXIMO 2 OPCIONES){" "}
+                  </Text>
                   <View style={styles.linea1} />
                   <Text style={styles.preguntas}>
                     {" "}
@@ -432,14 +433,18 @@ export default function PreCuaScreen(props) {
                   <Text style={styles.preguntas}>
                     {" "}
                     1. Circunstancias relacionadas con alteraciones de la salud
-                    mental (incluye: trastornos mentales, del comportamiento y del
-                    desarrollo neurológico)
+                    mental (incluye: trastornos mentales, del comportamiento y
+                    del desarrollo neurológico)
                   </Text>
 
                   <CheckBox
                     title="Trastornos de ansiedad"
-                    checked={selectedOptions1.includes("Trastornos de ansiedad")}
-                    onPress={() => handleOptionChange1("Trastornos de ansiedad")}
+                    checked={selectedOptions1.includes(
+                      "Trastornos de ansiedad"
+                    )}
+                    onPress={() =>
+                      handleOptionChange1("Trastornos de ansiedad")
+                    }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
                       selectedOptions1.includes("Trastornos de ansiedad")
@@ -461,8 +466,9 @@ export default function PreCuaScreen(props) {
                     }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOptions1.includes("Trastornos del estado de ánimo o afectivos")
-
+                      selectedOptions1.includes(
+                        "Trastornos del estado de ánimo o afectivos"
+                      )
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
@@ -496,8 +502,9 @@ export default function PreCuaScreen(props) {
                     }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOptions1.includes("Trastornos relacionados con sustancias")
-
+                      selectedOptions1.includes(
+                        "Trastornos relacionados con sustancias"
+                      )
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
@@ -529,7 +536,9 @@ export default function PreCuaScreen(props) {
                     }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOptions1.includes("Trastorno por estrés postraumático")
+                      selectedOptions1.includes(
+                        "Trastorno por estrés postraumático"
+                      )
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
@@ -547,8 +556,9 @@ export default function PreCuaScreen(props) {
                     }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOptions1.includes("Déficit Intelectual / Disminución de la Capacidad Mental")
-
+                      selectedOptions1.includes(
+                        "Déficit Intelectual / Disminución de la Capacidad Mental"
+                      )
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
@@ -567,7 +577,9 @@ export default function PreCuaScreen(props) {
                           "(déficit de aprendizaje escolar )"
                         )}
                         onPress={() =>
-                          handleDeficitChange("(déficit de aprendizaje escolar )")
+                          handleDeficitChange(
+                            "(déficit de aprendizaje escolar )"
+                          )
                         }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
@@ -594,7 +606,7 @@ export default function PreCuaScreen(props) {
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
                           deficit ===
-                            "(déficit en el desarrollo de la comprensión, el movimiento y el uso del lenguaje), con dependencia parcial de un cuidador"
+                          "(déficit en el desarrollo de la comprensión, el movimiento y el uso del lenguaje), con dependencia parcial de un cuidador"
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -617,7 +629,7 @@ export default function PreCuaScreen(props) {
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
                           deficit ===
-                            "(escaso o nulo nivel del desarrollo del lenguaje, marcado déficit motor) con dependencia de cuidador"
+                          "(escaso o nulo nivel del desarrollo del lenguaje, marcado déficit motor) con dependencia de cuidador"
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -625,7 +637,6 @@ export default function PreCuaScreen(props) {
                       />
                       <View style={styles.linea} />
                     </View>
-
                   )}
 
                   <CheckBox
@@ -633,14 +644,16 @@ export default function PreCuaScreen(props) {
                     checked={selectedOptions1.includes(
                       "Otras circunstancias relacionadas con alteraciones de la salud mental"
                     )}
-                    onPress={() => handleOptionChange1(
-                      "Otras circunstancias relacionadas con alteraciones de la salud mental"
-                    )
+                    onPress={() =>
+                      handleOptionChange1(
+                        "Otras circunstancias relacionadas con alteraciones de la salud mental"
+                      )
                     }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOptions1.includes("Otras circunstancias relacionadas con alteraciones de la salud mental")
-
+                      selectedOptions1.includes(
+                        "Otras circunstancias relacionadas con alteraciones de la salud mental"
+                      )
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
@@ -650,22 +663,20 @@ export default function PreCuaScreen(props) {
                   {selectedOptions1.includes(
                     "Otras circunstancias relacionadas con alteraciones de la salud mental"
                   ) && (
-                      <View style={styles.preguntaContainer}>
-                        <Text style={styles.preguntas}>Indique cuál</Text>
-                        <TextInput
-                          style={styles.input}
-                          value={mental}
-                          onChangeText={setMental}
-                        />
-                      </View>
-                    )}
+                    <View style={styles.preguntaContainer}>
+                      <Text style={styles.preguntas}>Indique cuál</Text>
+                      <TextInput
+                        style={styles.input}
+                        value={mental}
+                        onChangeText={setMental}
+                      />
+                    </View>
+                  )}
 
                   <Text style={styles.preguntas}>
                     {" "}
                     2.Enfermedades Crónicas No Transmisibles
                   </Text>
-
-
 
                   <CheckBox
                     title="Cáncer y Neoplasias en órganos y/o Tejidos"
@@ -679,8 +690,9 @@ export default function PreCuaScreen(props) {
                     }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOptions1.includes("Cáncer y Neoplasias en órganos y/o Tejidos")
-
+                      selectedOptions1.includes(
+                        "Cáncer y Neoplasias en órganos y/o Tejidos"
+                      )
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
@@ -698,8 +710,9 @@ export default function PreCuaScreen(props) {
                     }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOptions1.includes("Cardiovasculares (corazón y sistema circulatorio)")
-
+                      selectedOptions1.includes(
+                        "Cardiovasculares (corazón y sistema circulatorio)"
+                      )
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
@@ -728,15 +741,16 @@ export default function PreCuaScreen(props) {
                         "Endocrinas, Nutricionales, Digestivas y Metabólicas"
                       )
                     }
-
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOptions1.includes("Endocrinas, Nutricionales, Digestivas y Metabólicas")
-
+                      selectedOptions1.includes(
+                        "Endocrinas, Nutricionales, Digestivas y Metabólicas"
+                      )
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
-                    checkedColor="#BA0C2F" />
+                    checkedColor="#BA0C2F"
+                  />
                   <CheckBox
                     title="Sistema Musculoesquelético"
                     checked={selectedOptions1.includes(
@@ -789,8 +803,9 @@ export default function PreCuaScreen(props) {
                     }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOptions1.includes("Otras enfermedades crónicas no transmisibles")
-
+                      selectedOptions1.includes(
+                        "Otras enfermedades crónicas no transmisibles"
+                      )
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
@@ -800,15 +815,15 @@ export default function PreCuaScreen(props) {
                   {selectedOptions1.includes(
                     "Otras enfermedades crónicas no transmisibles"
                   ) && (
-                      <View style={styles.preguntaContainer}>
-                        <Text style={styles.preguntas}>Indique cuál</Text>
-                        <TextInput
-                          style={styles.input}
-                          value={cronicas}
-                          onChangeText={setCronicas}
-                        />
-                      </View>
-                    )}
+                    <View style={styles.preguntaContainer}>
+                      <Text style={styles.preguntas}>Indique cuál</Text>
+                      <TextInput
+                        style={styles.input}
+                        value={cronicas}
+                        onChangeText={setCronicas}
+                      />
+                    </View>
+                  )}
 
                   <Text style={styles.preguntas}>
                     3. Enfermedades Transmisibles o Infecciosas
@@ -841,7 +856,9 @@ export default function PreCuaScreen(props) {
                   />
                   <CheckBox
                     title="Transmitidas por vectores"
-                    checked={selectedOptions1.includes("Transmitidas por vectores")}
+                    checked={selectedOptions1.includes(
+                      "Transmitidas por vectores"
+                    )}
                     onPress={() =>
                       handleOptionChange1("Transmitidas por vectores")
                     }
@@ -863,7 +880,9 @@ export default function PreCuaScreen(props) {
                     }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOptions1.includes("Otras enfermedades infecciosas")
+                      selectedOptions1.includes(
+                        "Otras enfermedades infecciosas"
+                      )
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
@@ -873,19 +892,19 @@ export default function PreCuaScreen(props) {
                   {selectedOptions1.includes(
                     "Otras enfermedades infecciosas"
                   ) && (
-                      <View style={styles.preguntaContainer}>
-                        <Text style={styles.preguntas}>Indique cuál</Text>
-                        <TextInput
-                          style={styles.input}
-                          value={infecciosas}
-                          onChangeText={setInfecciosas}
-                        />
-                      </View>
-                    )}
+                    <View style={styles.preguntaContainer}>
+                      <Text style={styles.preguntas}>Indique cuál</Text>
+                      <TextInput
+                        style={styles.input}
+                        value={infecciosas}
+                        onChangeText={setInfecciosas}
+                      />
+                    </View>
+                  )}
 
                   <Text style={styles.preguntas}>
-                    4. Enfermedades Sensoriales o relacionadas con los órganos de
-                    los sentidos{" "}
+                    4. Enfermedades Sensoriales o relacionadas con los órganos
+                    de los sentidos{" "}
                   </Text>
 
                   <CheckBox
@@ -911,7 +930,9 @@ export default function PreCuaScreen(props) {
                     }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOptions1.includes("Alteraciones visuales y ceguera")
+                      selectedOptions1.includes(
+                        "Alteraciones visuales y ceguera"
+                      )
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
@@ -929,7 +950,9 @@ export default function PreCuaScreen(props) {
                     }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOptions1.includes("Alteraciones de la piel y tejido subcutáneo")
+                      selectedOptions1.includes(
+                        "Alteraciones de la piel y tejido subcutáneo"
+                      )
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
@@ -947,8 +970,9 @@ export default function PreCuaScreen(props) {
                     }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOptions1.includes("Otras enfermedades sensoriales de los órganos de los sentidos")
-
+                      selectedOptions1.includes(
+                        "Otras enfermedades sensoriales de los órganos de los sentidos"
+                      )
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
@@ -958,15 +982,15 @@ export default function PreCuaScreen(props) {
                   {selectedOptions1.includes(
                     "Otras enfermedades sensoriales de los órganos de los sentidos"
                   ) && (
-                      <View style={styles.preguntaContainer}>
-                        <Text style={styles.preguntas}>Indique cuál</Text>
-                        <TextInput
-                          style={styles.input}
-                          value={sensoriales}
-                          onChangeText={setSensoriales}
-                        />
-                      </View>
-                    )}
+                    <View style={styles.preguntaContainer}>
+                      <Text style={styles.preguntas}>Indique cuál</Text>
+                      <TextInput
+                        style={styles.input}
+                        value={sensoriales}
+                        onChangeText={setSensoriales}
+                      />
+                    </View>
+                  )}
 
                   <Text style={styles.preguntas}>
                     5. Lesiones de Causa Externa{" "}
@@ -1009,8 +1033,9 @@ export default function PreCuaScreen(props) {
                     }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOptions1.includes("Desastre Natural / Evento Catastrófico")
-
+                      selectedOptions1.includes(
+                        "Desastre Natural / Evento Catastrófico"
+                      )
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
@@ -1018,8 +1043,12 @@ export default function PreCuaScreen(props) {
                   />
                   <CheckBox
                     title="Lesiones Autoinfligida"
-                    checked={selectedOptions1.includes("Lesiones Autoinfligida")}
-                    onPress={() => handleOptionChange1("Lesiones Autoinfligida")}
+                    checked={selectedOptions1.includes(
+                      "Lesiones Autoinfligida"
+                    )}
+                    onPress={() =>
+                      handleOptionChange1("Lesiones Autoinfligida")
+                    }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
                       selectedOptions1.includes("Lesiones Autoinfligida")
@@ -1070,8 +1099,9 @@ export default function PreCuaScreen(props) {
                     }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOptions1.includes("Minas Antipersonal (MAP) / Municiones sin Explotar (MUSE)")
-
+                      selectedOptions1.includes(
+                        "Minas Antipersonal (MAP) / Municiones sin Explotar (MUSE)"
+                      )
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
@@ -1096,11 +1126,15 @@ export default function PreCuaScreen(props) {
                       "Otras causas de lesiones accidentales"
                     )}
                     onPress={() =>
-                      handleOptionChange1("Otras causas de lesiones accidentales")
+                      handleOptionChange1(
+                        "Otras causas de lesiones accidentales"
+                      )
                     }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOptions1.includes("Otras causas de lesiones accidentales")
+                      selectedOptions1.includes(
+                        "Otras causas de lesiones accidentales"
+                      )
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
@@ -1110,19 +1144,17 @@ export default function PreCuaScreen(props) {
                   {selectedOptions1.includes(
                     "Otras causas de lesiones accidentales"
                   ) && (
-                      <View style={styles.preguntaContainer}>
-                        <Text style={styles.preguntas}>Indique cuál</Text>
-                        <TextInput
-                          style={styles.input}
-                          value={lesiones}
-                          onChangeText={setLesiones}
-                        />
-                      </View>
-                    )}
+                    <View style={styles.preguntaContainer}>
+                      <Text style={styles.preguntas}>Indique cuál</Text>
+                      <TextInput
+                        style={styles.input}
+                        value={lesiones}
+                        onChangeText={setLesiones}
+                      />
+                    </View>
+                  )}
 
-                  <Text style={styles.preguntas}>
-                    6. Otras circunstancias
-                  </Text>
+                  <Text style={styles.preguntas}>6. Otras circunstancias</Text>
 
                   <CheckBox
                     title="Envejecimiento"
@@ -1149,8 +1181,9 @@ export default function PreCuaScreen(props) {
                     }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      selectedOptions1.includes("Complicaciones asociadas con el Embarazo, Parto y Posparto")
-
+                      selectedOptions1.includes(
+                        "Complicaciones asociadas con el Embarazo, Parto y Posparto"
+                      )
                         ? styles.selectedOptionText
                         : styles.checkBoxText
                     }
@@ -1213,11 +1246,8 @@ export default function PreCuaScreen(props) {
                       selectedOptions1.includes("Ninguna de las anteriores")
                         ? styles.selectedOptionText
                         : styles.checkBoxText
-
                     }
                     checkedColor="#BA0C2F"
-
-
                   />
                 </View>
 
@@ -1229,15 +1259,17 @@ export default function PreCuaScreen(props) {
                     <View style={styles.linea1} />
 
                     <Text style={styles.preguntas}>
-                      Su condición de salud en el último año está relacionada con mayor
-                      frecuencia con la alteración de:
+                      Su condición de salud en el último año está relacionada
+                      con mayor frecuencia con la alteración de:
                     </Text>
 
                     <View style={styles.inputDate}>
                       <CheckBox
                         title="Funciones mentales"
                         checked={selectedOption1.includes("Funciones mentales")}
-                        onPress={() => handleOptionChange8("Funciones mentales")}
+                        onPress={() =>
+                          handleOptionChange8("Funciones mentales")
+                        }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
                           selectedOption1.includes("Funciones mentales")
@@ -1258,8 +1290,9 @@ export default function PreCuaScreen(props) {
                         }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
-                          selectedOption1.includes("Funciones sensoriales para la captación de estímulos")
-
+                          selectedOption1.includes(
+                            "Funciones sensoriales para la captación de estímulos"
+                          )
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -1276,7 +1309,9 @@ export default function PreCuaScreen(props) {
                         }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
-                          selectedOption1.includes("Funciones de la voz y el habla")
+                          selectedOption1.includes(
+                            "Funciones de la voz y el habla"
+                          )
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -1295,8 +1330,9 @@ export default function PreCuaScreen(props) {
                         }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
-                          selectedOption1.includes("Funciones de los sistemas cardiovascular, hematológico, inmunológico y respiratorio")
-
+                          selectedOption1.includes(
+                            "Funciones de los sistemas cardiovascular, hematológico, inmunológico y respiratorio"
+                          )
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -1315,8 +1351,9 @@ export default function PreCuaScreen(props) {
                         }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
-                          selectedOption1.includes("Funciones de los sistemas digestivos, metabólico y endocrino (las hormonas)")
-
+                          selectedOption1.includes(
+                            "Funciones de los sistemas digestivos, metabólico y endocrino (las hormonas)"
+                          )
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -1335,8 +1372,9 @@ export default function PreCuaScreen(props) {
                         }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
-                          selectedOption1.includes("Funciones genitourinarias y reproductoras")
-
+                          selectedOption1.includes(
+                            "Funciones genitourinarias y reproductoras"
+                          )
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -1355,8 +1393,9 @@ export default function PreCuaScreen(props) {
                         }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
-                          selectedOption1.includes("Funciones neuromusculoesqueléticas y relacionadas con el movimiento")
-
+                          selectedOption1.includes(
+                            "Funciones neuromusculoesqueléticas y relacionadas con el movimiento"
+                          )
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -1375,8 +1414,9 @@ export default function PreCuaScreen(props) {
                         }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
-                          selectedOption1.includes("Funciones de la piel y estructuras relacionadas (uñas, cabello)")
-
+                          selectedOption1.includes(
+                            "Funciones de la piel y estructuras relacionadas (uñas, cabello)"
+                          )
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -1385,8 +1425,12 @@ export default function PreCuaScreen(props) {
 
                       <CheckBox
                         title="Ninguna de las anteriores"
-                        checked={selectedOption1.includes("Ninguna de las anteriores")}
-                        onPress={() => handleOptionChange8("Ninguna de las anteriores")}
+                        checked={selectedOption1.includes(
+                          "Ninguna de las anteriores"
+                        )}
+                        onPress={() =>
+                          handleOptionChange8("Ninguna de las anteriores")
+                        }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
                           selectedOption1.includes("Ninguna de las anteriores")
@@ -1395,42 +1439,29 @@ export default function PreCuaScreen(props) {
                         }
                         checkedColor="#BA0C2F"
                       />
-
                     </View>
-                    <Text style={styles.advertencia}>Nota: (Validar con respuesta 4.3.) </Text>
+                    <Text style={styles.advertencia}>
+                      Nota: (Validar con respuesta 4.3.){" "}
+                    </Text>
                   </View>
                 )}
-
-
-
               </View>
-
             </View>
-
           </View>
         </View>
-
-
-
-
-
       )}
-
-
-
 
       {/* Pregunta 4.3 */}
 
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-
-
             {selectedOption === "No" && (
-
               <View style={styles.questionContainer}>
-
-                <Text style={styles.question2}> PREGUNTA 4.3 (SELECCIÓN MÚLTIPLE - MÁXIMO 2 OPCIONES) </Text>
+                <Text style={styles.question2}>
+                  {" "}
+                  PREGUNTA 4.3 (SELECCIÓN MÚLTIPLE - MÁXIMO 2 OPCIONES){" "}
+                </Text>
                 <View style={styles.linea1} />
                 <Text style={styles.preguntas}>
                   {" "}
@@ -1469,8 +1500,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions1.includes("Trastornos del estado de ánimo o afectivos")
-
+                    selectedOptions1.includes(
+                      "Trastornos del estado de ánimo o afectivos"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -1504,8 +1536,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions1.includes("Trastornos relacionados con sustancias")
-
+                    selectedOptions1.includes(
+                      "Trastornos relacionados con sustancias"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -1537,7 +1570,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions1.includes("Trastorno por estrés postraumático")
+                    selectedOptions1.includes(
+                      "Trastorno por estrés postraumático"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -1555,8 +1590,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions1.includes("Déficit Intelectual / Disminución de la Capacidad Mental")
-
+                    selectedOptions1.includes(
+                      "Déficit Intelectual / Disminución de la Capacidad Mental"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -1602,7 +1638,7 @@ export default function PreCuaScreen(props) {
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
                         deficit ===
-                          "(déficit en el desarrollo de la comprensión, el movimiento y el uso del lenguaje), con dependencia parcial de un cuidador"
+                        "(déficit en el desarrollo de la comprensión, el movimiento y el uso del lenguaje), con dependencia parcial de un cuidador"
                           ? styles.selectedOptionText
                           : styles.checkBoxText
                       }
@@ -1625,7 +1661,7 @@ export default function PreCuaScreen(props) {
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
                         deficit ===
-                          "(escaso o nulo nivel del desarrollo del lenguaje, marcado déficit motor) con dependencia de cuidador"
+                        "(escaso o nulo nivel del desarrollo del lenguaje, marcado déficit motor) con dependencia de cuidador"
                           ? styles.selectedOptionText
                           : styles.checkBoxText
                       }
@@ -1633,7 +1669,6 @@ export default function PreCuaScreen(props) {
                     />
                     <View style={styles.linea} />
                   </View>
-
                 )}
 
                 <CheckBox
@@ -1641,14 +1676,16 @@ export default function PreCuaScreen(props) {
                   checked={selectedOptions1.includes(
                     "Otras circunstancias relacionadas con alteraciones de la salud mental"
                   )}
-                  onPress={() => handleOptionChange1(
-                    "Otras circunstancias relacionadas con alteraciones de la salud mental"
-                  )
+                  onPress={() =>
+                    handleOptionChange1(
+                      "Otras circunstancias relacionadas con alteraciones de la salud mental"
+                    )
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions1.includes("Otras circunstancias relacionadas con alteraciones de la salud mental")
-
+                    selectedOptions1.includes(
+                      "Otras circunstancias relacionadas con alteraciones de la salud mental"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -1658,22 +1695,20 @@ export default function PreCuaScreen(props) {
                 {selectedOptions1.includes(
                   "Otras circunstancias relacionadas con alteraciones de la salud mental"
                 ) && (
-                    <View style={styles.preguntaContainer}>
-                      <Text style={styles.preguntas}>Indique cuál</Text>
-                      <TextInput
-                        style={styles.input}
-                        value={mental}
-                        onChangeText={setMental}
-                      />
-                    </View>
-                  )}
+                  <View style={styles.preguntaContainer}>
+                    <Text style={styles.preguntas}>Indique cuál</Text>
+                    <TextInput
+                      style={styles.input}
+                      value={mental}
+                      onChangeText={setMental}
+                    />
+                  </View>
+                )}
 
                 <Text style={styles.preguntas}>
                   {" "}
                   2.Enfermedades Crónicas No Transmisibles
                 </Text>
-
-
 
                 <CheckBox
                   title="Cáncer y Neoplasias en órganos y/o Tejidos"
@@ -1687,8 +1722,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions1.includes("Cáncer y Neoplasias en órganos y/o Tejidos")
-
+                    selectedOptions1.includes(
+                      "Cáncer y Neoplasias en órganos y/o Tejidos"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -1706,8 +1742,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions1.includes("Cardiovasculares (corazón y sistema circulatorio)")
-
+                    selectedOptions1.includes(
+                      "Cardiovasculares (corazón y sistema circulatorio)"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -1735,15 +1772,16 @@ export default function PreCuaScreen(props) {
                       "Endocrinas, Nutricionales, Digestivas y Metabólicas"
                     )
                   }
-
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions1.includes("Endocrinas, Nutricionales, Digestivas y Metabólicas")
-
+                    selectedOptions1.includes(
+                      "Endocrinas, Nutricionales, Digestivas y Metabólicas"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
-                  checkedColor="#BA0C2F" />
+                  checkedColor="#BA0C2F"
+                />
                 <CheckBox
                   title="Sistema Musculoesquelético"
                   checked={selectedOptions1.includes(
@@ -1796,8 +1834,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions1.includes("Otras enfermedades crónicas no transmisibles")
-
+                    selectedOptions1.includes(
+                      "Otras enfermedades crónicas no transmisibles"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -1807,15 +1846,15 @@ export default function PreCuaScreen(props) {
                 {selectedOptions1.includes(
                   "Otras enfermedades crónicas no transmisibles"
                 ) && (
-                    <View style={styles.preguntaContainer}>
-                      <Text style={styles.preguntas}>Indique cuál</Text>
-                      <TextInput
-                        style={styles.input}
-                        value={cronicas}
-                        onChangeText={setCronicas}
-                      />
-                    </View>
-                  )}
+                  <View style={styles.preguntaContainer}>
+                    <Text style={styles.preguntas}>Indique cuál</Text>
+                    <TextInput
+                      style={styles.input}
+                      value={cronicas}
+                      onChangeText={setCronicas}
+                    />
+                  </View>
+                )}
 
                 <Text style={styles.preguntas}>
                   3. Enfermedades Transmisibles o Infecciosas
@@ -1848,7 +1887,9 @@ export default function PreCuaScreen(props) {
                 />
                 <CheckBox
                   title="Transmitidas por vectores"
-                  checked={selectedOptions1.includes("Transmitidas por vectores")}
+                  checked={selectedOptions1.includes(
+                    "Transmitidas por vectores"
+                  )}
                   onPress={() =>
                     handleOptionChange1("Transmitidas por vectores")
                   }
@@ -1880,15 +1921,15 @@ export default function PreCuaScreen(props) {
                 {selectedOptions1.includes(
                   "Otras enfermedades infecciosas"
                 ) && (
-                    <View style={styles.preguntaContainer}>
-                      <Text style={styles.preguntas}>Indique cuál</Text>
-                      <TextInput
-                        style={styles.input}
-                        value={infecciosas}
-                        onChangeText={setInfecciosas}
-                      />
-                    </View>
-                  )}
+                  <View style={styles.preguntaContainer}>
+                    <Text style={styles.preguntas}>Indique cuál</Text>
+                    <TextInput
+                      style={styles.input}
+                      value={infecciosas}
+                      onChangeText={setInfecciosas}
+                    />
+                  </View>
+                )}
 
                 <Text style={styles.preguntas}>
                   4. Enfermedades Sensoriales o relacionadas con los órganos de
@@ -1936,7 +1977,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions1.includes("Alteraciones de la piel y tejido subcutáneo")
+                    selectedOptions1.includes(
+                      "Alteraciones de la piel y tejido subcutáneo"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -1954,8 +1997,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions1.includes("Otras enfermedades sensoriales de los órganos de los sentidos")
-
+                    selectedOptions1.includes(
+                      "Otras enfermedades sensoriales de los órganos de los sentidos"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -1965,15 +2009,15 @@ export default function PreCuaScreen(props) {
                 {selectedOptions1.includes(
                   "Otras enfermedades sensoriales de los órganos de los sentidos"
                 ) && (
-                    <View style={styles.preguntaContainer}>
-                      <Text style={styles.preguntas}>Indique cuál</Text>
-                      <TextInput
-                        style={styles.input}
-                        value={sensoriales}
-                        onChangeText={setSensoriales}
-                      />
-                    </View>
-                  )}
+                  <View style={styles.preguntaContainer}>
+                    <Text style={styles.preguntas}>Indique cuál</Text>
+                    <TextInput
+                      style={styles.input}
+                      value={sensoriales}
+                      onChangeText={setSensoriales}
+                    />
+                  </View>
+                )}
 
                 <Text style={styles.preguntas}>
                   5. Lesiones de Causa Externa{" "}
@@ -2016,8 +2060,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions1.includes("Desastre Natural / Evento Catastrófico")
-
+                    selectedOptions1.includes(
+                      "Desastre Natural / Evento Catastrófico"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -2077,8 +2122,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions1.includes("Minas Antipersonal (MAP) / Municiones sin Explotar (MUSE)")
-
+                    selectedOptions1.includes(
+                      "Minas Antipersonal (MAP) / Municiones sin Explotar (MUSE)"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -2107,7 +2153,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions1.includes("Otras causas de lesiones accidentales")
+                    selectedOptions1.includes(
+                      "Otras causas de lesiones accidentales"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -2117,19 +2165,17 @@ export default function PreCuaScreen(props) {
                 {selectedOptions1.includes(
                   "Otras causas de lesiones accidentales"
                 ) && (
-                    <View style={styles.preguntaContainer}>
-                      <Text style={styles.preguntas}>Indique cuál</Text>
-                      <TextInput
-                        style={styles.input}
-                        value={lesiones}
-                        onChangeText={setLesiones}
-                      />
-                    </View>
-                  )}
+                  <View style={styles.preguntaContainer}>
+                    <Text style={styles.preguntas}>Indique cuál</Text>
+                    <TextInput
+                      style={styles.input}
+                      value={lesiones}
+                      onChangeText={setLesiones}
+                    />
+                  </View>
+                )}
 
-                <Text style={styles.preguntas}>
-                  6. Otras circunstancias
-                </Text>
+                <Text style={styles.preguntas}>6. Otras circunstancias</Text>
 
                 <CheckBox
                   title="Envejecimiento"
@@ -2156,8 +2202,9 @@ export default function PreCuaScreen(props) {
                   }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selectedOptions1.includes("Complicaciones asociadas con el Embarazo, Parto y Posparto")
-
+                    selectedOptions1.includes(
+                      "Complicaciones asociadas con el Embarazo, Parto y Posparto"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -2220,24 +2267,19 @@ export default function PreCuaScreen(props) {
                     selectedOptions1.includes("Ninguna de las anteriores")
                       ? styles.selectedOptionText
                       : styles.checkBoxText
-
                   }
                   checkedColor="#BA0C2F"
-
-
                 />
               </View>
             )}
 
-
-
-
-
             {/* Boton */}
-            <TouchableOpacity style={styles.boton} onPress={() => {
-              goToPreguntaCin();
-              SaveComponente4();
-            }}
+            <TouchableOpacity
+              style={styles.boton}
+              onPress={() => {
+                goToPreguntaCin();
+                SaveComponente4();
+              }}
             >
               <Text style={styles.textoBoton}>Siguiente</Text>
             </TouchableOpacity>
@@ -2259,7 +2301,6 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 20,
     marginBottom: 15,
-
   },
   textoBoton: {
     textAlign: "center",
@@ -2280,11 +2321,10 @@ const styles = StyleSheet.create({
 
   pregunta: {
     marginBottom: 5,
-    textAlign: 'justify',
+    textAlign: "justify",
     marginTop: -15,
     fontWeight: "bold",
     fontSize: 16,
-
   },
   preguntas: {
     color: "#000000",
@@ -2316,21 +2356,21 @@ const styles = StyleSheet.create({
   },
   linea: {
     marginTop: "auto",
-    height: 6,              // Altura de la línea
-    backgroundColor: "#BA0C2F",  // Color de la línea (rojo en este caso)
-    position: 'absolute',   // Posición absoluta para que se superponga al contenido
-    bottom: 0,              // Se coloca en la parte inferior de la tarjeta
-    left: 8,                // Alinear a la izquierda
-    right: 8,               // Alinear a la derecha
+    height: 6, // Altura de la línea
+    backgroundColor: "#BA0C2F", // Color de la línea (rojo en este caso)
+    position: "absolute", // Posición absoluta para que se superponga al contenido
+    bottom: 0, // Se coloca en la parte inferior de la tarjeta
+    left: 8, // Alinear a la izquierda
+    right: 8, // Alinear a la derecha
   },
   linea1: {
     marginTop: 8,
-    height: 6,              // Altura de la línea
-    backgroundColor: "#BA0C2F",  // Color de la línea (rojo en este caso)
-    position: 'relative',   // Posición absoluta para que se superponga al contenido
-    bottom: 20,              // Se coloca en la parte inferior de la tarjeta
-    left: 0,                // Alinear a la izquierda
-    right: 0,               // Alinear a la derecha
+    height: 6, // Altura de la línea
+    backgroundColor: "#BA0C2F", // Color de la línea (rojo en este caso)
+    position: "relative", // Posición absoluta para que se superponga al contenido
+    bottom: 20, // Se coloca en la parte inferior de la tarjeta
+    left: 0, // Alinear a la izquierda
+    right: 0, // Alinear a la derecha
   },
 
   /* Estilo Formulario*/
@@ -2396,7 +2436,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 
-
   botonDate: {
     backgroundColor: "#007bff",
     borderRadius: 5,
@@ -2419,8 +2458,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 
-
-
   inputContainer: {
     marginTop: 20,
   },
@@ -2439,9 +2476,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-
-
-
   preguntaContainer: {
     marginBottom: 16,
   },
@@ -2455,11 +2489,10 @@ const styles = StyleSheet.create({
 
   advertencia: {
     marginBottom: 5,
-    textAlign: 'justify',
+    textAlign: "justify",
     marginTop: 5,
     fontWeight: "bold",
     color: "#BA0C2F",
     fontSize: 16,
-
   },
 });

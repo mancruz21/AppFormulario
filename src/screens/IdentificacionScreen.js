@@ -92,7 +92,7 @@ export default function IdentificacionScreen(props) {
   };
   //Metodo para guardar en firestore
   const SaveIdent = async () => {
-    try {
+    /* try {
       const docRef = await addDoc(collection(db, 'identificacion'), {
         tipoIdentificacion: selectedOption,
         numeroIdentificacion: numeroIdentificacion,
@@ -103,7 +103,7 @@ export default function IdentificacionScreen(props) {
 
     } catch (error) {
       console.error(error);
-    }
+    } */
   }
   useEffect(() => {
     if (selectedOption !== '' && (selectedOption === 'AdultoSinIdentificacion' || selectedOption === 'AdultoSinIdentificacionAnonimo' || numeroIdentificacion !== '')) {

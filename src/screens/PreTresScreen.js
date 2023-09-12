@@ -107,19 +107,26 @@ export default function PreTresScreen(props) {
 
     try {
       realm.write(() => {
-        realm.create("component3", {
-          pregunta3_1: selectedOption,
-          pregunta3_2: aseguradora,
-          pregunta3_3: selectedOption2,
-          municipio_pregunta3_3: municipio,
-          pregunta3_4: selectedOption3 ? selectedOption3 : "Null",
-          municipio_pregunta3_4: selectedOption3 === "No" ? municipio : "null",
-          departamento_pregunta3_4:
-            selectedOption3 === "No" ? nombreDepartamento : "null",
-          municipio: "string",
-          departamento_pregunta3_4: "string",
-          nombreDepartamento: "string",
-        });
+        const personaToUpdate = realm
+          .objects("Persona")
+          .filtered("id_document = 1002965852");
+        if (personaToUpdate.length > 0) {
+          const persona = personaToUpdate[0];
+          persona.component3 = {
+            pregunta3_1: selectedOption,
+            pregunta3_2: aseguradora,
+            pregunta3_3: selectedOption2,
+            municipio_pregunta3_3: municipio,
+            pregunta3_4: selectedOption3 ? selectedOption3 : "Null",
+            municipio_pregunta3_4:
+              selectedOption3 === "No" ? municipio : "null",
+            departamento_pregunta3_4:
+              selectedOption3 === "No" ? nombreDepartamento : "null",
+            municipio: "string",
+            departamento_pregunta3_4: "string",
+            nombreDepartamento: "string",
+          };
+        }
       });
       console.log("Los datos se han guardado correctamente en Realm.");
     } catch (error) {

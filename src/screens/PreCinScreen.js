@@ -1,10 +1,17 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { Button, CheckBox } from 'react-native-elements';
-import { ScrollView } from 'react-native-gesture-handler';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import React, { useState, useEffect } from "react";
+import { Button, CheckBox } from "react-native-elements";
+import { ScrollView } from "react-native-gesture-handler";
 import appFirebase from "../components/firebase-config";
-import { addDoc, collection, getFirestore } from 'firebase/firestore';
-const db = getFirestore(appFirebase)
+import { addDoc, collection, getFirestore } from "firebase/firestore";
+const db = getFirestore(appFirebase);
 import { RealmConfigContext } from "./../../utils/models/context";
 const { useRealm } = RealmConfigContext;
 
@@ -14,7 +21,6 @@ export default function PreCinScreen(props) {
   const [selectedOption2, setSelectedOption2] = useState([]);
 
   const [selectedOption222, setSelectedOption222] = useState([]);
-
 
   const [selectedOption1, setSelectedOption1] = useState("");
   const [selected1Option, setSelected1Option] = useState([]);
@@ -36,25 +42,24 @@ export default function PreCinScreen(props) {
   const [selectedOption22, setSelectedOption22] = useState("");
   const [selectedOption11, setSelectedOption11] = useState([]);
   //Constantes para campos de texto municipios
-  const [municipio, setMunicipio] = useState('');
-  const [otro, setOtro] = useState('');
-  const [otro1, setOtro1] = useState('');
-  const [otro2, setOtro2] = useState('');
-  const [otro3, setOtro3] = useState('');
-  const [nombre, setNombre] = useState('');
-  const [lugar, setLugar] = useState('');
+  const [municipio, setMunicipio] = useState("");
+  const [otro, setOtro] = useState("");
+  const [otro1, setOtro1] = useState("");
+  const [otro2, setOtro2] = useState("");
+  const [otro3, setOtro3] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [lugar, setLugar] = useState("");
   const [showTextInput, setShowTextInput] = useState(false);
   const [showTextInput1, setShowTextInput1] = useState(false);
   const [showTextInput2, setShowTextInput2] = useState(false);
   const [showTextInput3, setShowTextInput3] = useState(false);
   const [transporte, setTransporte] = useState([]);
 
-
   //Constantes para campos de texto, Otros
-  const [motivo, setMotivo] = useState('');
-  const [motivo1, setMotivo1] = useState('');
-  const [motivo2, setMotivo2] = useState('');
-  const [motivo3, setMotivo3] = useState('');
+  const [motivo, setMotivo] = useState("");
+  const [motivo1, setMotivo1] = useState("");
+  const [motivo2, setMotivo2] = useState("");
+  const [motivo3, setMotivo3] = useState("");
 
   //Constante para pregunta 5.12
   const [selectedColumns, setSelectedColumns] = useState(Array(4).fill(-1));
@@ -80,21 +85,38 @@ export default function PreCinScreen(props) {
     .fill(null)
     .map((_, rowIndex) =>
       Array(4)
-        .fill('white')
+        .fill("white")
         .map((color, colIndex) =>
-          colIndex === 0 ? 'white' : selectedColumns[colIndex] === rowIndex ? '#BA0C2F' : 'white'
+          colIndex === 0
+            ? "white"
+            : selectedColumns[colIndex] === rowIndex
+            ? "#BA0C2F"
+            : "white"
         )
     );
 
   const cellTexts = [
-    ['', 'Costo en dinero de la atención', 'Costo en dinero del transporte', 'Tiempo de desplazamiento hasta el servicio de rehabilitación'],
-    ['BAJA', 'Entre $0  $2.900', 'Entre $0  $2.900', 'Entre 15m  30m'],
-    ['MEDIA', 'Entre $3.000  $14.900', 'Entre $3.000  $9.900', 'Entre 30m  60m'],
-    ['ALTA', 'Entre $15.000  $29.900', 'Entre $10.000  $29.900', 'Entre 60m  90m'],
-    ['MUY ALTA', 'Entre $30.000  $60.000', 'Entre $29.900  $60.000', '> 90m'],
+    [
+      "",
+      "Costo en dinero de la atención",
+      "Costo en dinero del transporte",
+      "Tiempo de desplazamiento hasta el servicio de rehabilitación",
+    ],
+    ["BAJA", "Entre $0  $2.900", "Entre $0  $2.900", "Entre 15m  30m"],
+    [
+      "MEDIA",
+      "Entre $3.000  $14.900",
+      "Entre $3.000  $9.900",
+      "Entre 30m  60m",
+    ],
+    [
+      "ALTA",
+      "Entre $15.000  $29.900",
+      "Entre $10.000  $29.900",
+      "Entre 60m  90m",
+    ],
+    ["MUY ALTA", "Entre $30.000  $60.000", "Entre $29.900  $60.000", "> 90m"],
   ];
-
-
 
   //Constante para pregunta 5.13
 
@@ -121,22 +143,30 @@ export default function PreCinScreen(props) {
     .fill(null)
     .map((_, rowIndex) =>
       Array(4)
-        .fill('white')
+        .fill("white")
         .map((color, colIndex) =>
-          colIndex === 0 ? 'white' : selectedColumns1[colIndex] === rowIndex ? '#BA0C2F' : 'white'
+          colIndex === 0
+            ? "white"
+            : selectedColumns1[colIndex] === rowIndex
+            ? "#BA0C2F"
+            : "white"
         )
     );
 
   const cellTexts1 = [
-    ['', 'Oportunidad en la asignación de la cita', 'Calidad en la atención por parte del profesional', 'Satisfacción de la atención recibida'],
-    ['ALTA', '< 3 días', '8 - 10 ', '8 - 10 '],
-    ['MEDIA', '3 - 5 días', '4 - 7 ', '4 - 7 '],
-    ['BAJA', '> 5 días', '1 - 3 ', '1 - 3 '],
+    [
+      "",
+      "Oportunidad en la asignación de la cita",
+      "Calidad en la atención por parte del profesional",
+      "Satisfacción de la atención recibida",
+    ],
+    ["ALTA", "< 3 días", "8 - 10 ", "8 - 10 "],
+    ["MEDIA", "3 - 5 días", "4 - 7 ", "4 - 7 "],
+    ["BAJA", "> 5 días", "1 - 3 ", "1 - 3 "],
   ];
   const [opcionOtro, setOpcionOtro] = useState(false);
-  const [otroTexto, setOtroTexto] = useState('');
+  const [otroTexto, setOtroTexto] = useState("");
   const [selecteOptions, setSelecteOptions] = useState([]);
-
 
   useEffect(() => {
     // Check if the "Otro" option is selected and show/hide the text input accordingly
@@ -144,7 +174,7 @@ export default function PreCinScreen(props) {
       setOpcionOtro(true);
     } else {
       setOpcionOtro(false);
-      setOtroTexto('');
+      setOtroTexto("");
     }
   }, [selecteOptions]);
   const { navigation } = props;
@@ -152,77 +182,79 @@ export default function PreCinScreen(props) {
   const goToPreguntaSeis = () => {
     if (
       selectedOption !== "" &&
-      (selectedOption === "Si" ? (selectedOptions.length !== 0) : true) &&
+      (selectedOption === "Si" ? selectedOptions.length !== 0 : true) &&
       selectedOption3 !== "" &&
-      (selectedOption3 === "Si" ? (selectedOption2.length !== 0) : true) &&
-      (selectedOption3 === "No" ? (selectedOption22.length !== 0) : true) &&
+      (selectedOption3 === "Si" ? selectedOption2.length !== 0 : true) &&
+      (selectedOption3 === "No" ? selectedOption22.length !== 0 : true) &&
       selectedOption1 !== "" &&
-      (selectedOption1 === "No" ? (selected1Option.length !== 0) : true) 
-      
-      
+      (selectedOption1 === "No" ? selected1Option.length !== 0 : true)
     ) {
       navigation.navigate("Pregunta 2.4");
       console.log("Opcion 1:", selectedOption11);
     } else {
-      
       Alert.alert("Error", "Por favor completa todos los campos.");
     }
     try {
       realm.write(() => {
-        realm.create('component5', {
-          pregunta5_1: "string",
-          pregunta5_1_SI: "string",
-          pregunta5_1_OtrosServi: "string",
-          pregunta5_1_Otro: "string",
-          pregunta5_2: "string",
-          pregunta5_3: "string",
-          pregunta5_3_1_OtrosServ: "string",
-          pregunta5_3_2_Otro: "string",
-          pregunta5_4: "string",
-          pregunta5_4_1: "string",
-          pregunta5_5: "string",
-          pregunta5_6: "string",
-          pregunta5_6_1_OtroServ: "string",
-          pregunta5_6_2_Otro: "string",
-          pregunta5_7: "string",
-          pregunta5_8: "string",
-          pregunta5_8_1: "string",
-          pregunta5_8_2: "string",
-          pregunta5_9: "string",
-          pregunta5_10: "string",
-          pregunta5_10_1: "string",
-          pregunta5_10_2: "string",
-          pregunta5_11: "string",
-          pregunta5_12: "string",
-          pregunta5_13: "string",
-          pregunta5_14: "string",
-          pregunta5_14_1: "string",
-        });
+        const personaToUpdate = realm
+          .objects("Persona")
+          .filtered("id_document = 1002965852");
+        if (personaToUpdate.length > 0) {
+          const persona = personaToUpdate[0];
+          persona.component5 = {
+            pregunta5_1: "string",
+            pregunta5_1_SI: "string",
+            pregunta5_1_OtrosServi: "string",
+            pregunta5_1_Otro: "string",
+            pregunta5_2: "string",
+            pregunta5_3: "string",
+            pregunta5_3_1_OtrosServ: "string",
+            pregunta5_3_2_Otro: "string",
+            pregunta5_4: "string",
+            pregunta5_4_1: "string",
+            pregunta5_5: "string",
+            pregunta5_6: "string",
+            pregunta5_6_1_OtroServ: "string",
+            pregunta5_6_2_Otro: "string",
+            pregunta5_7: "string",
+            pregunta5_8: "string",
+            pregunta5_8_1: "string",
+            pregunta5_8_2: "string",
+            pregunta5_9: "string",
+            pregunta5_10: "string",
+            pregunta5_10_1: "string",
+            pregunta5_10_2: "string",
+            pregunta5_11: "string",
+            pregunta5_12: "string",
+            pregunta5_13: "string",
+            pregunta5_14: "string",
+            pregunta5_14_1: "string",
+          };
+        }
       });
-      console.log('Los datos se han guardado correctamente en Realm.');
+      console.log("Los datos se han guardado correctamente en Realm.");
     } catch (error) {
-      console.error('Error al guardar datos en Realm:', error);
+      console.error("Error al guardar datos en Realm:", error);
     }
   };
   const handleMunicipioChange = (text) => {
     setMunicipio(text);
-  }
+  };
   const handleOtro = (text) => {
     setOtro(text);
-  }
+  };
   const handleOtro1 = (text) => {
     setOtro1(text);
-  }
+  };
   const handleOtro2 = (text) => {
     setOtro2(text);
-  }
+  };
   const handleOtro3 = (text) => {
     setOtro3(text);
-  }
+  };
   const handleOption2Select = (option) => {
-
     setSelectedOption2(option);
-    setMunicipio('');
+    setMunicipio("");
     if (selectedOption2.includes(option)) {
       setSelectedOption2(selectedOption2.filter((item) => item !== option));
     } else {
@@ -232,20 +264,18 @@ export default function PreCinScreen(props) {
         setSelectedOption2([...selectedOption2, option]);
       }
     }
-  }
+  };
   const handleOption8Select = (option) => {
     setSelectedOption8(option);
-    setNombre('');
-    setLugar('');
+    setNombre("");
+    setLugar("");
   };
 
   const handleOption9Select = (option) => {
     setSelectedOption9(option);
-
   };
   //Metodo general de opciones SI y NO 5.5
   const handleOption1Select = (option) => {
-
     if (selected1Option.includes(option)) {
       setSelected1Option(selected1Option.filter((item) => item !== option));
     } else {
@@ -270,12 +300,17 @@ export default function PreCinScreen(props) {
     if (isOptionSelected) {
       // If the option is already selected, remove it from the selected options
       setSelectedOptions4((prevSelectedOptions) =>
-        prevSelectedOptions.filter((selectedOption) => selectedOption !== option)
+        prevSelectedOptions.filter(
+          (selectedOption) => selectedOption !== option
+        )
       );
     } else {
       // If the option is not selected, add it to the selected options (limit to two options)
       if (selectedOptions4.length < 2) {
-        setSelectedOptions4((prevSelectedOptions) => [...prevSelectedOptions, option]);
+        setSelectedOptions4((prevSelectedOptions) => [
+          ...prevSelectedOptions,
+          option,
+        ]);
       }
     }
   };
@@ -333,15 +368,14 @@ export default function PreCinScreen(props) {
       };
 
       // Agregar un nuevo documento a la colección "respuestas"
-      await addDoc(respuestasCollectionRef, dataToSave);
+      /* await addDoc(respuestasCollectionRef, dataToSave); */
 
-      Alert.alert('Alerta', 'Sus respuestas fueron guardadas con éxito');
+      Alert.alert("Alerta", "Sus respuestas fueron guardadas con éxito");
     } catch (error) {
       console.error(error);
-      Alert.alert('Error', 'Hubo un error al guardar sus respuestas');
+      Alert.alert("Error", "Hubo un error al guardar sus respuestas");
     }
   };
-
 
   //Metodo General checkBox 5.1 opciones que desglosan al presionar SI
   const handleOptionChange = (option) => {
@@ -374,30 +408,27 @@ export default function PreCinScreen(props) {
     if (selectedOptions5.includes(option)) {
       setSelectedOptions5(selectedOptions5.filter((item) => item !== option));
 
-      if (option === 'Otro') {
+      if (option === "Otro") {
         setShowTextInput(false);
       }
     } else {
       if (selectedOptions5.length < 3) {
         setSelectedOptions5([...selectedOptions5, option]);
 
-        if (option === 'Otro') {
+        if (option === "Otro") {
           setShowTextInput(true);
         }
       }
     }
   };
 
-
   //Metodo para campo de texto 5.10 Segundo-Otro motivo
   const handleMotivoChange = (text) => {
     setMotivo(text);
-
-  }
+  };
   const [showOtherServicesText, setShowOtherServicesText] = useState(false);
   const [showOtherServices1Text, setShowOtherServices1Text] = useState(false);
   const [showOtherServices2Text, setShowOtherServices2Text] = useState(false);
-
 
   //Metodo General checkBox 5.10 opciones que desglosan
 
@@ -427,7 +458,7 @@ export default function PreCinScreen(props) {
   //Metodo para campo de texto 5.3 Segundo-Otro motivo
   const handleMotivo2Change = (text) => {
     setMotivo2(text);
-  }
+  };
   //Metodo para 5.3 para las opciones al precionar otros servicios de salud
   const handleOptionChange2 = (option) => {
     if (selectedOptions1.includes(option)) {
@@ -447,8 +478,6 @@ export default function PreCinScreen(props) {
     }
   };
 
-
-
   //Metodo para 5.6 para las opciones al precionar otros servicios de salud
   const handleOptionChange22 = (option) => {
     if (selectedOption11.includes(option)) {
@@ -466,23 +495,22 @@ export default function PreCinScreen(props) {
         }
       }
     }
-  }
-
+  };
 
   const [showQuestion5_6, setShowQuestion5_6] = useState(true);
 
   return (
     <ScrollView>
-
       {/* Pregunta 5.1 */}
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-
             <Text style={styles.titulo}>PRESTACIÓN DE SERVICIOS</Text>
 
-            <Text style={styles.question}> PREGUNTA 5.1 ( SELECCIÓN MÚLTIPLE - MÁXIMO 3 OPCIONES) </Text>
-
+            <Text style={styles.question}>
+              {" "}
+              PREGUNTA 5.1 ( SELECCIÓN MÚLTIPLE - MÁXIMO 3 OPCIONES){" "}
+            </Text>
           </View>
           <View style={styles.linea} />
         </View>
@@ -492,10 +520,15 @@ export default function PreCinScreen(props) {
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
             <View style={styles.preguntaContainer}>
-              <Text style={styles.advertencia}>Nota: Ver respuesta a la pregunta 2.1 Tipo de Población</Text>
+              <Text style={styles.advertencia}>
+                Nota: Ver respuesta a la pregunta 2.1 Tipo de Población
+              </Text>
 
-
-              <Text style={styles.preguntas}>De acuerdo al tipo de población con la que se identifica, ¿considera usted que requiere ser atendido en algún sevicio de rehabilitación?</Text>
+              <Text style={styles.preguntas}>
+                De acuerdo al tipo de población con la que se identifica,
+                ¿considera usted que requiere ser atendido en algún sevicio de
+                rehabilitación?
+              </Text>
               <View style={styles.optionContainer}>
                 <CheckBox
                   title="Si (indique cuál)"
@@ -514,7 +547,6 @@ export default function PreCinScreen(props) {
                   checked={selectedOption === "No"}
                   onPress={() => setSelectedOption("No")}
                   containerStyle={styles.checkBoxContainer}
-
                   textStyle={
                     selectedOption === "No"
                       ? styles.selectedOptionText
@@ -522,21 +554,16 @@ export default function PreCinScreen(props) {
                   }
                   checkedColor="#BA0C2F"
                 />
-
               </View>
               {selectedOption === "Si" && (
                 <View style={styles.questionContainer}>
-                  <Text style={styles.preguntas}>
-                    {" "}
-                    SELECCIONE{" "}
-                  </Text>
+                  <Text style={styles.preguntas}> SELECCIONE </Text>
 
                   <CheckBox
                     title="Fisioterapia"
                     checked={selectedOptions.includes("Fisioterapia")}
                     onPress={() => handleOptionChange("Fisioterapia")}
                     containerStyle={styles.checkBoxContainer}
-
                     textStyle={
                       selectedOptions.includes("Fisioterapia")
                         ? styles.selectedOptionText
@@ -550,8 +577,6 @@ export default function PreCinScreen(props) {
                     checked={selectedOptions.includes("Fonoaudiología")}
                     onPress={() => handleOptionChange("Fonoaudiología")}
                     containerStyle={styles.checkBoxContainer}
-
-
                     textStyle={
                       selectedOptions.includes("Fonoaudiología")
                         ? styles.selectedOptionText
@@ -633,8 +658,12 @@ export default function PreCinScreen(props) {
                   />
                   <CheckBox
                     title="Otros servicios de salud:"
-                    checked={selectedOptions.includes("Otros servicios de salud")}
-                    onPress={() => handleOptionChange("Otros servicios de salud")}
+                    checked={selectedOptions.includes(
+                      "Otros servicios de salud"
+                    )}
+                    onPress={() =>
+                      handleOptionChange("Otros servicios de salud")
+                    }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
                       selectedOptions.includes("Otros servicios de salud")
@@ -650,9 +679,10 @@ export default function PreCinScreen(props) {
                       <CheckBox
                         title="Medicina General"
                         checked={selectedOptions5.includes("Medicina General")}
-                        onPress={() => handleOptionChangecinco("Medicina General")}
+                        onPress={() =>
+                          handleOptionChangecinco("Medicina General")
+                        }
                         containerStyle={styles.checkBoxContainer}
-
                         textStyle={
                           selectedOptions5.includes("Medicina General")
                             ? styles.selectedOptionText
@@ -666,8 +696,6 @@ export default function PreCinScreen(props) {
                         checked={selectedOptions5.includes("Odontología")}
                         onPress={() => handleOptionChangecinco("Odontología")}
                         containerStyle={styles.checkBoxContainer}
-
-
                         textStyle={
                           selectedOptions5.includes("Odontología")
                             ? styles.selectedOptionText
@@ -701,11 +729,19 @@ export default function PreCinScreen(props) {
                       />
                       <CheckBox
                         title="Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüen- tos, Sobandero"
-                        checked={selectedOptions5.includes("Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüen- tos, Sobandero")}
-                        onPress={() => handleOptionChangecinco("Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüen- tos, Sobandero")}
+                        checked={selectedOptions5.includes(
+                          "Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüen- tos, Sobandero"
+                        )}
+                        onPress={() =>
+                          handleOptionChangecinco(
+                            "Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüen- tos, Sobandero"
+                          )
+                        }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
-                          selectedOptions5.includes("Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüen- tos, Sobandero")
+                          selectedOptions5.includes(
+                            "Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüen- tos, Sobandero"
+                          )
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -714,7 +750,9 @@ export default function PreCinScreen(props) {
                       <CheckBox
                         title="Hospitalización"
                         checked={selectedOptions5.includes("Hospitalización")}
-                        onPress={() => handleOptionChangecinco("Hospitalización")}
+                        onPress={() =>
+                          handleOptionChangecinco("Hospitalización")
+                        }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
                           selectedOptions5.includes("Hospitalización")
@@ -725,11 +763,19 @@ export default function PreCinScreen(props) {
                       />
                       <CheckBox
                         title="Medicina Especializada Ej: cirugía, cardiología, psiquia- tría, neurología"
-                        checked={selectedOptions5.includes("Medicina Especializada Ej: cirugía, cardiología, psiquia- tría, neurología")}
-                        onPress={() => handleOptionChangecinco("Medicina Especializada Ej: cirugía, cardiología, psiquia- tría, neurología")}
+                        checked={selectedOptions5.includes(
+                          "Medicina Especializada Ej: cirugía, cardiología, psiquia- tría, neurología"
+                        )}
+                        onPress={() =>
+                          handleOptionChangecinco(
+                            "Medicina Especializada Ej: cirugía, cardiología, psiquia- tría, neurología"
+                          )
+                        }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
-                          selectedOptions5.includes("Medicina Especializada Ej: cirugía, cardiología, psiquia- tría, neurología")
+                          selectedOptions5.includes(
+                            "Medicina Especializada Ej: cirugía, cardiología, psiquia- tría, neurología"
+                          )
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -759,8 +805,6 @@ export default function PreCinScreen(props) {
                           />
                         </View>
                       )}
-
-
                     </View>
                   )}
                 </View>
@@ -774,7 +818,10 @@ export default function PreCinScreen(props) {
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-            <Text style={styles.question}> PREGUNTA 5.2 ( SELECCIÓN ÚNICA ) </Text>
+            <Text style={styles.question}>
+              {" "}
+              PREGUNTA 5.2 ( SELECCIÓN ÚNICA ){" "}
+            </Text>
           </View>
           <View style={styles.linea} />
         </View>
@@ -783,13 +830,12 @@ export default function PreCinScreen(props) {
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-
             <View style={styles.preguntaContainer}>
-
-
-              <Text style={styles.pregunta}>Sabe usted si ¿en el hospital del
-                municipio se ha puesto en funcionamiento algún servicio
-                de rehabilitación durante el último año?</Text>
+              <Text style={styles.pregunta}>
+                Sabe usted si ¿en el hospital del municipio se ha puesto en
+                funcionamiento algún servicio de rehabilitación durante el
+                último año?
+              </Text>
               <View style={styles.optionContainer}>
                 <CheckBox
                   title="Si sabe"
@@ -818,17 +864,20 @@ export default function PreCinScreen(props) {
               </View>
               {selectedOption3 === "Si" && (
                 <View style={styles.questionContainer}>
-                  <Text style={styles.question2}>PREGUNTA 5.3 (SELECCIÓN MÚLTIPLE - MÁXIMO 3 OPCIONES)</Text>
+                  <Text style={styles.question2}>
+                    PREGUNTA 5.3 (SELECCIÓN MÚLTIPLE - MÁXIMO 3 OPCIONES)
+                  </Text>
                   <View style={styles.linea1} />
-                  <Text style={styles.pregunta}>Si conoce acerca de los servicios de rehabilitación instalados en
-                    el Hospital del muncipio, indique sobre cuáles de los siguientes ha tenido
-                    algún tipo de información:</Text>
+                  <Text style={styles.pregunta}>
+                    Si conoce acerca de los servicios de rehabilitación
+                    instalados en el Hospital del muncipio, indique sobre cuáles
+                    de los siguientes ha tenido algún tipo de información:
+                  </Text>
                   <CheckBox
                     title="Fisioterapia"
                     checked={selectedOption2.includes("Fisioterapia")}
                     onPress={() => handleOptionChangedos("Fisioterapia")}
                     containerStyle={styles.checkBoxContainer}
-
                     textStyle={
                       selectedOption2.includes("Fisioterapia")
                         ? styles.selectedOptionText
@@ -864,7 +913,9 @@ export default function PreCinScreen(props) {
                   <CheckBox
                     title="Terapia Respiratoria"
                     checked={selectedOption2.includes("Terapia Respiratoria")}
-                    onPress={() => handleOptionChangedos("Terapia Respiratoria")}
+                    onPress={() =>
+                      handleOptionChangedos("Terapia Respiratoria")
+                    }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
                       selectedOption2.includes("Terapia Respiratoria")
@@ -896,7 +947,6 @@ export default function PreCinScreen(props) {
                         : styles.checkBoxText
                     }
                     checkedColor="#BA0C2F"
-
                   />
                   <CheckBox
                     title="Trabajo social"
@@ -924,8 +974,12 @@ export default function PreCinScreen(props) {
                   />
                   <CheckBox
                     title="Otros servicios de salud"
-                    checked={selectedOption2.includes("Otros servicios de salud")}
-                    onPress={() => handleOptionChangedos("Otros servicios de salud")}
+                    checked={selectedOption2.includes(
+                      "Otros servicios de salud"
+                    )}
+                    onPress={() =>
+                      handleOptionChangedos("Otros servicios de salud")
+                    }
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
                       selectedOption2.includes("Otros servicios de salud")
@@ -935,13 +989,9 @@ export default function PreCinScreen(props) {
                     checkedColor="#BA0C2F"
                   />
 
-
                   {selectedOption2.includes("Otros servicios de salud") && (
                     <View style={styles.questionContainer}>
-                      <Text style={styles.preguntas}>
-                        {" "}
-                        SELECCIONE
-                      </Text>
+                      <Text style={styles.preguntas}> SELECCIONE</Text>
 
                       <CheckBox
                         title="Medicina General"
@@ -993,11 +1043,19 @@ export default function PreCinScreen(props) {
                       />
                       <CheckBox
                         title="Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüentos, Sobandero"
-                        checked={selectedOptions1.includes("Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüentos, Sobandero")}
-                        onPress={() => handleOptionChange2("Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüentos, Sobandero")}
+                        checked={selectedOptions1.includes(
+                          "Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüentos, Sobandero"
+                        )}
+                        onPress={() =>
+                          handleOptionChange2(
+                            "Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüentos, Sobandero"
+                          )
+                        }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
-                          selectedOptions1.includes("Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüentos, Sobandero")
+                          selectedOptions1.includes(
+                            "Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüentos, Sobandero"
+                          )
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -1017,11 +1075,19 @@ export default function PreCinScreen(props) {
                       />
                       <CheckBox
                         title="Medicina Especializada Ej: cirugía, cardiología, psiquiatría, neurología"
-                        checked={selectedOptions1.includes("Medicina Especializada Ej: cirugía, cardiología, psiquiatría, neurología")}
-                        onPress={() => handleOptionChange2("Medicina Especializada Ej: cirugía, cardiología, psiquiatría, neurología")}
+                        checked={selectedOptions1.includes(
+                          "Medicina Especializada Ej: cirugía, cardiología, psiquiatría, neurología"
+                        )}
+                        onPress={() =>
+                          handleOptionChange2(
+                            "Medicina Especializada Ej: cirugía, cardiología, psiquiatría, neurología"
+                          )
+                        }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
-                          selectedOptions1.includes("Medicina Especializada Ej: cirugía, cardiología, psiquiatría, neurología")
+                          selectedOptions1.includes(
+                            "Medicina Especializada Ej: cirugía, cardiología, psiquiatría, neurología"
+                          )
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -1029,18 +1095,19 @@ export default function PreCinScreen(props) {
                       />
                       <CheckBox
                         title="Otro ¿Cuál?"
-                        checked={selectedOptions1.includes("Otro motivo ¿Cuál?")}
-                        onPress={() => handleOptionChange2("Otro motivo ¿Cuál?")}
+                        checked={selectedOptions1.includes(
+                          "Otro motivo ¿Cuál?"
+                        )}
+                        onPress={() =>
+                          handleOptionChange2("Otro motivo ¿Cuál?")
+                        }
                         containerStyle={styles.checkBoxContainer}
-
                         textStyle={
                           selectedOptions1.includes("Otro motivo ¿Cuál?")
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
                         checkedColor="#BA0C2F"
-
-
                       />
                       {showTextInput1 && (
                         <View style={styles.preguntaContainer}>
@@ -1057,13 +1124,19 @@ export default function PreCinScreen(props) {
                   )}
 
                   <View style={styles.questionContainer}>
-                    <Text style={styles.question2}>PREGUNTA 5.4 (SELECCIÓN ÚNICA)</Text>
+                    <Text style={styles.question2}>
+                      PREGUNTA 5.4 (SELECCIÓN ÚNICA)
+                    </Text>
                     <View style={styles.linea1} />
-                    <Text style={styles.preguntas}>Sabe usted si ¿existen servicios de rehabilitación ubicados en otro municipio cercano que se encuentren en funcionamiento?</Text>
+                    <Text style={styles.preguntas}>
+                      Sabe usted si ¿existen servicios de rehabilitación
+                      ubicados en otro municipio cercano que se encuentren en
+                      funcionamiento?
+                    </Text>
                     <CheckBox
                       title="SI hay servicios"
-                      checked={selectedOption22 === 'SI hay servicios'}
-                      onPress={() => setSelectedOption22('SI hay servicios')}
+                      checked={selectedOption22 === "SI hay servicios"}
+                      onPress={() => setSelectedOption22("SI hay servicios")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
                         selectedOption22 === "SI hay servicios"
@@ -1074,8 +1147,8 @@ export default function PreCinScreen(props) {
                     />
                     <CheckBox
                       title="NO hay servicios"
-                      checked={selectedOption22 === 'NO hay servicios'}
-                      onPress={() => setSelectedOption22('NO hay servicios')}
+                      checked={selectedOption22 === "NO hay servicios"}
+                      onPress={() => setSelectedOption22("NO hay servicios")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
                         selectedOption22 === "NO hay servicios"
@@ -1083,12 +1156,11 @@ export default function PreCinScreen(props) {
                           : styles.checkBoxText
                       }
                       checkedColor="#BA0C2F"
-
                     />
                     <CheckBox
                       title="NO sabe"
-                      checked={selectedOption22 === 'NO sabe'}
-                      onPress={() => setSelectedOption22('NO sabe')}
+                      checked={selectedOption22 === "NO sabe"}
+                      onPress={() => setSelectedOption22("NO sabe")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
                         selectedOption22 === "NO sabe"
@@ -1098,36 +1170,38 @@ export default function PreCinScreen(props) {
                       checkedColor="#BA0C2F"
                     />
 
-                    {(selectedOption22 === 'SI hay servicios'
-                    ) && (
-                        <View style={styles.preguntaContainer}>
-                          <Text style={styles.preguntas}>Nombre del municipio:</Text>
-                          <TextInput
-                            style={styles.input}
-                            value={municipio}
-                            onChangeText={handleMunicipioChange}
-                            placeholder="Indique el nombre del municipio"
-                          />
-                        </View>
-                      )}
+                    {selectedOption22 === "SI hay servicios" && (
+                      <View style={styles.preguntaContainer}>
+                        <Text style={styles.preguntas}>
+                          Nombre del municipio:
+                        </Text>
+                        <TextInput
+                          style={styles.input}
+                          value={municipio}
+                          onChangeText={handleMunicipioChange}
+                          placeholder="Indique el nombre del municipio"
+                        />
+                      </View>
+                    )}
                   </View>
-
                 </View>
-
-
-
-
               )}
 
               {selectedOption3 === "No" && (
                 <View style={styles.questionContainer}>
-                  <Text style={styles.question2}>PREGUNTA 5.4 (SELECCIÓN ÚNICA)</Text>
+                  <Text style={styles.question2}>
+                    PREGUNTA 5.4 (SELECCIÓN ÚNICA)
+                  </Text>
                   <View style={styles.linea1} />
-                  <Text style={styles.preguntas}>Sabe usted si ¿existen servicios de rehabilitación ubicados en otro municipio cercano que se encuentren en funcionamiento?</Text>
+                  <Text style={styles.preguntas}>
+                    Sabe usted si ¿existen servicios de rehabilitación ubicados
+                    en otro municipio cercano que se encuentren en
+                    funcionamiento?
+                  </Text>
                   <CheckBox
                     title="SI hay servicios"
-                    checked={selectedOption22 === 'SI hay servicios'}
-                    onPress={() => setSelectedOption22('SI hay servicios')}
+                    checked={selectedOption22 === "SI hay servicios"}
+                    onPress={() => setSelectedOption22("SI hay servicios")}
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
                       selectedOption22 === "SI hay servicios"
@@ -1138,8 +1212,8 @@ export default function PreCinScreen(props) {
                   />
                   <CheckBox
                     title="NO hay servicios"
-                    checked={selectedOption22 === 'NO hay servicios'}
-                    onPress={() => setSelectedOption22('NO hay servicios')}
+                    checked={selectedOption22 === "NO hay servicios"}
+                    onPress={() => setSelectedOption22("NO hay servicios")}
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
                       selectedOption22 === "NO hay servicios"
@@ -1147,12 +1221,11 @@ export default function PreCinScreen(props) {
                         : styles.checkBoxText
                     }
                     checkedColor="#BA0C2F"
-
                   />
                   <CheckBox
                     title="NO sabe"
-                    checked={selectedOption22 === 'NO sabe'}
-                    onPress={() => setSelectedOption22('NO sabe')}
+                    checked={selectedOption22 === "NO sabe"}
+                    onPress={() => setSelectedOption22("NO sabe")}
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
                       selectedOption22 === "NO sabe"
@@ -1162,20 +1235,20 @@ export default function PreCinScreen(props) {
                     checkedColor="#BA0C2F"
                   />
 
-                  {(selectedOption22 === 'SI hay servicios'
-                  ) && (
-                      <View style={styles.preguntaContainer}>
-                        <Text style={styles.preguntas}>Nombre del municipio:</Text>
-                        <TextInput
-                          style={styles.input}
-                          value={municipio}
-                          onChangeText={handleMunicipioChange}
-                          placeholder="Indique el nombre del municipio"
-                        />
-                      </View>
-                    )}
+                  {selectedOption22 === "SI hay servicios" && (
+                    <View style={styles.preguntaContainer}>
+                      <Text style={styles.preguntas}>
+                        Nombre del municipio:
+                      </Text>
+                      <TextInput
+                        style={styles.input}
+                        value={municipio}
+                        onChangeText={handleMunicipioChange}
+                        placeholder="Indique el nombre del municipio"
+                      />
+                    </View>
+                  )}
                 </View>
-
               )}
             </View>
           </View>
@@ -1186,7 +1259,10 @@ export default function PreCinScreen(props) {
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-            <Text style={styles.question}> PREGUNTA 5.5 ( SELECCIÓN ÚNICA ) </Text>
+            <Text style={styles.question}>
+              {" "}
+              PREGUNTA 5.5 ( SELECCIÓN ÚNICA ){" "}
+            </Text>
           </View>
           <View style={styles.linea} />
         </View>
@@ -1195,18 +1271,26 @@ export default function PreCinScreen(props) {
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-            <Text style={styles.pregunta}>Como consecuencia de su condición de salud, ¿recibió usted atención en rehabilitación (FISIOTERAPIA / TERAPIA FÍSICA, TERAPIA OCUPACIONAL,
-              FONOAUDIOLOGÍA/ TERAPIA DEL LENGUAJE, PSICOLOGÍA, TERAPIA RESPIRATORIA, OPTOMETRÍA, TRABAJO SOCIAL) durante el último año?</Text>
+            <Text style={styles.pregunta}>
+              Como consecuencia de su condición de salud, ¿recibió usted
+              atención en rehabilitación (FISIOTERAPIA / TERAPIA FÍSICA, TERAPIA
+              OCUPACIONAL, FONOAUDIOLOGÍA/ TERAPIA DEL LENGUAJE, PSICOLOGÍA,
+              TERAPIA RESPIRATORIA, OPTOMETRÍA, TRABAJO SOCIAL) durante el
+              último año?
+            </Text>
             <View style={styles.optionContainer}>
-              <Text style={styles.advertencia}>*Sí* Verificar coherencia con PREGUNTAS 4.1 - 4.3. </Text>
+              <Text style={styles.advertencia}>
+                *Sí* Verificar coherencia con PREGUNTAS 4.1 - 4.3.{" "}
+              </Text>
               <CheckBox
                 title="Sí"
-                checked={selectedOption1 === 'Sí'}
-                onPress={() => setSelectedOption1('Sí')}
+                checked={selectedOption1 === "Sí"}
+                onPress={() => setSelectedOption1("Sí")}
                 containerStyle={styles.checkBoxContainer}
-                textStyle={selectedOption1 === "Sí"
-                  ? styles.selectedOptionText
-                  : styles.checkBoxText
+                textStyle={
+                  selectedOption1 === "Sí"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
                 }
                 checkedColor="#BA0C2F"
               />
@@ -1227,15 +1311,24 @@ export default function PreCinScreen(props) {
 
             {selectedOption1 === "No" && (
               <View style={styles.questionContainer}>
-                <Text style={styles.question2}>PREGUNTA 5.11 (SELECCIÓN ÚNICA)</Text>
+                <Text style={styles.question2}>
+                  PREGUNTA 5.11 (SELECCIÓN ÚNICA)
+                </Text>
                 <View style={styles.linea1} />
-                <Text style={styles.preguntas}>Si ha presentado una condición de salud o enfermedad durante el último año
-                  y no recibió atención por parte de los servicios de salud /rehabilitación, indique cuál fue la razón:</Text>
+                <Text style={styles.preguntas}>
+                  Si ha presentado una condición de salud o enfermedad durante
+                  el último año y no recibió atención por parte de los servicios
+                  de salud /rehabilitación, indique cuál fue la razón:
+                </Text>
 
                 <CheckBox
                   title="Cree que ya no lo necesita"
-                  checked={selected1Option.includes("Cree que ya no lo necesita")}
-                  onPress={() => handleOption1Select("Cree que ya no lo necesita")}
+                  checked={selected1Option.includes(
+                    "Cree que ya no lo necesita"
+                  )}
+                  onPress={() =>
+                    handleOption1Select("Cree que ya no lo necesita")
+                  }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selected1Option.includes("Cree que ya no lo necesita")
@@ -1247,8 +1340,12 @@ export default function PreCinScreen(props) {
 
                 <CheckBox
                   title="No le gusta, no le interesa"
-                  checked={selected1Option.includes("No le gusta, no le interesa")}
-                  onPress={() => handleOption1Select("No le gusta, no le interesa")}
+                  checked={selected1Option.includes(
+                    "No le gusta, no le interesa"
+                  )}
+                  onPress={() =>
+                    handleOption1Select("No le gusta, no le interesa")
+                  }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selected1Option.includes("No le gusta, no le interesa")
@@ -1271,11 +1368,17 @@ export default function PreCinScreen(props) {
                 />
                 <CheckBox
                   title="El centro de atención queda muy lejos"
-                  checked={selected1Option.includes("El centro de atención queda muy lejos")}
-                  onPress={() => handleOption1Select("El centro de atención queda muy lejos")}
+                  checked={selected1Option.includes(
+                    "El centro de atención queda muy lejos"
+                  )}
+                  onPress={() =>
+                    handleOption1Select("El centro de atención queda muy lejos")
+                  }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selected1Option.includes("El centro de atención queda muy lejos")
+                    selected1Option.includes(
+                      "El centro de atención queda muy lejos"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -1295,11 +1398,19 @@ export default function PreCinScreen(props) {
                 />
                 <CheckBox
                   title="No ha sido autorizado por el asegurador "
-                  checked={selected1Option.includes("No ha sido autorizado por el asegurador ")}
-                  onPress={() => handleOption1Select("No ha sido autorizado por el asegurador ")}
+                  checked={selected1Option.includes(
+                    "No ha sido autorizado por el asegurador "
+                  )}
+                  onPress={() =>
+                    handleOption1Select(
+                      "No ha sido autorizado por el asegurador "
+                    )
+                  }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selected1Option.includes("No ha sido autorizado por el asegurador ")
+                    selected1Option.includes(
+                      "No ha sido autorizado por el asegurador "
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -1307,12 +1418,19 @@ export default function PreCinScreen(props) {
                 />
                 <CheckBox
                   title="No ha sido remitido por el médico tratante"
-                  checked={selected1Option.includes("No ha sido remitido por el médico tratante")}
+                  checked={selected1Option.includes(
+                    "No ha sido remitido por el médico tratante"
+                  )}
                   onPress={() =>
-                    handleOption1Select("No ha sido remitido por el médico tratante")}
+                    handleOption1Select(
+                      "No ha sido remitido por el médico tratante"
+                    )
+                  }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selected1Option.includes("No ha sido remitido por el médico tratante")
+                    selected1Option.includes(
+                      "No ha sido remitido por el médico tratante"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -1320,7 +1438,8 @@ export default function PreCinScreen(props) {
                 />
                 <CheckBox
                   title="No sabe"
-                  checked={selected1Option.includes("No sabe")} onPress={() => handleOption1Select("No sabe")}
+                  checked={selected1Option.includes("No sabe")}
+                  onPress={() => handleOption1Select("No sabe")}
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selected1Option.includes("No sabe")
@@ -1331,38 +1450,39 @@ export default function PreCinScreen(props) {
                 />
                 <CheckBox
                   title="Cierre del servicio por pandemia COVID-19"
-                  checked={selected1Option.includes("Cierre del servicio por pandemia COVID-19")}
-                  onPress={() => handleOption1Select("Cierre del servicio por pandemia COVID-19")}
+                  checked={selected1Option.includes(
+                    "Cierre del servicio por pandemia COVID-19"
+                  )}
+                  onPress={() =>
+                    handleOption1Select(
+                      "Cierre del servicio por pandemia COVID-19"
+                    )
+                  }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selected1Option.includes("Cierre del servicio por pandemia COVID-19")
+                    selected1Option.includes(
+                      "Cierre del servicio por pandemia COVID-19"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
                   checkedColor="#BA0C2F"
                 />
-
-
               </View>
             )}
-
-
           </View>
         </View>
       </View>
       {selectedOption1 === "No" && showQuestion5_6 && (
-
-
         <View>
-
-
-
-
           {/* Pregunta 5.12 */}
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-                <Text style={styles.question}> PREGUNTA 5.12 (SELECCIÓN ÚNICA)</Text>
+                <Text style={styles.question}>
+                  {" "}
+                  PREGUNTA 5.12 (SELECCIÓN ÚNICA)
+                </Text>
               </View>
               <View style={styles.linea} />
             </View>
@@ -1371,13 +1491,15 @@ export default function PreCinScreen(props) {
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-
-
                 <View style={styles.container}>
-                  <Text style={styles.advertencia}>Validar con la respuesta a pregunta 5.5</Text>
+                  <Text style={styles.advertencia}>
+                    Validar con la respuesta a pregunta 5.5
+                  </Text>
 
-                  <Text style={styles.preguntas}>Según su experiencia de atención en los servicios de rehabilitación
-                    durante el último año califique: </Text>
+                  <Text style={styles.preguntas}>
+                    Según su experiencia de atención en los servicios de
+                    rehabilitación durante el último año califique:{" "}
+                  </Text>
 
                   {cellColors.map((rowColors, rowIndex) => (
                     <View key={rowIndex} style={styles.row}>
@@ -1385,25 +1507,30 @@ export default function PreCinScreen(props) {
                         <TouchableOpacity
                           key={colIndex}
                           style={[styles.cell, { backgroundColor: color }]}
-                          onPress={() => handleCellSelection(rowIndex, colIndex)}
+                          onPress={() =>
+                            handleCellSelection(rowIndex, colIndex)
+                          }
                         >
                           <Text
                             style={{
-                              color: colIndex === 0 ? 'black' : selectedColumns[colIndex] === rowIndex ? 'white' : 'black',
-                              fontWeight: colIndex === 0 ? 'bold' : 'normal',
+                              color:
+                                colIndex === 0
+                                  ? "black"
+                                  : selectedColumns[colIndex] === rowIndex
+                                  ? "white"
+                                  : "black",
+                              fontWeight: colIndex === 0 ? "bold" : "normal",
                             }}
                           >
-                            {colIndex === 0 && rowIndex === 0 ? '  ACCESO\n\n\n DIFICULTAD' : cellTexts[rowIndex][colIndex]}
+                            {colIndex === 0 && rowIndex === 0
+                              ? "  ACCESO\n\n\n DIFICULTAD"
+                              : cellTexts[rowIndex][colIndex]}
                           </Text>
                         </TouchableOpacity>
                       ))}
                     </View>
                   ))}
                 </View>
-
-
-
-
               </View>
             </View>
           </View>
@@ -1412,7 +1539,10 @@ export default function PreCinScreen(props) {
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-                <Text style={styles.question}> PREGUNTA 5.13 (SELECCIÓN ÚNICA)</Text>
+                <Text style={styles.question}>
+                  {" "}
+                  PREGUNTA 5.13 (SELECCIÓN ÚNICA)
+                </Text>
               </View>
               <View style={styles.linea} />
             </View>
@@ -1421,10 +1551,14 @@ export default function PreCinScreen(props) {
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-
                 <View style={styles.container}>
-                  <Text style={styles.advertencia}>Validar con la respuesta a pregunta 5.5</Text>
-                  <Text style={styles.preguntas}>Según su experiencia de atención en los servicios de rehabilitación durante el último año califique: </Text>
+                  <Text style={styles.advertencia}>
+                    Validar con la respuesta a pregunta 5.5
+                  </Text>
+                  <Text style={styles.preguntas}>
+                    Según su experiencia de atención en los servicios de
+                    rehabilitación durante el último año califique:{" "}
+                  </Text>
 
                   {cellColors1.map((rowColors, rowIndex) => (
                     <View key={rowIndex} style={styles.row}>
@@ -1432,24 +1566,33 @@ export default function PreCinScreen(props) {
                         <TouchableOpacity
                           key={colIndex}
                           style={[styles.cell, { backgroundColor: color }]}
-                          onPress={() => handleCellSelection1(rowIndex, colIndex)}
+                          onPress={() =>
+                            handleCellSelection1(rowIndex, colIndex)
+                          }
                         >
                           <Text
                             style={{
-                              color: colIndex === 0 ? 'black' : selectedColumns1[colIndex] === rowIndex ? 'white' : 'black',
-                              fontWeight: colIndex === 0 || rowIndex === 0 ? 'bold' : 'normal',
+                              color:
+                                colIndex === 0
+                                  ? "black"
+                                  : selectedColumns1[colIndex] === rowIndex
+                                  ? "white"
+                                  : "black",
+                              fontWeight:
+                                colIndex === 0 || rowIndex === 0
+                                  ? "bold"
+                                  : "normal",
                             }}
                           >
-                            {colIndex === 0 && rowIndex === 0 ? '  USO\n\n\n SATISFACCIÓN' : cellTexts1[rowIndex][colIndex]}
+                            {colIndex === 0 && rowIndex === 0
+                              ? "  USO\n\n\n SATISFACCIÓN"
+                              : cellTexts1[rowIndex][colIndex]}
                           </Text>
                         </TouchableOpacity>
                       ))}
                     </View>
                   ))}
                 </View>
-
-
-
               </View>
             </View>
           </View>
@@ -1458,34 +1601,33 @@ export default function PreCinScreen(props) {
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-                <Text style={styles.question}> PREGUNTA 5.14 (SELECCIÓN MÚLTIPLE - MÁXIMO 2 OPCIONES)</Text>
+                <Text style={styles.question}>
+                  {" "}
+                  PREGUNTA 5.14 (SELECCIÓN MÚLTIPLE - MÁXIMO 2 OPCIONES)
+                </Text>
               </View>
               <View style={styles.linea} />
             </View>
           </View>
 
-
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-
-
                 <View style={styles.preguntaContainer}>
-
-
-                  <Text style={styles.pregunta}>Indique el medio de transporte utilizado para asistir al servicio de salud / rehabilitación:</Text>
+                  <Text style={styles.pregunta}>
+                    Indique el medio de transporte utilizado para asistir al
+                    servicio de salud / rehabilitación:
+                  </Text>
                   <View style={styles.optionContainer}>
-
-
                     <CheckBox
                       title="A pie"
                       checked={transporte.includes("A pie")}
                       onPress={() => handleOptionTransporte("A pie")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
-                        checked = transporte.includes("A pie")
+                        (checked = transporte.includes("A pie")
                           ? styles.selectedOptionText
-                          : styles.checkBoxText
+                          : styles.checkBoxText)
                       }
                       checkedColor="#BA0C2F"
                     />
@@ -1496,9 +1638,9 @@ export default function PreCinScreen(props) {
                       onPress={() => handleOptionTransporte("Terrestre")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
-                        checked = transporte.includes("Terrestre")
+                        (checked = transporte.includes("Terrestre")
                           ? styles.selectedOptionText
-                          : styles.checkBoxText
+                          : styles.checkBoxText)
                       }
                       checkedColor="#BA0C2F"
                     />
@@ -1508,9 +1650,9 @@ export default function PreCinScreen(props) {
                       onPress={() => handleOptionTransporte("Aéreo")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
-                        checked = transporte.includes("Aéreo")
+                        (checked = transporte.includes("Aéreo")
                           ? styles.selectedOptionText
-                          : styles.checkBoxText
+                          : styles.checkBoxText)
                       }
                       checkedColor="#BA0C2F"
                     />
@@ -1521,21 +1663,27 @@ export default function PreCinScreen(props) {
                       onPress={() => handleOptionTransporte("Fluvial")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
-                        checked = transporte.includes("Fluvial")
+                        (checked = transporte.includes("Fluvial")
                           ? styles.selectedOptionText
-                          : styles.checkBoxText
+                          : styles.checkBoxText)
                       }
                       checkedColor="#BA0C2F"
                     />
                     <CheckBox
                       title="Animales de tiro/ de montar"
-                      checked={transporte.includes("Animales de tiro/ de montar")}
-                      onPress={() => handleOptionTransporte("Animales de tiro/ de montar")}
+                      checked={transporte.includes(
+                        "Animales de tiro/ de montar"
+                      )}
+                      onPress={() =>
+                        handleOptionTransporte("Animales de tiro/ de montar")
+                      }
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
-                        checked = transporte.includes("Animales de tiro/ de montar")
+                        (checked = transporte.includes(
+                          "Animales de tiro/ de montar"
+                        )
                           ? styles.selectedOptionText
-                          : styles.checkBoxText
+                          : styles.checkBoxText)
                       }
                       checkedColor="#BA0C2F"
                     />
@@ -1546,9 +1694,9 @@ export default function PreCinScreen(props) {
                       onPress={() => handleOptionTransporte("Otro ¿Cuál?")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
-                        checked = transporte.includes("Otro ¿Cuál?")
+                        (checked = transporte.includes("Otro ¿Cuál?")
                           ? styles.selectedOptionText
-                          : styles.checkBoxText
+                          : styles.checkBoxText)
                       }
                       checkedColor="#BA0C2F"
                     />
@@ -1564,44 +1712,24 @@ export default function PreCinScreen(props) {
                         />
                       </View>
                     )}
-
-
-
-
                   </View>
-
                 </View>
-
-
-
-
-
-
-
               </View>
             </View>
           </View>
-
-
-
-
-
-
-
         </View>
-
       )}
       {/* Pregunta 5.6 */}
 
-
       {selectedOption1 === "Sí" && (
-
         <View>
-
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-                <Text style={styles.question}> PREGUNTA 5.6 ( SELECCIÓN MÚLTIPLE - MÁXIMO 3 OPCIONES ) </Text>
+                <Text style={styles.question}>
+                  {" "}
+                  PREGUNTA 5.6 ( SELECCIÓN MÚLTIPLE - MÁXIMO 3 OPCIONES ){" "}
+                </Text>
               </View>
               <View style={styles.linea} />
             </View>
@@ -1610,13 +1738,15 @@ export default function PreCinScreen(props) {
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-
-
                 <View style={styles.preguntaContainer}>
-                  <Text style={styles.advertencia}>Verificar coherencia con PREGUNTAS 4.1 - 4.3. </Text>
+                  <Text style={styles.advertencia}>
+                    Verificar coherencia con PREGUNTAS 4.1 - 4.3.{" "}
+                  </Text>
 
-                  <Text style={styles.preguntas}>Indique cuál fue el servicio de rehabilitación
-                    que le prestaron para atender su condición de salud o enfermedad:</Text>
+                  <Text style={styles.preguntas}>
+                    Indique cuál fue el servicio de rehabilitación que le
+                    prestaron para atender su condición de salud o enfermedad:
+                  </Text>
 
                   <View style={styles.optionContainer}>
                     <CheckBox
@@ -1646,7 +1776,9 @@ export default function PreCinScreen(props) {
                     />
                     <CheckBox
                       title="Terapia ocupacional"
-                      checked={selectedOption222.includes("Terapia ocupacional")}
+                      checked={selectedOption222.includes(
+                        "Terapia ocupacional"
+                      )}
                       onPress={() => handleOptionChange5("Terapia ocupacional")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
@@ -1658,8 +1790,12 @@ export default function PreCinScreen(props) {
                     />
                     <CheckBox
                       title="Terapia Respiratoria"
-                      checked={selectedOption222.includes("Terapia Respiratoria")}
-                      onPress={() => handleOptionChange5("Terapia Respiratoria")}
+                      checked={selectedOption222.includes(
+                        "Terapia Respiratoria"
+                      )}
+                      onPress={() =>
+                        handleOptionChange5("Terapia Respiratoria")
+                      }
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
                         selectedOption222.includes("Terapia Respiratoria")
@@ -1694,9 +1830,7 @@ export default function PreCinScreen(props) {
                     />
                     <CheckBox
                       title="Trabajo social"
-                      checked={selectedOption222.includes(
-                        "Trabajo social"
-                      )}
+                      checked={selectedOption222.includes("Trabajo social")}
                       onPress={() => handleOptionChange5("Trabajo social")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
@@ -1721,8 +1855,12 @@ export default function PreCinScreen(props) {
 
                     <CheckBox
                       title="Otros servicios de salud"
-                      checked={selectedOption222.includes("Otros servicios de salud")}
-                      onPress={() => handleOptionChange5("Otros servicios de salud")}
+                      checked={selectedOption222.includes(
+                        "Otros servicios de salud"
+                      )}
+                      onPress={() =>
+                        handleOptionChange5("Otros servicios de salud")
+                      }
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
                         selectedOption222.includes("Otros servicios de salud")
@@ -1731,15 +1869,10 @@ export default function PreCinScreen(props) {
                       }
                       checkedColor="#BA0C2F"
                     />
-
-
-
                   </View>
                   {selectedOption222.includes("Otros servicios de salud") && (
                     <View style={styles.questionContainer}>
-                      <Text style={styles.preguntas}>
-                        SELECCIONE
-                      </Text>
+                      <Text style={styles.preguntas}>SELECCIONE</Text>
 
                       <CheckBox
                         title="Medicina General"
@@ -1756,9 +1889,7 @@ export default function PreCinScreen(props) {
                       <CheckBox
                         title="Odontología"
                         checked={selectedOption11.includes("Odontología")}
-                        onPress={() =>
-                          handleOptionChange22("Odontología")
-                        }
+                        onPress={() => handleOptionChange22("Odontología")}
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
                           selectedOption11.includes("Odontología")
@@ -1770,9 +1901,7 @@ export default function PreCinScreen(props) {
                       <CheckBox
                         title="Enfermería"
                         checked={selectedOption11.includes("Enfermería")}
-                        onPress={() =>
-                          handleOptionChange22("Enfermería")
-                        }
+                        onPress={() => handleOptionChange22("Enfermería")}
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
                           selectedOption11.includes("Enfermería")
@@ -1784,9 +1913,7 @@ export default function PreCinScreen(props) {
                       <CheckBox
                         title="Nutrición"
                         checked={selectedOption11.includes("Nutrición")}
-                        onPress={() =>
-                          handleOptionChange22("Nutrición")
-                        }
+                        onPress={() => handleOptionChange22("Nutrición")}
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
                           selectedOption11.includes("Nutrición")
@@ -1797,13 +1924,19 @@ export default function PreCinScreen(props) {
                       />
                       <CheckBox
                         title="Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüentos, Sobandero"
-                        checked={selectedOption11.includes("Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüentos, Sobandero")}
+                        checked={selectedOption11.includes(
+                          "Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüentos, Sobandero"
+                        )}
                         onPress={() =>
-                          handleOptionChange22("Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüentos, Sobandero")
+                          handleOptionChange22(
+                            "Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüentos, Sobandero"
+                          )
                         }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
-                          selectedOption11.includes("Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüentos, Sobandero")
+                          selectedOption11.includes(
+                            "Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüentos, Sobandero"
+                          )
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -1812,9 +1945,7 @@ export default function PreCinScreen(props) {
                       <CheckBox
                         title="Hospitalización"
                         checked={selectedOption11.includes("Hospitalización")}
-                        onPress={() =>
-                          handleOptionChange22("Hospitalización")
-                        }
+                        onPress={() => handleOptionChange22("Hospitalización")}
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
                           selectedOption11.includes("Hospitalización")
@@ -1825,14 +1956,19 @@ export default function PreCinScreen(props) {
                       />
                       <CheckBox
                         title="Medicina Especializada Ej: cirugía, cardiología, psiquiatría, neurología"
-                        checked={selectedOption11.includes("Medicina Especializada Ej: cirugía, cardiología, psiquiatría, neurología")}
+                        checked={selectedOption11.includes(
+                          "Medicina Especializada Ej: cirugía, cardiología, psiquiatría, neurología"
+                        )}
                         onPress={() =>
-                          handleOptionChange22("Medicina Especializada Ej: cirugía, cardiología, psiquiatría, neurología")
+                          handleOptionChange22(
+                            "Medicina Especializada Ej: cirugía, cardiología, psiquiatría, neurología"
+                          )
                         }
                         containerStyle={styles.checkBoxContainer}
-
                         textStyle={
-                          selectedOption11.includes("Medicina Especializada Ej: cirugía, cardiología, psiquiatría, neurología")
+                          selectedOption11.includes(
+                            "Medicina Especializada Ej: cirugía, cardiología, psiquiatría, neurología"
+                          )
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -1840,7 +1976,9 @@ export default function PreCinScreen(props) {
                       />
                       <CheckBox
                         title="Otro ¿Cuál?"
-                        checked={selectedOption11.includes("Otro motivo ¿Cuál?")}
+                        checked={selectedOption11.includes(
+                          "Otro motivo ¿Cuál?"
+                        )}
                         onPress={() =>
                           handleOptionChange22("Otro motivo ¿Cuál?")
                         }
@@ -1865,9 +2003,7 @@ export default function PreCinScreen(props) {
                         </View>
                       )}
                     </View>
-
                   )}
-
                 </View>
               </View>
             </View>
@@ -1877,7 +2013,10 @@ export default function PreCinScreen(props) {
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-                <Text style={styles.question}> PREGUNTA 5.7 SELECCIÓN MÚLTIPLE - MÁXIMO 2 OPCIONES</Text>
+                <Text style={styles.question}>
+                  {" "}
+                  PREGUNTA 5.7 SELECCIÓN MÚLTIPLE - MÁXIMO 2 OPCIONES
+                </Text>
               </View>
               <View style={styles.linea} />
             </View>
@@ -1886,18 +2025,27 @@ export default function PreCinScreen(props) {
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-
                 <View style={styles.preguntaContainer}>
-
-                  <Text style={styles.pregunta}>Indique quién pagó por su atención para la prestación de los servicios de salud /rehabilitación</Text>
+                  <Text style={styles.pregunta}>
+                    Indique quién pagó por su atención para la prestación de los
+                    servicios de salud /rehabilitación
+                  </Text>
                   <View style={styles.optionContainer}>
                     <CheckBox
                       title="El sistema general de salud (ARL, EAPB)"
-                      checked={selectedOptions4.includes('El sistema general de salud (ARL, EAPB)')}
-                      onPress={() => handleOption4Select('El sistema general de salud (ARL, EAPB)')}
+                      checked={selectedOptions4.includes(
+                        "El sistema general de salud (ARL, EAPB)"
+                      )}
+                      onPress={() =>
+                        handleOption4Select(
+                          "El sistema general de salud (ARL, EAPB)"
+                        )
+                      }
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
-                        selectedOptions4.includes('El sistema general de salud (ARL, EAPB)')
+                        selectedOptions4.includes(
+                          "El sistema general de salud (ARL, EAPB)"
+                        )
                           ? styles.selectedOptionText
                           : styles.checkBoxText
                       }
@@ -1905,11 +2053,11 @@ export default function PreCinScreen(props) {
                     />
                     <CheckBox
                       title="La familia"
-                      checked={selectedOptions4.includes('La familia')}
-                      onPress={() => handleOption4Select('La familia')}
+                      checked={selectedOptions4.includes("La familia")}
+                      onPress={() => handleOption4Select("La familia")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
-                        selectedOptions4.includes('La familia')
+                        selectedOptions4.includes("La familia")
                           ? styles.selectedOptionText
                           : styles.checkBoxText
                       }
@@ -1917,11 +2065,15 @@ export default function PreCinScreen(props) {
                     />
                     <CheckBox
                       title="Personalmente (usted mismo)"
-                      checked={selectedOptions4.includes('Personalmente (usted mismo)')}
-                      onPress={() => handleOption4Select('Personalmente (usted mismo)')}
+                      checked={selectedOptions4.includes(
+                        "Personalmente (usted mismo)"
+                      )}
+                      onPress={() =>
+                        handleOption4Select("Personalmente (usted mismo)")
+                      }
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
-                        selectedOptions4.includes('Personalmente (usted mismo)')
+                        selectedOptions4.includes("Personalmente (usted mismo)")
                           ? styles.selectedOptionText
                           : styles.checkBoxText
                       }
@@ -1929,11 +2081,11 @@ export default function PreCinScreen(props) {
                     />
                     <CheckBox
                       title="Una ONG"
-                      checked={selectedOptions4.includes('Una ONG')}
-                      onPress={() => handleOption4Select('Una ONG')}
+                      checked={selectedOptions4.includes("Una ONG")}
+                      onPress={() => handleOption4Select("Una ONG")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
-                        selectedOptions4.includes('Una ONG')
+                        selectedOptions4.includes("Una ONG")
                           ? styles.selectedOptionText
                           : styles.checkBoxText
                       }
@@ -1941,11 +2093,11 @@ export default function PreCinScreen(props) {
                     />
                     <CheckBox
                       title="El empleador"
-                      checked={selectedOptions4.includes('El empleador')}
-                      onPress={() => handleOption4Select('El empleador')}
+                      checked={selectedOptions4.includes("El empleador")}
+                      onPress={() => handleOption4Select("El empleador")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
-                        selectedOptions4.includes('El empleador')
+                        selectedOptions4.includes("El empleador")
                           ? styles.selectedOptionText
                           : styles.checkBoxText
                       }
@@ -1953,11 +2105,11 @@ export default function PreCinScreen(props) {
                     />
                     <CheckBox
                       title="Otro"
-                      checked={selectedOptions4.includes('Otro')}
-                      onPress={() => handleOption4Select('Otro')}
+                      checked={selectedOptions4.includes("Otro")}
+                      onPress={() => handleOption4Select("Otro")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
-                        selectedOptions4.includes('Otro')
+                        selectedOptions4.includes("Otro")
                           ? styles.selectedOptionText
                           : styles.checkBoxText
                       }
@@ -1973,7 +2125,10 @@ export default function PreCinScreen(props) {
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-                <Text style={styles.question}> PREGUNTA 5.8 SELECCIÓN ÚNICA</Text>
+                <Text style={styles.question}>
+                  {" "}
+                  PREGUNTA 5.8 SELECCIÓN ÚNICA
+                </Text>
               </View>
               <View style={styles.linea} />
             </View>
@@ -1983,15 +2138,14 @@ export default function PreCinScreen(props) {
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
                 <View style={styles.preguntaContainer}>
-
-
-                  <Text style={styles.pregunta}>Indique si el establecimiento donde
-                    recibió la atención es: </Text>
+                  <Text style={styles.pregunta}>
+                    Indique si el establecimiento donde recibió la atención es:{" "}
+                  </Text>
                   <View style={styles.optionContainer}>
                     <CheckBox
                       title="Público"
-                      checked={selectedOption8 === 'Público'}
-                      onPress={() => handleOption8Select('Público')}
+                      checked={selectedOption8 === "Público"}
+                      onPress={() => handleOption8Select("Público")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
                         selectedOption8 === "Público"
@@ -2002,8 +2156,8 @@ export default function PreCinScreen(props) {
                     />
                     <CheckBox
                       title="Privado"
-                      checked={selectedOption8 === 'Privado'}
-                      onPress={() => handleOption8Select('Privado')}
+                      checked={selectedOption8 === "Privado"}
+                      onPress={() => handleOption8Select("Privado")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
                         selectedOption8 === "Privado"
@@ -2011,12 +2165,11 @@ export default function PreCinScreen(props) {
                           : styles.checkBoxText
                       }
                       checkedColor="#BA0C2F"
-
                     />
                     <CheckBox
                       title="No sabe"
-                      checked={selectedOption8 === 'No sabe'}
-                      onPress={() => handleOption8Select('No sabe')}
+                      checked={selectedOption8 === "No sabe"}
+                      onPress={() => handleOption8Select("No sabe")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
                         selectedOption8 === "No sabe"
@@ -2024,19 +2177,23 @@ export default function PreCinScreen(props) {
                           : styles.checkBoxText
                       }
                       checkedColor="#BA0C2F"
-
                     />
                   </View>
-                  {selectedOption8 === 'Privado' && (
+                  {selectedOption8 === "Privado" && (
                     <View style={styles.preguntaContainer}>
-                      <Text style={styles.preguntas}>Nombre de la institución /consultorio:</Text>
+                      <Text style={styles.preguntas}>
+                        Nombre de la institución /consultorio:
+                      </Text>
                       <TextInput
                         style={styles.input}
                         value={nombre}
                         onChangeText={handleNombreChange}
                         placeholder="Ingrese el Nombre"
                       />
-                      <Text style={styles.preguntas}>Lugar en el que se ubica la institución /consultorio (Ciudad/ Municipio):</Text>
+                      <Text style={styles.preguntas}>
+                        Lugar en el que se ubica la institución /consultorio
+                        (Ciudad/ Municipio):
+                      </Text>
                       <TextInput
                         style={styles.input}
                         value={lugar}
@@ -2045,11 +2202,7 @@ export default function PreCinScreen(props) {
                       />
                     </View>
                   )}
-
                 </View>
-
-
-
               </View>
             </View>
           </View>
@@ -2058,7 +2211,10 @@ export default function PreCinScreen(props) {
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-                <Text style={styles.question}> PREGUNTA 5.9 SELECCIÓN ÚNICA</Text>
+                <Text style={styles.question}>
+                  {" "}
+                  PREGUNTA 5.9 SELECCIÓN ÚNICA
+                </Text>
               </View>
               <View style={styles.linea} />
             </View>
@@ -2067,17 +2223,22 @@ export default function PreCinScreen(props) {
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-
                 <View style={styles.preguntaContainer}>
-                  <Text style={styles.advertencia}>Validar con la respuesta 4.3</Text>
+                  <Text style={styles.advertencia}>
+                    Validar con la respuesta 4.3
+                  </Text>
 
-                  <Text style={styles.preguntas}>Como consecuencia de su condición de salud ¿ha requerido productos de apoyo durante el último año? (ej.: sillas de ruedas, bastones de orientación
-                    visual, muletas, caminadores, audífonos, gafas, prótesis, etc.) </Text>
+                  <Text style={styles.preguntas}>
+                    Como consecuencia de su condición de salud ¿ha requerido
+                    productos de apoyo durante el último año? (ej.: sillas de
+                    ruedas, bastones de orientación visual, muletas,
+                    caminadores, audífonos, gafas, prótesis, etc.){" "}
+                  </Text>
                   <View style={styles.optionContainer}>
                     <CheckBox
                       title="Sí"
-                      checked={selectedOption9 === 'Sí'}
-                      onPress={() => handleOption9Select('Sí')}
+                      checked={selectedOption9 === "Sí"}
+                      onPress={() => handleOption9Select("Sí")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
                         selectedOption9 === "Sí"
@@ -2088,8 +2249,8 @@ export default function PreCinScreen(props) {
                     />
                     <CheckBox
                       title="No"
-                      checked={selectedOption9 === 'No'}
-                      onPress={() => handleOption9Select('No')}
+                      checked={selectedOption9 === "No"}
+                      onPress={() => handleOption9Select("No")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
                         selectedOption9 === "No"
@@ -2097,46 +2258,42 @@ export default function PreCinScreen(props) {
                           : styles.checkBoxText
                       }
                       checkedColor="#BA0C2F"
-
                     />
                   </View>
-
                 </View>
-
               </View>
             </View>
           </View>
-
-
 
           {/* Pregunta 5.10 */}
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-                <Text style={styles.question}> PREGUNTA 5.10 (SELECCIÓN MÚLTIPLE - MÁXIMO 3 OPCIONES)</Text>
+                <Text style={styles.question}>
+                  {" "}
+                  PREGUNTA 5.10 (SELECCIÓN MÚLTIPLE - MÁXIMO 3 OPCIONES)
+                </Text>
               </View>
               <View style={styles.linea} />
             </View>
           </View>
 
-
-
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-
                 <View style={styles.preguntaContainer}>
-
-
-                  <Text style={styles.pregunta}>Como parte de la atención de su condición de salud ¿ha recibido productos de apoyo durante el último año? (ej.: sillas de ruedas, bastones de orientación visual, muletas, caminadores, audífonos, gafas, prótesis, etc.)</Text>
+                  <Text style={styles.pregunta}>
+                    Como parte de la atención de su condición de salud ¿ha
+                    recibido productos de apoyo durante el último año? (ej.:
+                    sillas de ruedas, bastones de orientación visual, muletas,
+                    caminadores, audífonos, gafas, prótesis, etc.)
+                  </Text>
                   <View style={styles.optionContainer}>
-
                     <CheckBox
                       title="Si"
                       checked={selectedOption0 === "Sí"}
                       onPress={() => setSelectedOption0("Sí")}
                       containerStyle={styles.checkBoxContainer}
-
                       textStyle={
                         selectedOption0 === "Sí"
                           ? styles.selectedOptionText
@@ -2149,7 +2306,6 @@ export default function PreCinScreen(props) {
                       checked={selectedOption0 === "No"}
                       onPress={() => setSelectedOption0("No")}
                       containerStyle={styles.checkBoxContainer}
-
                       textStyle={
                         selectedOption0 === "No"
                           ? styles.selectedOptionText
@@ -2157,21 +2313,26 @@ export default function PreCinScreen(props) {
                       }
                       checkedColor="#BA0C2F"
                     />
-
                   </View>
                   {selectedOption0 === "No" && (
                     <View style={styles.questionContainer}>
-                      <Text style={styles.preguntas}>
-                        SELECCIONE
-                      </Text>
+                      <Text style={styles.preguntas}>SELECCIONE</Text>
 
                       <CheckBox
                         title="Múltiples desplazamientos para gestionar autorización"
-                        checked={selectedOptions0.includes("Múltiples desplazamientos para gestionar autorización")}
-                        onPress={() => handleOptionChange0("Múltiples desplazamientos para gestionar autorización")}
+                        checked={selectedOptions0.includes(
+                          "Múltiples desplazamientos para gestionar autorización"
+                        )}
+                        onPress={() =>
+                          handleOptionChange0(
+                            "Múltiples desplazamientos para gestionar autorización"
+                          )
+                        }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
-                          selectedOptions0.includes("Múltiples desplazamientos para gestionar autorización")
+                          selectedOptions0.includes(
+                            "Múltiples desplazamientos para gestionar autorización"
+                          )
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -2180,26 +2341,40 @@ export default function PreCinScreen(props) {
 
                       <CheckBox
                         title="Historia Clínica exigida para la autorización"
-                        checked={selectedOptions0.includes("Historia Clínica exigida para la autorización")}
-                        onPress={() => handleOptionChange0("Historia Clínica exigida para la autorización")}
+                        checked={selectedOptions0.includes(
+                          "Historia Clínica exigida para la autorización"
+                        )}
+                        onPress={() =>
+                          handleOptionChange0(
+                            "Historia Clínica exigida para la autorización"
+                          )
+                        }
                         containerStyle={styles.checkBoxContainer}
-                        textStyle={selectedOptions0.includes("Historia Clínica exigida para la autorización"
-                        )
-                          ? styles.selectedOptionText
-                          : styles.checkBoxText
+                        textStyle={
+                          selectedOptions0.includes(
+                            "Historia Clínica exigida para la autorización"
+                          )
+                            ? styles.selectedOptionText
+                            : styles.checkBoxText
                         }
                         checkedColor="#BA0C2F"
                       />
                       <CheckBox
                         title="Tiempos largos de espera para la autorización, 
                     congestión en el servicio de salud"
-                        checked={selectedOptions0.includes("Tiempos largos de espera para la autorización, congestión en el servicio de salud")}
+                        checked={selectedOptions0.includes(
+                          "Tiempos largos de espera para la autorización, congestión en el servicio de salud"
+                        )}
                         onPress={() =>
-                          handleOptionChange0("Tiempos largos de espera para la autorización, congestión en el servicio de salud")
+                          handleOptionChange0(
+                            "Tiempos largos de espera para la autorización, congestión en el servicio de salud"
+                          )
                         }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
-                          selectedOptions0.includes("Tiempos largos de espera para la autorización, congestión en el servicio de salud")
+                          selectedOptions0.includes(
+                            "Tiempos largos de espera para la autorización, congestión en el servicio de salud"
+                          )
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -2207,13 +2382,17 @@ export default function PreCinScreen(props) {
                       />
                       <CheckBox
                         title="Remisiones a IPS sin convenio"
-                        checked={selectedOptions0.includes("Remisiones a IPS sin convenio")}
+                        checked={selectedOptions0.includes(
+                          "Remisiones a IPS sin convenio"
+                        )}
                         onPress={() =>
                           handleOptionChange0("Remisiones a IPS sin convenio")
                         }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
-                          selectedOptions0.includes("Remisiones a IPS sin convenio")
+                          selectedOptions0.includes(
+                            "Remisiones a IPS sin convenio"
+                          )
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -2222,11 +2401,19 @@ export default function PreCinScreen(props) {
                       <CheckBox
                         title="Vencimiento de la autorización por no agenda del profesional,
                     requiere nuevamente cita con medicina general"
-                        checked={selectedOptions0.includes("Vencimiento de la autorización por no agenda del profesional, requiere nuevamente cita con medicina general")}
-                        onPress={() => handleOptionChange0("Vencimiento de la autorización por no agenda del profesional, requiere nuevamente cita con medicina general")}
+                        checked={selectedOptions0.includes(
+                          "Vencimiento de la autorización por no agenda del profesional, requiere nuevamente cita con medicina general"
+                        )}
+                        onPress={() =>
+                          handleOptionChange0(
+                            "Vencimiento de la autorización por no agenda del profesional, requiere nuevamente cita con medicina general"
+                          )
+                        }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
-                          selectedOptions0.includes("Vencimiento de la autorización por no agenda del profesional, requiere nuevamente cita con medicina general")
+                          selectedOptions0.includes(
+                            "Vencimiento de la autorización por no agenda del profesional, requiere nuevamente cita con medicina general"
+                          )
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -2234,9 +2421,12 @@ export default function PreCinScreen(props) {
                       />
                       <CheckBox
                         title="Considera que no lo necesita "
-                        checked={selectedOptions0.includes("Considera que no lo necesita ")}
+                        checked={selectedOptions0.includes(
+                          "Considera que no lo necesita "
+                        )}
                         onPress={() =>
-                          handleOptionChange0("Considera que no lo necesita ")}
+                          handleOptionChange0("Considera que no lo necesita ")
+                        }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
                           selectedOptions0 === "Considera que no lo necesita "
@@ -2248,10 +2438,11 @@ export default function PreCinScreen(props) {
 
                       <CheckBox
                         title="Otro motivo ¿Cuál?"
-                        checked={selectedOptions0.includes("Otro motivo ¿Cuál?")}
-                        onPress={() => handleOptionChange0(
+                        checked={selectedOptions0.includes(
                           "Otro motivo ¿Cuál?"
-                        )
+                        )}
+                        onPress={() =>
+                          handleOptionChange0("Otro motivo ¿Cuál?")
                         }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
@@ -2261,9 +2452,11 @@ export default function PreCinScreen(props) {
                         }
                         checkedColor="#BA0C2F"
                       />
-                      {(selectedOptions0.includes("Otro motivo ¿Cuál?")) && (
+                      {selectedOptions0.includes("Otro motivo ¿Cuál?") && (
                         <View style={styles.preguntaContainer}>
-                          <Text style={styles.preguntas}>Especifique otro:</Text>
+                          <Text style={styles.preguntas}>
+                            Especifique otro:
+                          </Text>
                           <TextInput
                             style={styles.input}
                             value={motivo}
@@ -2274,9 +2467,7 @@ export default function PreCinScreen(props) {
                       )}
                     </View>
                   )}
-
                 </View>
-
               </View>
             </View>
           </View>
@@ -2285,7 +2476,10 @@ export default function PreCinScreen(props) {
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-                <Text style={styles.question}> PREGUNTA 5.11 SELECCIÓN ÚNICA</Text>
+                <Text style={styles.question}>
+                  {" "}
+                  PREGUNTA 5.11 SELECCIÓN ÚNICA
+                </Text>
               </View>
               <View style={styles.linea} />
             </View>
@@ -2294,18 +2488,20 @@ export default function PreCinScreen(props) {
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-
-
-
-
-
-                <Text style={styles.preguntas}>Si ha presentado una condición de salud o enfermedad durante el último año
-                  y no recibió atención por parte de los servicios de salud /rehabilitación, indique cuál fue la razón:</Text>
+                <Text style={styles.preguntas}>
+                  Si ha presentado una condición de salud o enfermedad durante
+                  el último año y no recibió atención por parte de los servicios
+                  de salud /rehabilitación, indique cuál fue la razón:
+                </Text>
 
                 <CheckBox
                   title="Cree que ya no lo necesita"
-                  checked={selected1Option2.includes("Cree que ya no lo necesita")}
-                  onPress={() => handleOption1Select2("Cree que ya no lo necesita")}
+                  checked={selected1Option2.includes(
+                    "Cree que ya no lo necesita"
+                  )}
+                  onPress={() =>
+                    handleOption1Select2("Cree que ya no lo necesita")
+                  }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selected1Option2.includes("Cree que ya no lo necesita")
@@ -2317,8 +2513,12 @@ export default function PreCinScreen(props) {
 
                 <CheckBox
                   title="No le gusta, no le interesa"
-                  checked={selected1Option2.includes("No le gusta, no le interesa")}
-                  onPress={() => handleOption1Select2("No le gusta, no le interesa")}
+                  checked={selected1Option2.includes(
+                    "No le gusta, no le interesa"
+                  )}
+                  onPress={() =>
+                    handleOption1Select2("No le gusta, no le interesa")
+                  }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selected1Option2.includes("No le gusta, no le interesa")
@@ -2341,11 +2541,19 @@ export default function PreCinScreen(props) {
                 />
                 <CheckBox
                   title="El centro de atención queda muy lejos"
-                  checked={selected1Option2.includes("El centro de atención queda muy lejos")}
-                  onPress={() => handleOption1Select2("El centro de atención queda muy lejos")}
+                  checked={selected1Option2.includes(
+                    "El centro de atención queda muy lejos"
+                  )}
+                  onPress={() =>
+                    handleOption1Select2(
+                      "El centro de atención queda muy lejos"
+                    )
+                  }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selected1Option2.includes("El centro de atención queda muy lejos")
+                    selected1Option2.includes(
+                      "El centro de atención queda muy lejos"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -2365,11 +2573,19 @@ export default function PreCinScreen(props) {
                 />
                 <CheckBox
                   title="No ha sido autorizado por el asegurador "
-                  checked={selected1Option2.includes("No ha sido autorizado por el asegurador ")}
-                  onPress={() => handleOption1Select2("No ha sido autorizado por el asegurador ")}
+                  checked={selected1Option2.includes(
+                    "No ha sido autorizado por el asegurador "
+                  )}
+                  onPress={() =>
+                    handleOption1Select2(
+                      "No ha sido autorizado por el asegurador "
+                    )
+                  }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selected1Option2.includes("No ha sido autorizado por el asegurador ")
+                    selected1Option2.includes(
+                      "No ha sido autorizado por el asegurador "
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -2377,12 +2593,19 @@ export default function PreCinScreen(props) {
                 />
                 <CheckBox
                   title="No ha sido remitido por el médico tratante"
-                  checked={selected1Option2.includes("No ha sido remitido por el médico tratante")}
+                  checked={selected1Option2.includes(
+                    "No ha sido remitido por el médico tratante"
+                  )}
                   onPress={() =>
-                    handleOption1Select2("No ha sido remitido por el médico tratante")}
+                    handleOption1Select2(
+                      "No ha sido remitido por el médico tratante"
+                    )
+                  }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selected1Option2.includes("No ha sido remitido por el médico tratante")
+                    selected1Option2.includes(
+                      "No ha sido remitido por el médico tratante"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -2390,7 +2613,8 @@ export default function PreCinScreen(props) {
                 />
                 <CheckBox
                   title="No sabe"
-                  checked={selected1Option2.includes("No sabe")} onPress={() => handleOption1Select("No sabe")}
+                  checked={selected1Option2.includes("No sabe")}
+                  onPress={() => handleOption1Select("No sabe")}
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selected1Option2.includes("No sabe")
@@ -2401,25 +2625,24 @@ export default function PreCinScreen(props) {
                 />
                 <CheckBox
                   title="Cierre del servicio por pandemia COVID-19"
-                  checked={selected1Option2.includes("Cierre del servicio por pandemia COVID-19")}
-                  onPress={() => handleOption1Select2("Cierre del servicio por pandemia COVID-19")}
+                  checked={selected1Option2.includes(
+                    "Cierre del servicio por pandemia COVID-19"
+                  )}
+                  onPress={() =>
+                    handleOption1Select2(
+                      "Cierre del servicio por pandemia COVID-19"
+                    )
+                  }
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
-                    selected1Option2.includes("Cierre del servicio por pandemia COVID-19")
+                    selected1Option2.includes(
+                      "Cierre del servicio por pandemia COVID-19"
+                    )
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
                   checkedColor="#BA0C2F"
                 />
-
-
-
-
-
-
-
-
-
               </View>
             </View>
           </View>
@@ -2428,7 +2651,10 @@ export default function PreCinScreen(props) {
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-                <Text style={styles.question}> PREGUNTA 5.12 (SELECCIÓN ÚNICA)</Text>
+                <Text style={styles.question}>
+                  {" "}
+                  PREGUNTA 5.12 (SELECCIÓN ÚNICA)
+                </Text>
               </View>
               <View style={styles.linea} />
             </View>
@@ -2437,13 +2663,15 @@ export default function PreCinScreen(props) {
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-
-
                 <View style={styles.container}>
-                  <Text style={styles.advertencia}>Validar con la respuesta a pregunta 5.5</Text>
+                  <Text style={styles.advertencia}>
+                    Validar con la respuesta a pregunta 5.5
+                  </Text>
 
-                  <Text style={styles.preguntas}>Según su experiencia de atención en los servicios de rehabilitación
-                    durante el último año califique: </Text>
+                  <Text style={styles.preguntas}>
+                    Según su experiencia de atención en los servicios de
+                    rehabilitación durante el último año califique:{" "}
+                  </Text>
 
                   {cellColors.map((rowColors, rowIndex) => (
                     <View key={rowIndex} style={styles.row}>
@@ -2451,25 +2679,30 @@ export default function PreCinScreen(props) {
                         <TouchableOpacity
                           key={colIndex}
                           style={[styles.cell, { backgroundColor: color }]}
-                          onPress={() => handleCellSelection(rowIndex, colIndex)}
+                          onPress={() =>
+                            handleCellSelection(rowIndex, colIndex)
+                          }
                         >
                           <Text
                             style={{
-                              color: colIndex === 0 ? 'black' : selectedColumns[colIndex] === rowIndex ? 'white' : 'black',
-                              fontWeight: colIndex === 0 ? 'bold' : 'normal',
+                              color:
+                                colIndex === 0
+                                  ? "black"
+                                  : selectedColumns[colIndex] === rowIndex
+                                  ? "white"
+                                  : "black",
+                              fontWeight: colIndex === 0 ? "bold" : "normal",
                             }}
                           >
-                            {colIndex === 0 && rowIndex === 0 ? '  ACCESO\n\n\n DIFICULTAD' : cellTexts[rowIndex][colIndex]}
+                            {colIndex === 0 && rowIndex === 0
+                              ? "  ACCESO\n\n\n DIFICULTAD"
+                              : cellTexts[rowIndex][colIndex]}
                           </Text>
                         </TouchableOpacity>
                       ))}
                     </View>
                   ))}
                 </View>
-
-
-
-
               </View>
             </View>
           </View>
@@ -2478,7 +2711,10 @@ export default function PreCinScreen(props) {
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-                <Text style={styles.question}> PREGUNTA 5.13 (SELECCIÓN ÚNICA)</Text>
+                <Text style={styles.question}>
+                  {" "}
+                  PREGUNTA 5.13 (SELECCIÓN ÚNICA)
+                </Text>
               </View>
               <View style={styles.linea} />
             </View>
@@ -2487,10 +2723,14 @@ export default function PreCinScreen(props) {
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-
                 <View style={styles.container}>
-                  <Text style={styles.advertencia}>Validar con la respuesta a pregunta 5.5</Text>
-                  <Text style={styles.preguntas}>Según su experiencia de atención en los servicios de rehabilitación durante el último año califique: </Text>
+                  <Text style={styles.advertencia}>
+                    Validar con la respuesta a pregunta 5.5
+                  </Text>
+                  <Text style={styles.preguntas}>
+                    Según su experiencia de atención en los servicios de
+                    rehabilitación durante el último año califique:{" "}
+                  </Text>
 
                   {cellColors1.map((rowColors, rowIndex) => (
                     <View key={rowIndex} style={styles.row}>
@@ -2498,24 +2738,33 @@ export default function PreCinScreen(props) {
                         <TouchableOpacity
                           key={colIndex}
                           style={[styles.cell, { backgroundColor: color }]}
-                          onPress={() => handleCellSelection1(rowIndex, colIndex)}
+                          onPress={() =>
+                            handleCellSelection1(rowIndex, colIndex)
+                          }
                         >
                           <Text
                             style={{
-                              color: colIndex === 0 ? 'black' : selectedColumns1[colIndex] === rowIndex ? 'white' : 'black',
-                              fontWeight: colIndex === 0 || rowIndex === 0 ? 'bold' : 'normal',
+                              color:
+                                colIndex === 0
+                                  ? "black"
+                                  : selectedColumns1[colIndex] === rowIndex
+                                  ? "white"
+                                  : "black",
+                              fontWeight:
+                                colIndex === 0 || rowIndex === 0
+                                  ? "bold"
+                                  : "normal",
                             }}
                           >
-                            {colIndex === 0 && rowIndex === 0 ? '  USO\n\n\n SATISFACCIÓN' : cellTexts1[rowIndex][colIndex]}
+                            {colIndex === 0 && rowIndex === 0
+                              ? "  USO\n\n\n SATISFACCIÓN"
+                              : cellTexts1[rowIndex][colIndex]}
                           </Text>
                         </TouchableOpacity>
                       ))}
                     </View>
                   ))}
                 </View>
-
-
-
               </View>
             </View>
           </View>
@@ -2524,34 +2773,33 @@ export default function PreCinScreen(props) {
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-                <Text style={styles.question}> PREGUNTA 5.14 (SELECCIÓN MÚLTIPLE - MÁXIMO 2 OPCIONES)</Text>
+                <Text style={styles.question}>
+                  {" "}
+                  PREGUNTA 5.14 (SELECCIÓN MÚLTIPLE - MÁXIMO 2 OPCIONES)
+                </Text>
               </View>
               <View style={styles.linea} />
             </View>
           </View>
 
-
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
               <View style={styles.contenedor}>
-
-
                 <View style={styles.preguntaContainer}>
-
-
-                  <Text style={styles.pregunta}>Indique el medio de transporte utilizado para asistir al servicio de salud / rehabilitación:</Text>
+                  <Text style={styles.pregunta}>
+                    Indique el medio de transporte utilizado para asistir al
+                    servicio de salud / rehabilitación:
+                  </Text>
                   <View style={styles.optionContainer}>
-
-
                     <CheckBox
                       title="A pie"
                       checked={transporte.includes("A pie")}
                       onPress={() => handleOptionTransporte("A pie")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
-                        checked = transporte.includes("A pie")
+                        (checked = transporte.includes("A pie")
                           ? styles.selectedOptionText
-                          : styles.checkBoxText
+                          : styles.checkBoxText)
                       }
                       checkedColor="#BA0C2F"
                     />
@@ -2562,9 +2810,9 @@ export default function PreCinScreen(props) {
                       onPress={() => handleOptionTransporte("Terrestre")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
-                        checked = transporte.includes("Terrestre")
+                        (checked = transporte.includes("Terrestre")
                           ? styles.selectedOptionText
-                          : styles.checkBoxText
+                          : styles.checkBoxText)
                       }
                       checkedColor="#BA0C2F"
                     />
@@ -2574,9 +2822,9 @@ export default function PreCinScreen(props) {
                       onPress={() => handleOptionTransporte("Aéreo")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
-                        checked = transporte.includes("Aéreo")
+                        (checked = transporte.includes("Aéreo")
                           ? styles.selectedOptionText
-                          : styles.checkBoxText
+                          : styles.checkBoxText)
                       }
                       checkedColor="#BA0C2F"
                     />
@@ -2587,21 +2835,27 @@ export default function PreCinScreen(props) {
                       onPress={() => handleOptionTransporte("Fluvial")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
-                        checked = transporte.includes("Fluvial")
+                        (checked = transporte.includes("Fluvial")
                           ? styles.selectedOptionText
-                          : styles.checkBoxText
+                          : styles.checkBoxText)
                       }
                       checkedColor="#BA0C2F"
                     />
                     <CheckBox
                       title="Animales de tiro/ de montar"
-                      checked={transporte.includes("Animales de tiro/ de montar")}
-                      onPress={() => handleOptionTransporte("Animales de tiro/ de montar")}
+                      checked={transporte.includes(
+                        "Animales de tiro/ de montar"
+                      )}
+                      onPress={() =>
+                        handleOptionTransporte("Animales de tiro/ de montar")
+                      }
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
-                        checked = transporte.includes("Animales de tiro/ de montar")
+                        (checked = transporte.includes(
+                          "Animales de tiro/ de montar"
+                        )
                           ? styles.selectedOptionText
-                          : styles.checkBoxText
+                          : styles.checkBoxText)
                       }
                       checkedColor="#BA0C2F"
                     />
@@ -2612,9 +2866,9 @@ export default function PreCinScreen(props) {
                       onPress={() => handleOptionTransporte("Otro ¿Cuál?")}
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
-                        checked = transporte.includes("Otro ¿Cuál?")
+                        (checked = transporte.includes("Otro ¿Cuál?")
                           ? styles.selectedOptionText
-                          : styles.checkBoxText
+                          : styles.checkBoxText)
                       }
                       checkedColor="#BA0C2F"
                     />
@@ -2630,36 +2884,13 @@ export default function PreCinScreen(props) {
                         />
                       </View>
                     )}
-
-
-
-
                   </View>
-
                 </View>
-
-
-
-
-
-
-
               </View>
             </View>
           </View>
-
         </View>
       )}
-
-
-
-
-
-
-
-
-
-
 
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
@@ -2668,20 +2899,12 @@ export default function PreCinScreen(props) {
               <Text style={styles.textoBoton}>Siguiente</Text>
             </TouchableOpacity>
           </View>
-
         </View>
       </View>
-
-
-
-
     </ScrollView>
-
-  )
+  );
 }
 const styles = StyleSheet.create({
-
-
   titulo: {
     textAlign: "center",
     justifyContent: "center",
@@ -2692,17 +2915,16 @@ const styles = StyleSheet.create({
   },
 
   opcionesContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 4,
   },
   pregunta: {
     marginBottom: 5,
-    textAlign: 'justify',
+    textAlign: "justify",
     marginTop: -15,
     fontWeight: "bold",
     fontSize: 16,
-
   },
   preguntas: {
     color: "#000000",
@@ -2734,21 +2956,21 @@ const styles = StyleSheet.create({
   },
   linea: {
     marginTop: "auto",
-    height: 6,              // Altura de la línea
-    backgroundColor: "#BA0C2F",  // Color de la línea (rojo en este caso)
-    position: 'absolute',   // Posición absoluta para que se superponga al contenido
-    bottom: 0,              // Se coloca en la parte inferior de la tarjeta
-    left: 8,                // Alinear a la izquierda
-    right: 8,               // Alinear a la derecha
+    height: 6, // Altura de la línea
+    backgroundColor: "#BA0C2F", // Color de la línea (rojo en este caso)
+    position: "absolute", // Posición absoluta para que se superponga al contenido
+    bottom: 0, // Se coloca en la parte inferior de la tarjeta
+    left: 8, // Alinear a la izquierda
+    right: 8, // Alinear a la derecha
   },
   linea1: {
     marginTop: 8,
-    height: 6,              // Altura de la línea
-    backgroundColor: "#BA0C2F",  // Color de la línea (rojo en este caso)
-    position: 'relative',   // Posición absoluta para que se superponga al contenido
-    bottom: 20,              // Se coloca en la parte inferior de la tarjeta
-    left: 0,                // Alinear a la izquierda
-    right: 0,               // Alinear a la derecha
+    height: 6, // Altura de la línea
+    backgroundColor: "#BA0C2F", // Color de la línea (rojo en este caso)
+    position: "relative", // Posición absoluta para que se superponga al contenido
+    bottom: 20, // Se coloca en la parte inferior de la tarjeta
+    left: 0, // Alinear a la izquierda
+    right: 0, // Alinear a la derecha
   },
   input: {
     backgroundColor: "white",
@@ -2769,7 +2991,6 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 20,
     marginBottom: 15,
-
   },
   textoBoton: {
     textAlign: "center",
@@ -2779,10 +3000,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-
-
   tituloSeccion: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 8,
   },
 
@@ -2834,33 +3053,30 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-
   // Estilo Tabla
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   row: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   cell: {
     width: 80,
     height: 110,
     borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   advertencia: {
     marginBottom: 5,
-    textAlign: 'justify',
+    textAlign: "justify",
     marginTop: 5,
     fontWeight: "bold",
     color: "#BA0C2F",
     fontSize: 16,
-
   },
-
 });

@@ -1,6 +1,5 @@
 import { Realm } from "@realm/react";
 export class Component5 extends Realm.Object {
-  _id = new Realm.BSON.ObjectID();
   pregunta5_1 = "";
   pregunta5_1_SI = "";
   pregunta5_1_OtrosServi = "";
@@ -32,7 +31,6 @@ export class Component5 extends Realm.Object {
   static schema = {
     name: "component5",
     properties: {
-      _id: { type: "objectId", default: new Realm.BSON.ObjectId() },
       pregunta5_1: "string",
       pregunta5_1_SI: "string",
       pregunta5_1_OtrosServi: "string",
@@ -60,7 +58,6 @@ export class Component5 extends Realm.Object {
       pregunta5_13: "string",
       pregunta5_14: "string",
       pregunta5_14_1: "string",
-    },
-    primaryKey: "_id",
+    }
   };
 }

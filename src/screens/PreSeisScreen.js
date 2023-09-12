@@ -33,8 +33,6 @@ export default function PreSeisScreen(props) {
   const [municipio, setMunicipio] = useState("");
   const [formCounter, setFormCounter] = useState(1);
 
-  
-
   const opciones = [
     "Educación para la salud (cuidado de niños, mujeres y adulto mayor)",
     "Estrategia comunitaria RBC - Rehabilitación Basada en Comunidad (ayudas técnicas, deporte para Personas con Discapacidad)",
@@ -147,15 +145,46 @@ export default function PreSeisScreen(props) {
         nombreDepartamento !== "") ||
         selectedOption3 === "No") // Validación de la selección única y campos de texto
     ) {
-     
       navigation.navigate("Envio", { formCounter: formCounter });
     } else {
       Alert.alert("Error", "Por favor completa todos los campos.");
-
     }
   };
-  const SaveComponente6 = async () => {
+
+  // Suponiendo que ya tienes 'realm' disponible y has definido tu modelo 'Componente6'
+
+  const guardarPersonasEnFirestore = async () => {
     try {
+      const personas = realm.objects("Persona");
+
+      // Convierte los registros de Realm en objetos JSON y elimina el campo _id
+      const registrosFirestore = personas.map((persona) => {
+        const registro = persona.toJSON();
+        delete registro._id; // Elimina el campo _id
+        return registro;
+      });
+
+      // Guarda los registros en Firestore
+      await Promise.all(
+        registrosFirestore.map(async (registro) => {
+          await addDoc(collection(db, "personasFirestore"), registro);
+        })
+      );
+
+      console.log("Registros de Persona guardados en Firestore con éxito.");
+    } catch (error) {
+      console.error("Error al guardar registros en Firestore:", error);
+      Alert.alert("Error", "Hubo un error al guardar registros en Firestore");
+    }
+  };
+
+  // Llama a la función para guardar los registros de 'Persona' en Firestore
+  guardarPersonasEnFirestore();
+
+  // Llama a la función para obtener y mostrar todos los registros
+
+  const SaveComponente6 = async () => {
+    /*  try {
       await addDoc(collection(db, "componenteseis"), {
         pregunta6_1: selectedOptions.map((index) => opciones[index]),
         otroTexto6_1: opcionOtro ? otroTexto : "",
@@ -169,23 +198,31 @@ export default function PreSeisScreen(props) {
     } catch (error) {
       console.error(error);
       Alert.alert("Error", "Hubo un error al guardar sus respuestas");
-    }
+    } */
 
     try {
       realm.write(() => {
-        realm.create("component6", {
-          pregunta6_1: "string",
-          otroTexto6_1: "string",
-          pregunta6_2: "string",
-          otroIndicacion6_2:"string",
-          pregunta6_3: "string",
-          municipio_pregunta6_3: "string",
-        });
+        const personaToUpdate = realm
+          .objects("Persona")
+          .filtered("id_document = 1002965852");
+        if (personaToUpdate.length > 0) {
+          const persona = personaToUpdate[0];
+          persona.component6 = {
+            pregunta6_1: "string",
+            otroTexto6_1: "string",
+            pregunta6_2: "string",
+            otroIndicacion6_2: "string",
+            pregunta6_3: "string",
+            municipio_pregunta6_3: "string",
+          };
+        }
       });
+
       console.log("Los datos se han guardado correctamente en Realm.");
     } catch (error) {
       console.error("Error al guardar datos en Realm:", error);
     }
+    guardarPersonasEnFirestore();
   };
 
   return (

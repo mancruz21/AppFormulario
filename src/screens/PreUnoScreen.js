@@ -255,7 +255,7 @@ export default function PreUnoScreen(props) {
     saveDataToStorage();
   };
   const SaveComponente1 = async () => {
-    try {
+    /* try {
       await addDoc(collection(db, "componenteuno"), {
         pregunta1_1Apell: apellido,
         pregunta1_1_2Nombres: nombres,
@@ -275,7 +275,7 @@ export default function PreUnoScreen(props) {
       });
     } catch (error) {
       console.error(error);
-    }
+    } */
 
     Celular_parse = parseInt(Celular);
     edad_parse = parseInt(edadCalculada);
@@ -283,7 +283,7 @@ export default function PreUnoScreen(props) {
       realm.write(() => {
         realm.create("Persona", {
           tipoID: "CC",
-          id_document: 1002965852,
+          id_document: 10029658523,
           component1: {
             pregunta1_1Apell: apellido.toString(),
             pregunta1_1_2Nombres: nombres.toString(),

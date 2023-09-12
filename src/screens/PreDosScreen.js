@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Alert, } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import { CheckBox } from "react-native-elements";
 import appFirebase from "../components/firebase-config";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { RealmConfigContext } from "./../../utils/models/context";
 const { useRealm } = RealmConfigContext;
-
 
 const db = getFirestore(appFirebase);
 
@@ -33,7 +40,7 @@ export default function PreDosScreen(props) {
   const handleOption1Press = (opcion) => {
     if (opcion === opcion1) {
       // Si la opción seleccionada es la misma que se presionó, deselecciónala
-      setOpcion1('');
+      setOpcion1("");
     } else {
       // De lo contrario, establece la opción seleccionada en la opción presionada
       setOpcion1(opcion);
@@ -43,7 +50,7 @@ export default function PreDosScreen(props) {
   const handleOption2Press = (opcion) => {
     if (opcion === opcion2) {
       // Si la opción seleccionada es la misma que se presionó, deselecciónala
-      setOpcion2('');
+      setOpcion2("");
     } else {
       // De lo contrario, establece la opción seleccionada en la opción presionada
       setOpcion2(opcion);
@@ -53,13 +60,12 @@ export default function PreDosScreen(props) {
   const handleOption3Press = (opcion) => {
     if (opcion === opcion3) {
       // Si la opción seleccionada es la misma que se presionó, deselecciónala
-      setOpcion3('');
+      setOpcion3("");
     } else {
       // De lo contrario, establece la opción seleccionada en la opción presionada
       setOpcion3(opcion);
     }
-
-  }
+  };
   const handleOption4Press = (opcion) => {
     if (opcion === selectedOption4) {
       // Si la opción seleccionada es la misma que se presionó, deselecciónala
@@ -68,8 +74,7 @@ export default function PreDosScreen(props) {
       // De lo contrario, establece la opción seleccionada en la opción presionada
       setSelectedOption4(opcion);
     }
-
-  }
+  };
 
   // Función para manejar la selección de la opción Urbano
   const handleUrbanoPress = () => {
@@ -90,11 +95,15 @@ export default function PreDosScreen(props) {
         const savedOpcion2 = await AsyncStorage.getItem("opcion2");
         const savedOpcion3 = await AsyncStorage.getItem("opcion3");
         const savedDiscapacidad = await AsyncStorage.getItem("discapacidad");
-        const savedOptionSelection = await AsyncStorage.getItem("OptionSelection");
+        const savedOptionSelection = await AsyncStorage.getItem(
+          "OptionSelection"
+        );
         const savedEtnia = await AsyncStorage.getItem("etnia");
         const savedIndigena = await AsyncStorage.getItem("indigena");
         const savedEducativo = await AsyncStorage.getItem("educativo");
-        const savedEducacionSuperior = await AsyncStorage.getItem("educacionSuperior");
+        const savedEducacionSuperior = await AsyncStorage.getItem(
+          "educacionSuperior"
+        );
         const savedOcupacion = await AsyncStorage.getItem("ocupacion");
         const savedTrabajo = await AsyncStorage.getItem("trabajo");
         const savedSalario = await AsyncStorage.getItem("salario");
@@ -126,18 +135,17 @@ export default function PreDosScreen(props) {
     fetchSavedData();
   }, []);
 
-
   const goToPreguntaTres = async () => {
     //Condicion de no dejar a la proxima pantalla
     if (
       opcion2 !== null &&
       (etnia === "Indígena" ? indigena !== "" : true) &&
-      (educativo === "Educación Superior" ? educacionSuperior !== null : true) &&
-      (ocupacion === "Trabajando"
-        ? trabajo.length > 0
+      (educativo === "Educación Superior"
+        ? educacionSuperior !== null
         : true) &&
+      (ocupacion === "Trabajando" ? trabajo.length > 0 : true) &&
       (ocupacion ===
-        "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
+      "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
         ? trabajo !== null
         : true)
     ) {
@@ -146,12 +154,16 @@ export default function PreDosScreen(props) {
         if (opcion1 !== null) await AsyncStorage.setItem("opcion1", opcion1);
         if (opcion2 !== null) await AsyncStorage.setItem("opcion2", opcion2);
         if (opcion3 !== null) await AsyncStorage.setItem("opcion3", opcion3);
-        if (discapacidad !== null) await AsyncStorage.setItem("discapacidad", discapacidad);
-        if (OptionSelection !== null) await AsyncStorage.setItem("OptionSelection", OptionSelection);
+        if (discapacidad !== null)
+          await AsyncStorage.setItem("discapacidad", discapacidad);
+        if (OptionSelection !== null)
+          await AsyncStorage.setItem("OptionSelection", OptionSelection);
         if (etnia !== null) await AsyncStorage.setItem("etnia", etnia);
         if (indigena !== null) await AsyncStorage.setItem("indigena", indigena);
-        if (educativo !== null) await AsyncStorage.setItem("educativo", educativo);
-        if (educacionSuperior !== null) await AsyncStorage.setItem("educacionSuperior", educacionSuperior);
+        if (educativo !== null)
+          await AsyncStorage.setItem("educativo", educativo);
+        if (educacionSuperior !== null)
+          await AsyncStorage.setItem("educacionSuperior", educacionSuperior);
         await AsyncStorage.setItem("ocupacion", JSON.stringify(ocupacion));
         await AsyncStorage.setItem("trabajo", JSON.stringify(trabajo));
         if (salario !== null) await AsyncStorage.setItem("salario", salario);
@@ -166,7 +178,7 @@ export default function PreDosScreen(props) {
     }
   };
   const SaveComponente2 = async () => {
-    try {
+    /* try {
       const pregunta2_4 = selectedOption4.toString();
 
       await addDoc(collection(db, "componentedos"), {
@@ -187,43 +199,49 @@ export default function PreDosScreen(props) {
       });
     } catch (error) {
       console.error(error);
-    }
+    } */
 
     try {
       // Convierte selectedOption4 en una cadena (si es necesario)
       let pregunta2_4 = selectedOption4;
 
-      if (typeof pregunta2_4 !== 'string') {
+      if (typeof pregunta2_4 !== "string") {
         // Si selectedOption4 no es una cadena, intenta convertirlo en cadena
         pregunta2_4 = String(selectedOption4);
       }
-
-
+      // En la pantalla dos, actualiza los datos en el mismo objeto Persona
       realm.write(() => {
-        realm.create('component2', {
-          pregunta2_1: opcion1,
-          pregunta2_2: opcion2,
-          pregunta2_3: opcion3,
-          pregunta2_4: selectedOption4.toString(),
-          pregunta2_2_1: discapacidad,
-          pregunta2_2_2: OptionSelection.toString(),
-          pregunta2_4_1: etnia,
-          pregunta2_4_1_nombre: indigena,
-          pregunta2_5_2_UltimoNivel: educativo,
-          pregunta2_5_1EducaSuperior: educacionSuperior ? educacionSuperior : "NULL" ,
-          pregunta2_6_Ocupacion: ocupacion.toString(),
-          pregunta2_7_Trabajo: trabajo.toString(),
-          pregunta2_8_1_Salario: salario  ? salario : "NULL",
-          pregunta2_8_2_Ingreso: promedio ? promedio : "NULL",
-
-        });
+        const personaToUpdate = realm
+          .objects("Persona")
+          .filtered("id_document = 1002965852");
+        if (personaToUpdate.length > 0) {
+          const persona = personaToUpdate[0];
+          persona.component2 = {
+            pregunta2_1: opcion1,
+            pregunta2_2: opcion2,
+            pregunta2_3: opcion3,
+            pregunta2_4: selectedOption4.toString(),
+            pregunta2_2_1: discapacidad,
+            pregunta2_2_2: OptionSelection.toString(),
+            pregunta2_4_1: etnia,
+            pregunta2_4_1_nombre: indigena,
+            pregunta2_5_2_UltimoNivel: educativo,
+            pregunta2_5_1EducaSuperior: educacionSuperior
+              ? educacionSuperior
+              : "NULL",
+            pregunta2_6_Ocupacion: ocupacion.toString(),
+            pregunta2_7_Trabajo: trabajo.toString(),
+            pregunta2_8_1_Salario: salario ? salario : "NULL",
+            pregunta2_8_2_Ingreso: promedio ? promedio : "NULL",
+          };
+        }
       });
-      console.log('Los datos se han guardado correctamente en Realm.');
+
+      console.log("Los datos se han guardado correctamente en Realm.");
     } catch (error) {
-      console.error('Error al guardar datos en Realm:', error);
+      console.error("Error al guardar datos en Realm:", error);
     }
   };
-
 
   return (
     <ScrollView>
@@ -232,7 +250,10 @@ export default function PreDosScreen(props) {
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
             <Text style={styles.titulo}>CARACTERÍSTICAS SOCIODEMOGRÁFICAS</Text>
-            <Text style={styles.question}> PREGUNTA 2.1 ( SELECCIÓN MÚLTIPLE - MÁXIMO 4 OPCIONES) </Text>
+            <Text style={styles.question}>
+              {" "}
+              PREGUNTA 2.1 ( SELECCIÓN MÚLTIPLE - MÁXIMO 4 OPCIONES){" "}
+            </Text>
           </View>
           <View style={styles.linea} />
         </View>
@@ -273,7 +294,7 @@ export default function PreDosScreen(props) {
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   opcion1 ===
-                    "Población en proceso de reincorporación / reintegración"
+                  "Población en proceso de reincorporación / reintegración"
                     ? styles.selectedOptionText
                     : styles.checkBoxText
                 }
@@ -286,7 +307,9 @@ export default function PreDosScreen(props) {
                   opcion1 === "Víctima de Conflicto Armado - Ley 1448 del 2011"
                 }
                 onPress={() =>
-                  handleOption1Press("Víctima de Conflicto Armado - Ley 1448 del 2011")
+                  handleOption1Press(
+                    "Víctima de Conflicto Armado - Ley 1448 del 2011"
+                  )
                 }
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
@@ -363,14 +386,15 @@ export default function PreDosScreen(props) {
               />
             </View>
 
-
             {/* Opcion 3 */}
             <Text style={styles.preguntas}> Opción 3 </Text>
             <View style={styles.inputDate}>
               <CheckBox
                 title="Mujer embarazada y/o lactante"
                 checked={opcion3 === "Mujer embarazada y/o lactante"}
-                onPress={() => handleOption3Press("Mujer embarazada y/o lactante")}
+                onPress={() =>
+                  handleOption3Press("Mujer embarazada y/o lactante")
+                }
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   opcion3 === "Mujer embarazada y/o lactante"
@@ -425,9 +449,11 @@ export default function PreDosScreen(props) {
                   checkedColor="#BA0C2F"
                 />
                 {selectedOption4 === "Población con Discapacidad" && (
-
                   <View style={styles.questionContainer}>
-                    <Text style={styles.question2}> PREGUNTA 2.2 ( SELECCIÓN ÚNICA ) </Text>
+                    <Text style={styles.question2}>
+                      {" "}
+                      PREGUNTA 2.2 ( SELECCIÓN ÚNICA ){" "}
+                    </Text>
                     <View style={styles.linea1} />
                     <Text style={styles.pregunta}>
                       Si es una persona con discapacidad, indique la categoría
@@ -519,7 +545,10 @@ export default function PreDosScreen(props) {
                       checkedColor="#BA0C2F"
                     />
 
-                    <Text style={styles.question2}> PREGUNTA 2.3 ( SELECCIÓN ÚNICA ) </Text>
+                    <Text style={styles.question2}>
+                      {" "}
+                      PREGUNTA 2.3 ( SELECCIÓN ÚNICA ){" "}
+                    </Text>
                     <View style={styles.linea1} />
 
                     <Text style={styles.pregunta}>
@@ -567,7 +596,10 @@ export default function PreDosScreen(props) {
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-            <Text style={styles.question1}> PREGUNTA 2.4 ( SELECCIÓN ÚNICA ) </Text>
+            <Text style={styles.question1}>
+              {" "}
+              PREGUNTA 2.4 ( SELECCIÓN ÚNICA ){" "}
+            </Text>
           </View>
           <View style={styles.linea} />
         </View>
@@ -605,8 +637,12 @@ export default function PreDosScreen(props) {
             />
             <CheckBox
               title="Raizal del Archipiélago de San Andrés y Providencia"
-              checked={etnia === "Raizal del Archipiélago de San Andrés y Providencia"}
-              onPress={() => setEtnia("Raizal del Archipiélago de San Andrés y Providencia")}
+              checked={
+                etnia === "Raizal del Archipiélago de San Andrés y Providencia"
+              }
+              onPress={() =>
+                setEtnia("Raizal del Archipiélago de San Andrés y Providencia")
+              }
               containerStyle={styles.checkBoxContainer}
               textStyle={
                 etnia === "Raizal del Archipiélago de San Andrés y Providencia"
@@ -629,11 +665,19 @@ export default function PreDosScreen(props) {
             />
             <CheckBox
               title="Negro(a), Mulato(a), Afrocolombiano(a) o Afrodescendiente"
-              checked={etnia === "Negro(a), Mulato(a), Afrocolombiano(a) o Afrodescendiente"}
-              onPress={() => setEtnia("Negro(a), Mulato(a), Afrocolombiano(a) o Afrodescendiente")}
+              checked={
+                etnia ===
+                "Negro(a), Mulato(a), Afrocolombiano(a) o Afrodescendiente"
+              }
+              onPress={() =>
+                setEtnia(
+                  "Negro(a), Mulato(a), Afrocolombiano(a) o Afrodescendiente"
+                )
+              }
               containerStyle={styles.checkBoxContainer}
               textStyle={
-                etnia === "Negro(a), Mulato(a), Afrocolombiano(a) o Afrodescendiente"
+                etnia ===
+                "Negro(a), Mulato(a), Afrocolombiano(a) o Afrodescendiente"
                   ? styles.selectedOptionText
                   : styles.checkBoxText
               }
@@ -673,7 +717,10 @@ export default function PreDosScreen(props) {
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-            <Text style={styles.question1}> PREGUNTA 2.5 ( SELECCIÓN ÚNICA ) </Text>
+            <Text style={styles.question1}>
+              {" "}
+              PREGUNTA 2.5 ( SELECCIÓN ÚNICA ){" "}
+            </Text>
           </View>
           <View style={styles.linea} />
         </View>
@@ -799,7 +846,6 @@ export default function PreDosScreen(props) {
                   />
                   <View style={styles.linea} />
                 </View>
-
               )}
 
               <CheckBox
@@ -828,17 +874,17 @@ export default function PreDosScreen(props) {
                 checkedColor="#BA0C2F"
               />
             </View>
-
-
           </View>
-
         </View>
       </View>
 
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-            <Text style={styles.question1}> PREGUNTA 2.6 ( SELECCIÓN ÚNICA ) </Text>
+            <Text style={styles.question1}>
+              {" "}
+              PREGUNTA 2.6 ( SELECCIÓN ÚNICA ){" "}
+            </Text>
           </View>
           <View style={styles.linea} />
         </View>
@@ -855,7 +901,7 @@ export default function PreDosScreen(props) {
               <CheckBox
                 title="Trabajando"
                 checked={ocupacion === "Trabajando"}
-                onPress={() => setOcupacion('Trabajando')}
+                onPress={() => setOcupacion("Trabajando")}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   ocupacion === "Trabajando"
@@ -866,13 +912,17 @@ export default function PreDosScreen(props) {
               />
               {ocupacion === "Trabajando" && (
                 <View style={styles.questionContainer}>
-                  <Text style={styles.preguntas}>Seleccione el tipo de trabajo</Text>
+                  <Text style={styles.preguntas}>
+                    Seleccione el tipo de trabajo
+                  </Text>
                   <CheckBox
                     title="Urbano"
                     checked={urbano}
                     onPress={handleUrbanoPress}
                     containerStyle={styles.checkBoxContainer}
-                    textStyle={urbano ? styles.selectedOptionText : styles.checkBoxText}
+                    textStyle={
+                      urbano ? styles.selectedOptionText : styles.checkBoxText
+                    }
                     checkedColor="#BA0C2F"
                   />
                   <CheckBox
@@ -880,15 +930,15 @@ export default function PreDosScreen(props) {
                     checked={rural}
                     onPress={handleRuralPress}
                     containerStyle={styles.checkBoxContainer}
-                    textStyle={rural ? styles.selectedOptionText : styles.checkBoxText}
+                    textStyle={
+                      rural ? styles.selectedOptionText : styles.checkBoxText
+                    }
                     checkedColor="#BA0C2F"
                   />
 
                   <View style={styles.linea} />
                 </View>
               )}
-
-
             </View>
 
             <CheckBox
@@ -961,18 +1011,19 @@ export default function PreDosScreen(props) {
               containerStyle={styles.checkBoxContainer}
               textStyle={
                 ocupacion ===
-                  "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
+                "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
                   ? styles.selectedOptionText
                   : styles.checkBoxText
               }
               checkedColor="#BA0C2F"
             />
 
-
-
             {ocupacion === "Trabajando" && (
               <View style={styles.questionContainer}>
-                <Text style={styles.question2}> PREGUNTA 2.7 ( SELECCIÓN ÚNICA ) </Text>
+                <Text style={styles.question2}>
+                  {" "}
+                  PREGUNTA 2.7 ( SELECCIÓN ÚNICA ){" "}
+                </Text>
                 <View style={styles.linea1} />
                 <Text style={styles.preguntas}>
                   La actividad económica (formal o informal) en la que trabaja
@@ -1050,170 +1101,168 @@ export default function PreDosScreen(props) {
                   }
                   checkedColor="#BA0C2F"
                 />
-
-
               </View>
             )}
 
             {(ocupacion.includes("Trabajando") ||
               ocupacion.includes(
                 "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
-              ))
-              && (
-                <View style={styles.questionContainer}>
+              )) && (
+              <View style={styles.questionContainer}>
+                <Text style={styles.question2}>
+                  {" "}
+                  PREGUNTA 2.8 ( SELECCIÓN ÚNICA ){" "}
+                </Text>
+                <View style={styles.linea1} />
+                <Text style={styles.preguntas}>
+                  ¿Cuál es su ingreso mensual promedio?
+                </Text>
+                <View style={styles.inputDate}>
+                  <CheckBox
+                    title="Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)"
+                    checked={
+                      salario === "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)"
+                    }
+                    onPress={() =>
+                      setSalario("Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)")
+                    }
+                    containerStyle={styles.checkBoxContainer}
+                    textStyle={
+                      salario === "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)"
+                        ? styles.selectedOptionText
+                        : styles.checkBoxText
+                    }
+                    checkedColor="#BA0C2F"
+                  />
 
+                  {salario ===
+                    "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)" && (
+                    <View style={styles.questionContainer}>
+                      <Text style={styles.preguntas}>*Seleccione*</Text>
+                      <Text style={styles.preguntas}>
+                        Linea de pobreza extrema
+                      </Text>
+                      <View>
+                        <CheckBox
+                          title="Entre $0.000 y $145.004"
+                          checked={promedio === "Entre $0.000 y $145.004"}
+                          onPress={() => setPromedio("Entre $0.000 y $145.004")}
+                          containerStyle={styles.checkBoxContainer}
+                          textStyle={
+                            promedio === "Entre $0.000 y $145.004"
+                              ? styles.selectedOptionText
+                              : styles.checkBoxText
+                          }
+                          checkedColor="#BA0C2F"
+                        />
+                      </View>
 
-                  <Text style={styles.question2}> PREGUNTA 2.8 ( SELECCIÓN ÚNICA ) </Text>
-                  <View style={styles.linea1} />
-                  <Text style={styles.preguntas}>
-                    ¿Cuál es su ingreso mensual promedio?
-                  </Text>
-                  <View style={styles.inputDate}>
-                    <CheckBox
-                      title="Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)"
-                      checked={
-                        salario === "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)"
-                      }
-                      onPress={() =>
-                        setSalario("Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)")
-                      }
-                      containerStyle={styles.checkBoxContainer}
-                      textStyle={
-                        salario === "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)"
-                          ? styles.selectedOptionText
-                          : styles.checkBoxText
-                      }
-                      checkedColor="#BA0C2F"
-                    />
+                      <Text style={styles.preguntas}>
+                        Linea de pobreza monetaria
+                      </Text>
 
-                    {salario ===
-                      "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)" && (
-                        <View style={styles.questionContainer}>
-                          <Text style={styles.preguntas}>*Seleccione*</Text>
-                          <Text style={styles.preguntas}>
-                            Linea de pobreza extrema
-                          </Text>
-                          <View>
-                            <CheckBox
-                              title="Entre $0.000 y $145.004"
-                              checked={promedio === "Entre $0.000 y $145.004"}
-                              onPress={() => setPromedio("Entre $0.000 y $145.004")}
-                              containerStyle={styles.checkBoxContainer}
-                              textStyle={
-                                promedio === "Entre $0.000 y $145.004"
-                                  ? styles.selectedOptionText
-                                  : styles.checkBoxText
-                              }
-                              checkedColor="#BA0C2F"
-                            />
-                          </View>
+                      <View>
+                        <CheckBox
+                          title="Entre $146.000 y $331.688"
+                          checked={promedio === "Entre $146.000 y $331.688"}
+                          onPress={() =>
+                            setPromedio("Entre $146.000 y $331.688")
+                          }
+                          containerStyle={styles.checkBoxContainer}
+                          textStyle={
+                            promedio === "Entre $146.000 y $331.688"
+                              ? styles.selectedOptionText
+                              : styles.checkBoxText
+                          }
+                          checkedColor="#BA0C2F"
+                        />
+                      </View>
 
-                          <Text style={styles.preguntas}>
-                            Linea de pobreza monetaria
-                          </Text>
+                      <Text style={styles.preguntas}>
+                        Condiciones de Vulnerabilidad
+                      </Text>
 
-                          <View>
-                            <CheckBox
-                              title="Entre $146.000 y $331.688"
-                              checked={promedio === "Entre $146.000 y $331.688"}
-                              onPress={() =>
-                                setPromedio("Entre $146.000 y $331.688")
-                              }
-                              containerStyle={styles.checkBoxContainer}
-                              textStyle={
-                                promedio === "Entre $146.000 y $331.688"
-                                  ? styles.selectedOptionText
-                                  : styles.checkBoxText
-                              }
-                              checkedColor="#BA0C2F"
-                            />
-                          </View>
+                      <View>
+                        <CheckBox
+                          title="Entre $332.000 y $653.781"
+                          checked={promedio === "Entre $332.000 y $653.781"}
+                          onPress={() =>
+                            setPromedio("Entre $332.000 y $653.781")
+                          }
+                          containerStyle={styles.checkBoxContainer}
+                          textStyle={
+                            promedio === "Entre $332.000 y $653.781"
+                              ? styles.selectedOptionText
+                              : styles.checkBoxText
+                          }
+                          checkedColor="#BA0C2F"
+                        />
 
-                          <Text style={styles.preguntas}>
-                            Condiciones de Vulnerabilidad
-                          </Text>
+                        <View style={styles.linea} />
+                      </View>
+                    </View>
+                  )}
 
+                  <CheckBox
+                    title="Entre $654.000 y $908.000 1 SMMLV"
+                    checked={salario === "Entre $654.000 y $908.000 1 SMMLV"}
+                    onPress={() =>
+                      setSalario("Entre $654.000 y $908.000 1 SMMLV")
+                    }
+                    containerStyle={styles.checkBoxContainer}
+                    textStyle={
+                      salario === "Entre $654.000 y $908.000 1 SMMLV"
+                        ? styles.selectedOptionText
+                        : styles.checkBoxText
+                    }
+                    checkedColor="#BA0C2F"
+                  />
 
-                          <View>
-                            <CheckBox
-                              title="Entre $332.000 y $653.781"
-                              checked={promedio === "Entre $332.000 y $653.781"}
-                              onPress={() =>
-                                setPromedio("Entre $332.000 y $653.781")
-                              }
-                              containerStyle={styles.checkBoxContainer}
-                              textStyle={
-                                promedio === "Entre $332.000 y $653.781"
-                                  ? styles.selectedOptionText
-                                  : styles.checkBoxText
-                              }
-                              checkedColor="#BA0C2F"
-                            />
-
-                            <View style={styles.linea} />
-                          </View>
-                        </View>
-                      )}
-
-
-                    <CheckBox
-                      title="Entre $654.000 y $908.000 1 SMMLV"
-                      checked={salario === "Entre $654.000 y $908.000 1 SMMLV"}
-                      onPress={() =>
-                        setSalario("Entre $654.000 y $908.000 1 SMMLV")
-                      }
-                      containerStyle={styles.checkBoxContainer}
-                      textStyle={
-                        salario === "Entre $654.000 y $908.000 1 SMMLV"
-                          ? styles.selectedOptionText
-                          : styles.checkBoxText
-                      }
-                      checkedColor="#BA0C2F"
-                    />
-
-                    <CheckBox
-                      title="Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
-                      checked={
-                        salario ===
+                  <CheckBox
+                    title="Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
+                    checked={
+                      salario ===
+                      "Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
+                    }
+                    onPress={() =>
+                      setSalario(
                         "Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
-                      }
-                      onPress={() =>
-                        setSalario(
-                          "Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
-                        )
-                      }
-                      containerStyle={styles.checkBoxContainer}
-                      textStyle={
-                        salario ===
-                          "Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
-                          ? styles.selectedOptionText
-                          : styles.checkBoxText
-                      }
-                      checkedColor="#BA0C2F"
-                    />
+                      )
+                    }
+                    containerStyle={styles.checkBoxContainer}
+                    textStyle={
+                      salario ===
+                      "Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
+                        ? styles.selectedOptionText
+                        : styles.checkBoxText
+                    }
+                    checkedColor="#BA0C2F"
+                  />
 
-                    <CheckBox
-                      title="Mayor a 1.5 SMMLV ( ≥$1.365.000)"
-                      checked={salario === "Mayor a 1.5 SMMLV ( ≥$1.365.000)"}
-                      onPress={() =>
-                        setSalario("Mayor a 1.5 SMMLV ( ≥$1.365.000)")
-                      }
-                      containerStyle={styles.checkBoxContainer}
-                      textStyle={
-                        salario === "Mayor a 1.5 SMMLV ( ≥$1.365.000)"
-                          ? styles.selectedOptionText
-                          : styles.checkBoxText
-                      }
-                      checkedColor="#BA0C2F"
-                    />
-                  </View>
+                  <CheckBox
+                    title="Mayor a 1.5 SMMLV ( ≥$1.365.000)"
+                    checked={salario === "Mayor a 1.5 SMMLV ( ≥$1.365.000)"}
+                    onPress={() =>
+                      setSalario("Mayor a 1.5 SMMLV ( ≥$1.365.000)")
+                    }
+                    containerStyle={styles.checkBoxContainer}
+                    textStyle={
+                      salario === "Mayor a 1.5 SMMLV ( ≥$1.365.000)"
+                        ? styles.selectedOptionText
+                        : styles.checkBoxText
+                    }
+                    checkedColor="#BA0C2F"
+                  />
                 </View>
-              )}
+              </View>
+            )}
             {/* Botón */}
-            <TouchableOpacity style={styles.boton} onPress={() => {
-              goToPreguntaTres();
-              SaveComponente2();
-            }}
+            <TouchableOpacity
+              style={styles.boton}
+              onPress={() => {
+                goToPreguntaTres();
+                SaveComponente2();
+              }}
             >
               <Text style={styles.textoBoton}>Siguiente</Text>
             </TouchableOpacity>
@@ -1235,7 +1284,6 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 20,
     marginBottom: 15,
-
   },
   textoBoton: {
     textAlign: "center",
@@ -1244,7 +1292,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-
 
   titulo: {
     textAlign: "center",
@@ -1255,14 +1302,12 @@ const styles = StyleSheet.create({
     marginTop: -20,
   },
 
-
   pregunta: {
     marginBottom: 5,
-    textAlign: 'justify',
+    textAlign: "justify",
     marginTop: -15,
     fontWeight: "bold",
     fontSize: 16,
-
   },
   preguntas: {
     color: "#000000",
@@ -1294,21 +1339,21 @@ const styles = StyleSheet.create({
   },
   linea: {
     marginTop: "auto",
-    height: 6,              // Altura de la línea
-    backgroundColor: "#BA0C2F",  // Color de la línea (rojo en este caso)
-    position: 'absolute',   // Posición absoluta para que se superponga al contenido
-    bottom: 0,              // Se coloca en la parte inferior de la tarjeta
-    left: 8,                // Alinear a la izquierda
-    right: 8,               // Alinear a la derecha
+    height: 6, // Altura de la línea
+    backgroundColor: "#BA0C2F", // Color de la línea (rojo en este caso)
+    position: "absolute", // Posición absoluta para que se superponga al contenido
+    bottom: 0, // Se coloca en la parte inferior de la tarjeta
+    left: 8, // Alinear a la izquierda
+    right: 8, // Alinear a la derecha
   },
   linea1: {
     marginTop: 8,
-    height: 6,              // Altura de la línea
-    backgroundColor: "#BA0C2F",  // Color de la línea (rojo en este caso)
-    position: 'relative',   // Posición absoluta para que se superponga al contenido
-    bottom: 20,              // Se coloca en la parte inferior de la tarjeta
-    left: 0,                // Alinear a la izquierda
-    right: 0,               // Alinear a la derecha
+    height: 6, // Altura de la línea
+    backgroundColor: "#BA0C2F", // Color de la línea (rojo en este caso)
+    position: "relative", // Posición absoluta para que se superponga al contenido
+    bottom: 20, // Se coloca en la parte inferior de la tarjeta
+    left: 0, // Alinear a la izquierda
+    right: 0, // Alinear a la derecha
   },
   input: {
     backgroundColor: "white",
