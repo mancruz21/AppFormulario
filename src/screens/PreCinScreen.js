@@ -187,7 +187,9 @@ export default function PreCinScreen(props) {
       (selectedOption3 === "Si" ? selectedOption2.length !== 0 : true) &&
       (selectedOption3 === "No" ? selectedOption22.length !== 0 : true) &&
       selectedOption1 !== "" &&
-      (selectedOption1 === "No" ? selected1Option.length !== 0 : true)
+      (selectedOption1 === "No" ? (selected1Option.length !== 0) : true)
+
+
     ) {
       navigation.navigate("Pregunta 2.4");
       console.log("Opcion 1:", selectedOption11);
@@ -449,9 +451,7 @@ export default function PreCinScreen(props) {
       if (transporte.length < 2) {
         setTransporte([...transporte, option]);
       }
-      if (option === "Otro ¿Cuál?") {
-        setShowTextInput3(true);
-      }
+
     }
   };
 
@@ -1701,12 +1701,12 @@ export default function PreCinScreen(props) {
                       checkedColor="#BA0C2F"
                     />
 
-                    {showTextInput3 && (
+                    {(transporte.includes("Otro ¿Cuál?")) && (
                       <View style={styles.preguntaContainer}>
-                        <Text style={styles.preguntas}>¿Cuál?</Text>
+                        <Text style={styles.preguntas}>Especifique otro:</Text>
                         <TextInput
                           style={styles.input}
-                          value={otro}
+                          value={otro3}
                           onChangeText={handleOtro3}
                           placeholder="Indique cuál"
                         />
@@ -1991,12 +1991,14 @@ export default function PreCinScreen(props) {
                         checkedColor="#BA0C2F"
                       />
 
+
+
                       {showTextInput2 && (
                         <View style={styles.preguntaContainer}>
                           <Text style={styles.preguntas}>¿Cuál?</Text>
                           <TextInput
                             style={styles.input}
-                            value={otro}
+                            value={otro2}
                             onChangeText={handleOtro2}
                             placeholder="Indique cuál"
                           />
@@ -2872,10 +2874,9 @@ export default function PreCinScreen(props) {
                       }
                       checkedColor="#BA0C2F"
                     />
-
-                    {showTextInput3 && (
+                    {(transporte.includes("Otro ¿Cuál?")) && (
                       <View style={styles.preguntaContainer}>
-                        <Text style={styles.preguntas}>¿Cuál?</Text>
+                        <Text style={styles.preguntas}>Especifique otro:</Text>
                         <TextInput
                           style={styles.input}
                           value={otro3}

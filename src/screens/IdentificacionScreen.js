@@ -12,6 +12,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import appFirebase from "../components/firebase-config";
 import { addDoc, collection, getFirestore } from 'firebase/firestore';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Picker } from "@react-native-picker/picker";
 
 
 const db = getFirestore(appFirebase)
@@ -21,6 +22,7 @@ export default function IdentificacionScreen(props) {
   const [selectedOption, setSelectedOption] = useState("");
   const [numeroIdentificacion, setNumeroIdentificacion] = useState("");
   const [puedeAvanzar, setPuedeAvanzar] = useState(false);
+  const [departamento, setDepartamento] = useState("departamento");
 
   const goToPreguntaUno = () => {
     // Aquí puedes realizar acciones con la opción seleccionada
@@ -30,13 +32,18 @@ export default function IdentificacionScreen(props) {
     ) {
       console.log("Opción seleccionada:", selectedOption);
       console.log("Número de identificación:", numeroIdentificacion);
+      console.log("Departamento:", departamento);
       navigation.navigate("Pregunta 1.1");
     } else {
       // Mostrar una alerta al usuario
       Alert.alert("Error", "Por favor completa todos los campos.");
     }
   };
+  // departamento donde se hace la encuesta
 
+  const departamentoHandle = (itemValue, itemIndex) => {
+    setDepartamento(itemValue);
+  };
   useEffect(() => {
     // Recuperar los datos guardados de AsyncStorage cuando la pantalla se carga
     const restoreData = async () => {
@@ -46,6 +53,7 @@ export default function IdentificacionScreen(props) {
           const parsedData = JSON.parse(savedData);
           setSelectedOption(parsedData.selectedOption);
           setNumeroIdentificacion(parsedData.numeroIdentificacion);
+          setDepartamento(parsedData.departamento);
         }
       } catch (error) {
         console.error("Error al restaurar los datos:", error);
@@ -62,6 +70,7 @@ export default function IdentificacionScreen(props) {
         const dataToSave = JSON.stringify({
           selectedOption,
           numeroIdentificacion,
+          departamento,
         });
         await AsyncStorage.setItem("identificacionData", dataToSave);
       } catch (error) {
@@ -70,7 +79,7 @@ export default function IdentificacionScreen(props) {
     };
 
     saveData();
-  }, [selectedOption, numeroIdentificacion]);
+  }, [selectedOption, numeroIdentificacion, departamento]);
 
   //Para que no salga la opcion de escribir el documento de identidad
   const shouldShowNumeroIdentificacion = () => {
@@ -96,6 +105,7 @@ export default function IdentificacionScreen(props) {
       const docRef = await addDoc(collection(db, 'identificacion'), {
         tipoIdentificacion: selectedOption,
         numeroIdentificacion: numeroIdentificacion,
+        departamento: departamento,
       });
 
       console.log("Documento guardado con ID:", docRef.id);
@@ -219,8 +229,36 @@ export default function IdentificacionScreen(props) {
                   underlineColorAndroid="transparent" // Para Android
                   selectionColor="#efefef" // Color de la línea cuando se selecciona el campo
                 />
+
+
               </View>
             )}
+            <View style={styles.preguntaContainer}>
+              <Text style={styles.pregunta}>
+                Indique en que departamento esta realizando la encuesta
+              </Text>
+
+              <Picker
+                selectedValue={departamento}
+                style={{ height: 70, width: 300 }}
+                onValueChange={departamentoHandle}
+              >
+                <Picker.Item label="Antioquia" value="Antioquia" />
+                <Picker.Item label="Bolívar" value="Bolívar" />
+                <Picker.Item label="Cauca" value="Cauca" />
+                <Picker.Item label="Meta" value="Meta" />
+                <Picker.Item label="Putumayo" value="Putumayo" />
+                <Picker.Item label="Sucre" value="Sucre" />
+                <Picker.Item label="Valle del Cauca" value="Valle del Cauca" />
+
+              </Picker>
+
+
+            </View>
+
+
+
+
 
             {/* Boton */}
             <TouchableOpacity style={styles.boton} onPress={() => {
@@ -290,6 +328,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 15,
 
+  },
+  pregunta: {
+    marginBottom: 5,
+    marginTop: 20,
+    textAlign: "justify",
+    marginTop: -15,
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  preguntaContainer: {
+    marginTop: 23,
   },
   textoBoton: {
     textAlign: "center",
