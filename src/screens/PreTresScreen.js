@@ -88,7 +88,7 @@ export default function PreTresScreen(props) {
   };
 
   const SaveComponente3 = async () => {
-    try {
+    /* try {
       await addDoc(collection(db, "componentetres"), {
         pregunta3_1: selectedOption,
         pregunta3_2: aseguradora,
@@ -103,7 +103,7 @@ export default function PreTresScreen(props) {
     } catch (error) {
       console.error(error);
       Alert.alert("Error", "Hubo un error al guardar sus respuestas");
-    }
+    } */
 
     try {
       realm.write(() => {

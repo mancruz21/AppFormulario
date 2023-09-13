@@ -178,11 +178,6 @@ export default function PreSeisScreen(props) {
     }
   };
 
-  // Llama a la función para guardar los registros de 'Persona' en Firestore
-  guardarPersonasEnFirestore();
-
-  // Llama a la función para obtener y mostrar todos los registros
-
   const SaveComponente6 = async () => {
     /*  try {
       await addDoc(collection(db, "componenteseis"), {

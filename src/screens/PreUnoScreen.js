@@ -283,7 +283,8 @@ export default function PreUnoScreen(props) {
       realm.write(() => {
         realm.create("Persona", {
           tipoID: "CC",
-          id_document: 10029658523,
+          id_document: 1002965852,
+          departamento: "Cauca",
           component1: {
             pregunta1_1Apell: apellido.toString(),
             pregunta1_1_2Nombres: nombres.toString(),

@@ -14,6 +14,7 @@ export class Persona extends Realm.Object {
     properties: {
       tipoID: "string",
       id_document: "int",
+      departamento:"string",
       component1: { type: "object", objectType: "component1" },
       component2: { type: "object", objectType: "component2" },
       component3: { type: "object", objectType: "component3" },
