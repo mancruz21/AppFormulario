@@ -8,7 +8,7 @@ import {
   Alert,
 } from "react-native";
 import { CheckBox } from "react-native-elements";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { includes } from "lodash";
 import appFirebase from "../components/firebase-config";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
@@ -35,6 +35,8 @@ export default function PreCuaScreen(props) {
   const [mental, setMental] = useState(""); // Estado para capturar el texto del TextInput
 
   const goToPreguntaCin = () => {
+
+
     if (
       selectedOption !== "" &&
       (selectedOption === "No" || selectedOptions.length !== 0) && // Verifica que al menos una opción está seleccionada si es "No"
@@ -45,7 +47,67 @@ export default function PreCuaScreen(props) {
     } else {
       Alert.alert("Error", "Por favor completa todos los campos.");
     }
+
+
+
   };
+  useEffect(() => {
+    // Recuperar los datos guardados de AsyncStorage cuando la pantalla se carga
+    const restoreData = async () => {
+      try {
+        const savedData = await AsyncStorage.getItem("datosGuardados");
+        if (savedData) {
+          const parsedData = JSON.parse(savedData);
+          setSelectedOption(parsedData.selectedOption);
+          setSelectedOption1(parsedData.selectedOption1);
+          setSelectedOptions(parsedData.selectedOptions);
+          setSelectedOptions1(parsedData.selectedOptions1);
+          setDeficitOptions(parsedData.deficitOptions);
+          setDeficit(parsedData.deficit);
+          setCronicas(parsedData.cronicas);
+          setInfecciosas(parsedData.infecciosas);
+          setSensoriales(parsedData.sensoriales);
+          setLesiones(parsedData.lesiones);
+          setAutoinmunes(parsedData.autoinmunes);
+          setMental(parsedData.mental);
+
+        }
+      } catch (error) {
+        console.error("Error al restaurar los datos:", error);
+      }
+    };
+
+    restoreData();
+  }, []);
+
+  useEffect(() => {
+    // Guardar los datos seleccionados en AsyncStorage cuando cambian
+    const saveData = async () => {
+      try {
+        const dataToSave4 = JSON.stringify({
+          selectedOption,
+          selectedOption1,
+          selectedOptions,
+          selectedOptions1,
+          deficitOptions,
+          deficit,
+          cronicas,
+          infecciosas,
+          sensoriales,
+          lesiones,
+          autoinmunes, mental,
+
+        });
+        await AsyncStorage.setItem("datosGuardados", dataToSave4);
+      } catch (error) {
+        console.error("Error al guardar los datos:", error);
+      }
+    };
+
+    saveData();
+  }, [selectedOption, selectedOption1, selectedOptions, selectedOptions1, deficitOptions,
+    deficit, cronicas, infecciosas, sensoriales, lesiones, autoinmunes, mental,]);
+
 
   const SaveComponente4 = async () => {
     /* try {
@@ -606,7 +668,7 @@ export default function PreCuaScreen(props) {
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
                           deficit ===
-                          "(déficit en el desarrollo de la comprensión, el movimiento y el uso del lenguaje), con dependencia parcial de un cuidador"
+                            "(déficit en el desarrollo de la comprensión, el movimiento y el uso del lenguaje), con dependencia parcial de un cuidador"
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -629,7 +691,7 @@ export default function PreCuaScreen(props) {
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
                           deficit ===
-                          "(escaso o nulo nivel del desarrollo del lenguaje, marcado déficit motor) con dependencia de cuidador"
+                            "(escaso o nulo nivel del desarrollo del lenguaje, marcado déficit motor) con dependencia de cuidador"
                             ? styles.selectedOptionText
                             : styles.checkBoxText
                         }
@@ -663,15 +725,15 @@ export default function PreCuaScreen(props) {
                   {selectedOptions1.includes(
                     "Otras circunstancias relacionadas con alteraciones de la salud mental"
                   ) && (
-                    <View style={styles.preguntaContainer}>
-                      <Text style={styles.preguntas}>Indique cuál</Text>
-                      <TextInput
-                        style={styles.input}
-                        value={mental}
-                        onChangeText={setMental}
-                      />
-                    </View>
-                  )}
+                      <View style={styles.preguntaContainer}>
+                        <Text style={styles.preguntas}>Indique cuál</Text>
+                        <TextInput
+                          style={styles.input}
+                          value={mental}
+                          onChangeText={setMental}
+                        />
+                      </View>
+                    )}
 
                   <Text style={styles.preguntas}>
                     {" "}
@@ -815,15 +877,15 @@ export default function PreCuaScreen(props) {
                   {selectedOptions1.includes(
                     "Otras enfermedades crónicas no transmisibles"
                   ) && (
-                    <View style={styles.preguntaContainer}>
-                      <Text style={styles.preguntas}>Indique cuál</Text>
-                      <TextInput
-                        style={styles.input}
-                        value={cronicas}
-                        onChangeText={setCronicas}
-                      />
-                    </View>
-                  )}
+                      <View style={styles.preguntaContainer}>
+                        <Text style={styles.preguntas}>Indique cuál</Text>
+                        <TextInput
+                          style={styles.input}
+                          value={cronicas}
+                          onChangeText={setCronicas}
+                        />
+                      </View>
+                    )}
 
                   <Text style={styles.preguntas}>
                     3. Enfermedades Transmisibles o Infecciosas
@@ -892,15 +954,15 @@ export default function PreCuaScreen(props) {
                   {selectedOptions1.includes(
                     "Otras enfermedades infecciosas"
                   ) && (
-                    <View style={styles.preguntaContainer}>
-                      <Text style={styles.preguntas}>Indique cuál</Text>
-                      <TextInput
-                        style={styles.input}
-                        value={infecciosas}
-                        onChangeText={setInfecciosas}
-                      />
-                    </View>
-                  )}
+                      <View style={styles.preguntaContainer}>
+                        <Text style={styles.preguntas}>Indique cuál</Text>
+                        <TextInput
+                          style={styles.input}
+                          value={infecciosas}
+                          onChangeText={setInfecciosas}
+                        />
+                      </View>
+                    )}
 
                   <Text style={styles.preguntas}>
                     4. Enfermedades Sensoriales o relacionadas con los órganos
@@ -982,15 +1044,15 @@ export default function PreCuaScreen(props) {
                   {selectedOptions1.includes(
                     "Otras enfermedades sensoriales de los órganos de los sentidos"
                   ) && (
-                    <View style={styles.preguntaContainer}>
-                      <Text style={styles.preguntas}>Indique cuál</Text>
-                      <TextInput
-                        style={styles.input}
-                        value={sensoriales}
-                        onChangeText={setSensoriales}
-                      />
-                    </View>
-                  )}
+                      <View style={styles.preguntaContainer}>
+                        <Text style={styles.preguntas}>Indique cuál</Text>
+                        <TextInput
+                          style={styles.input}
+                          value={sensoriales}
+                          onChangeText={setSensoriales}
+                        />
+                      </View>
+                    )}
 
                   <Text style={styles.preguntas}>
                     5. Lesiones de Causa Externa{" "}
@@ -1144,15 +1206,15 @@ export default function PreCuaScreen(props) {
                   {selectedOptions1.includes(
                     "Otras causas de lesiones accidentales"
                   ) && (
-                    <View style={styles.preguntaContainer}>
-                      <Text style={styles.preguntas}>Indique cuál</Text>
-                      <TextInput
-                        style={styles.input}
-                        value={lesiones}
-                        onChangeText={setLesiones}
-                      />
-                    </View>
-                  )}
+                      <View style={styles.preguntaContainer}>
+                        <Text style={styles.preguntas}>Indique cuál</Text>
+                        <TextInput
+                          style={styles.input}
+                          value={lesiones}
+                          onChangeText={setLesiones}
+                        />
+                      </View>
+                    )}
 
                   <Text style={styles.preguntas}>6. Otras circunstancias</Text>
 
@@ -1638,7 +1700,7 @@ export default function PreCuaScreen(props) {
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
                         deficit ===
-                        "(déficit en el desarrollo de la comprensión, el movimiento y el uso del lenguaje), con dependencia parcial de un cuidador"
+                          "(déficit en el desarrollo de la comprensión, el movimiento y el uso del lenguaje), con dependencia parcial de un cuidador"
                           ? styles.selectedOptionText
                           : styles.checkBoxText
                       }
@@ -1661,7 +1723,7 @@ export default function PreCuaScreen(props) {
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
                         deficit ===
-                        "(escaso o nulo nivel del desarrollo del lenguaje, marcado déficit motor) con dependencia de cuidador"
+                          "(escaso o nulo nivel del desarrollo del lenguaje, marcado déficit motor) con dependencia de cuidador"
                           ? styles.selectedOptionText
                           : styles.checkBoxText
                       }
@@ -1695,15 +1757,15 @@ export default function PreCuaScreen(props) {
                 {selectedOptions1.includes(
                   "Otras circunstancias relacionadas con alteraciones de la salud mental"
                 ) && (
-                  <View style={styles.preguntaContainer}>
-                    <Text style={styles.preguntas}>Indique cuál</Text>
-                    <TextInput
-                      style={styles.input}
-                      value={mental}
-                      onChangeText={setMental}
-                    />
-                  </View>
-                )}
+                    <View style={styles.preguntaContainer}>
+                      <Text style={styles.preguntas}>Indique cuál</Text>
+                      <TextInput
+                        style={styles.input}
+                        value={mental}
+                        onChangeText={setMental}
+                      />
+                    </View>
+                  )}
 
                 <Text style={styles.preguntas}>
                   {" "}
@@ -1846,15 +1908,15 @@ export default function PreCuaScreen(props) {
                 {selectedOptions1.includes(
                   "Otras enfermedades crónicas no transmisibles"
                 ) && (
-                  <View style={styles.preguntaContainer}>
-                    <Text style={styles.preguntas}>Indique cuál</Text>
-                    <TextInput
-                      style={styles.input}
-                      value={cronicas}
-                      onChangeText={setCronicas}
-                    />
-                  </View>
-                )}
+                    <View style={styles.preguntaContainer}>
+                      <Text style={styles.preguntas}>Indique cuál</Text>
+                      <TextInput
+                        style={styles.input}
+                        value={cronicas}
+                        onChangeText={setCronicas}
+                      />
+                    </View>
+                  )}
 
                 <Text style={styles.preguntas}>
                   3. Enfermedades Transmisibles o Infecciosas
@@ -1921,15 +1983,15 @@ export default function PreCuaScreen(props) {
                 {selectedOptions1.includes(
                   "Otras enfermedades infecciosas"
                 ) && (
-                  <View style={styles.preguntaContainer}>
-                    <Text style={styles.preguntas}>Indique cuál</Text>
-                    <TextInput
-                      style={styles.input}
-                      value={infecciosas}
-                      onChangeText={setInfecciosas}
-                    />
-                  </View>
-                )}
+                    <View style={styles.preguntaContainer}>
+                      <Text style={styles.preguntas}>Indique cuál</Text>
+                      <TextInput
+                        style={styles.input}
+                        value={infecciosas}
+                        onChangeText={setInfecciosas}
+                      />
+                    </View>
+                  )}
 
                 <Text style={styles.preguntas}>
                   4. Enfermedades Sensoriales o relacionadas con los órganos de
@@ -2009,15 +2071,15 @@ export default function PreCuaScreen(props) {
                 {selectedOptions1.includes(
                   "Otras enfermedades sensoriales de los órganos de los sentidos"
                 ) && (
-                  <View style={styles.preguntaContainer}>
-                    <Text style={styles.preguntas}>Indique cuál</Text>
-                    <TextInput
-                      style={styles.input}
-                      value={sensoriales}
-                      onChangeText={setSensoriales}
-                    />
-                  </View>
-                )}
+                    <View style={styles.preguntaContainer}>
+                      <Text style={styles.preguntas}>Indique cuál</Text>
+                      <TextInput
+                        style={styles.input}
+                        value={sensoriales}
+                        onChangeText={setSensoriales}
+                      />
+                    </View>
+                  )}
 
                 <Text style={styles.preguntas}>
                   5. Lesiones de Causa Externa{" "}
@@ -2165,15 +2227,15 @@ export default function PreCuaScreen(props) {
                 {selectedOptions1.includes(
                   "Otras causas de lesiones accidentales"
                 ) && (
-                  <View style={styles.preguntaContainer}>
-                    <Text style={styles.preguntas}>Indique cuál</Text>
-                    <TextInput
-                      style={styles.input}
-                      value={lesiones}
-                      onChangeText={setLesiones}
-                    />
-                  </View>
-                )}
+                    <View style={styles.preguntaContainer}>
+                      <Text style={styles.preguntas}>Indique cuál</Text>
+                      <TextInput
+                        style={styles.input}
+                        value={lesiones}
+                        onChangeText={setLesiones}
+                      />
+                    </View>
+                  )}
 
                 <Text style={styles.preguntas}>6. Otras circunstancias</Text>
 

@@ -22,7 +22,7 @@ export default function IdentificacionScreen(props) {
   const [selectedOption, setSelectedOption] = useState("");
   const [numeroIdentificacion, setNumeroIdentificacion] = useState("");
   const [puedeAvanzar, setPuedeAvanzar] = useState(false);
-  const [departamento, setDepartamento] = useState("departamento");
+  const [departamento, setDepartamento] = useState("");
 
   const goToPreguntaUno = () => {
     // Aquí puedes realizar acciones con la opción seleccionada
@@ -101,7 +101,7 @@ export default function IdentificacionScreen(props) {
   };
   //Metodo para guardar en firestore
   const SaveIdent = async () => {
-    /* try {
+    try {
       const docRef = await addDoc(collection(db, 'identificacion'), {
         tipoIdentificacion: selectedOption,
         numeroIdentificacion: numeroIdentificacion,
@@ -113,7 +113,7 @@ export default function IdentificacionScreen(props) {
 
     } catch (error) {
       console.error(error);
-    } */
+    }
   }
   useEffect(() => {
     if (selectedOption !== '' && (selectedOption === 'AdultoSinIdentificacion' || selectedOption === 'AdultoSinIdentificacionAnonimo' || numeroIdentificacion !== '')) {

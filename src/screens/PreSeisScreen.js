@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CheckBox } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import appFirebase from "../components/firebase-config";
@@ -14,6 +14,7 @@ import { addDoc, collection, getFirestore } from "firebase/firestore";
 const db = getFirestore(appFirebase);
 import { RealmConfigContext } from "./../../utils/models/context";
 const { useRealm } = RealmConfigContext;
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function PreSeisScreen(props) {
   const realm = useRealm();
@@ -33,6 +34,59 @@ export default function PreSeisScreen(props) {
   const [municipio, setMunicipio] = useState("");
   const [formCounter, setFormCounter] = useState(1);
 
+  useEffect(() => {
+    // Recuperar los datos guardados de AsyncStorage cuando la pantalla se carga
+    const restoreData = async () => {
+      try {
+        const savedData6 = await AsyncStorage.getItem("componente6");
+        if (savedData6) {
+          const parsedData = JSON.parse(savedData6);
+          setOpcionOtro(parsedData.opcion);
+          setOpcionOtro1(parsedData.opcion1);
+          setOtroTexto(parsedData.otroTexto);
+          setOtroTexto1(parsedData.otroTexto1);
+          setSelectedOptions(parsedData.selectedOptions);
+          setSelectedOptions1(parsedData.selectedOptions1);
+          setSeleccionoSi(parsedData.seleccionoSi);
+          setSeleccionoSi1(parsedData.seleccionoSi1);
+          setOtroIndicacion(parsedData.otroIndicacion);
+          setOtroIndicacion1(parsedData.otroIndicacion1);
+          setSelectedOption3(parsedData.selectedOption3);
+          setNombreDepartamento(parsedData.nombreDepartamento);
+          setMunicipio(parsedData.municipio);
+
+
+        }
+      } catch (error) {
+        console.error("Error al restaurar los datos:", error);
+      }
+    };
+
+    restoreData();
+  }, []);
+
+  useEffect(() => {
+    // Guardar los datos seleccionados en AsyncStorage cuando cambian
+    const saveData = async () => {
+      try {
+        const dataToSave6 = JSON.stringify({
+          opcionOtro, opcionOtro1, otroTexto, otroTexto1, selectedOptions, selectedOptions1,
+          seleccionoSi, seleccionoSi1, otroIndicacion, otroIndicacion1, selectedOption3,
+          nombreDepartamento, municipio,
+
+
+        });
+        await AsyncStorage.setItem("componente6", dataToSave6);
+      } catch (error) {
+        console.error("Error al guardar los datos:", error);
+      }
+    };
+
+    saveData();
+  }, [opcionOtro, opcionOtro1, otroTexto, otroTexto1, selectedOptions, selectedOptions1,
+    seleccionoSi, seleccionoSi1, otroIndicacion, otroIndicacion1, selectedOption3,
+    nombreDepartamento, municipio
+  ]);
   const opciones = [
     "Educación para la salud (cuidado de niños, mujeres y adulto mayor)",
     "Estrategia comunitaria RBC - Rehabilitación Basada en Comunidad (ayudas técnicas, deporte para Personas con Discapacidad)",

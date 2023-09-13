@@ -14,6 +14,7 @@ import { addDoc, collection, getFirestore } from "firebase/firestore";
 const db = getFirestore(appFirebase);
 import { RealmConfigContext } from "./../../utils/models/context";
 const { useRealm } = RealmConfigContext;
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function PreCinScreen(props) {
   const realm = useRealm();
@@ -90,8 +91,8 @@ export default function PreCinScreen(props) {
           colIndex === 0
             ? "white"
             : selectedColumns[colIndex] === rowIndex
-            ? "#BA0C2F"
-            : "white"
+              ? "#BA0C2F"
+              : "white"
         )
     );
 
@@ -148,8 +149,8 @@ export default function PreCinScreen(props) {
           colIndex === 0
             ? "white"
             : selectedColumns1[colIndex] === rowIndex
-            ? "#BA0C2F"
-            : "white"
+              ? "#BA0C2F"
+              : "white"
         )
     );
 
@@ -496,6 +497,95 @@ export default function PreCinScreen(props) {
       }
     }
   };
+
+  //Guardar en asyncstorage
+  useEffect(() => {
+    // Recuperar los datos guardados de AsyncStorage cuando la pantalla se carga
+    const restoreData = async () => {
+      try {
+        const savedData = await AsyncStorage.getItem("datosGuardados5");
+        if (savedData) {
+          const parsedData = JSON.parse(savedData);
+          setSelectedOption(parsedData.selectedOption);
+          setSelectedOption1(parsedData.selectedOption1);
+          setSelectedOption2(parsedData.selectedOption2);
+          setSelectedOption3(parsedData.selectedOption3);
+          setSelectedOption222(parsedData.selectedOption222);
+          setSelected1Option(parsedData.selected1Option);
+          setSelected1Option2(parsedData.selected1Option2);
+          setSelectedOptions(parsedData.selectedOptions);
+          setSelectedOptions1(parsedData.selectedOptions1);
+          setSelectedOptions4(parsedData.selectedOptions4);
+          setSelectedOptions5(parsedData.selectedOptions5);
+          setSelectedOption9(parsedData.selectedOption9);
+          setSelectedOption8(parsedData.selectedOption8);
+          setSelectedOption0(parsedData.selectedOption0);
+          setSelectedOptions0(parsedData.selectedOptions0);
+          setSelectedOption22(parsedData.selectedOption22);
+          setSelectedOption11(parsedData.selectedOption11);
+          setMunicipio(parsedData.municipio);
+          setOtro(parsedData.otro);
+          setOtro1(parsedData.otro1);
+          setOtro2(parsedData.otro2);
+          setOtro3(parsedData.otro3);
+          setNombre(parsedData.nombre);
+          setLugar(parsedData.lugar);
+          setShowOtherServices1Text(parsedData.showOtherServices1Text);
+          setShowOtherServices2Text(parsedData.showOtherServices2Text);
+
+          setShowTextInput(parsedData.showTextInput);
+          setShowTextInput1(parsedData.showTextInput1);
+          setShowTextInput2(parsedData.showTextInput2);
+          setShowTextInput3(parsedData.showTextInput3);
+          setTransporte(parsedData.transporte);
+          setMotivo(parsedData.motivo);
+          setMotivo1(parsedData.motivo1);
+          setMotivo2(parsedData.motivo2);
+          setMotivo3(parsedData.motivo3);
+          setSelectedColumns(parsedData.selectedColumns);
+          setSelectedColumns1(parsedData.selectedColumns1);
+
+        }
+      } catch (error) {
+        console.error("Error al restaurar los datos:", error);
+      }
+    };
+
+    restoreData();
+  }, []);
+
+  useEffect(() => {
+    // Guardar los datos seleccionados en AsyncStorage cuando cambian
+    const saveData = async () => {
+      try {
+        const dataToSave5 = JSON.stringify({
+          selectedOption, selectedOption1, selectedOption2, selectedOption3,
+          selectedOption222, selected1Option, selected1Option2, selectedOptions,
+          selectedOptions1, selectedOptions4, selectedOptions5, selectedOption9,
+          selectedOption8, selectedOption0, selectedOptions0, selectedOption22,
+          selectedOption11, municipio, otro, otro1, otro2, otro3, nombre, lugar,
+          showOtherServices1Text, showOtherServices2Text,
+          showTextInput, showTextInput1, showTextInput2, showTextInput3, transporte,
+          motivo, motivo1, motivo2, motivo3, selectedColumns, selectedColumns1,
+
+
+        });
+        await AsyncStorage.setItem("datosGuardados5", dataToSave5);
+      } catch (error) {
+        console.error("Error al guardar los datos:", error);
+      }
+    };
+
+    saveData();
+  }, [selectedOption, selectedOption1, selectedOption2, selectedOption3,
+    selectedOption222, selected1Option, selected1Option2, selectedOptions,
+    selectedOptions1, selectedOptions4, selectedOptions5, selectedOption9,
+    selectedOption8, selectedOption0, selectedOptions0, selectedOption22,
+    selectedOption11, municipio, otro, otro1, otro2, otro3, nombre, lugar,
+    showOtherServices1Text, showOtherServices2Text,
+    showTextInput, showTextInput1, showTextInput2, showTextInput3, transporte,
+    motivo, motivo1, motivo2, motivo3, selectedColumns, selectedColumns1,]);
+
 
   const [showQuestion5_6, setShowQuestion5_6] = useState(true);
 
@@ -1517,8 +1607,8 @@ export default function PreCinScreen(props) {
                                 colIndex === 0
                                   ? "black"
                                   : selectedColumns[colIndex] === rowIndex
-                                  ? "white"
-                                  : "black",
+                                    ? "white"
+                                    : "black",
                               fontWeight: colIndex === 0 ? "bold" : "normal",
                             }}
                           >
@@ -1576,8 +1666,8 @@ export default function PreCinScreen(props) {
                                 colIndex === 0
                                   ? "black"
                                   : selectedColumns1[colIndex] === rowIndex
-                                  ? "white"
-                                  : "black",
+                                    ? "white"
+                                    : "black",
                               fontWeight:
                                 colIndex === 0 || rowIndex === 0
                                   ? "bold"
@@ -2691,8 +2781,8 @@ export default function PreCinScreen(props) {
                                 colIndex === 0
                                   ? "black"
                                   : selectedColumns[colIndex] === rowIndex
-                                  ? "white"
-                                  : "black",
+                                    ? "white"
+                                    : "black",
                               fontWeight: colIndex === 0 ? "bold" : "normal",
                             }}
                           >
@@ -2750,8 +2840,8 @@ export default function PreCinScreen(props) {
                                 colIndex === 0
                                   ? "black"
                                   : selectedColumns1[colIndex] === rowIndex
-                                  ? "white"
-                                  : "black",
+                                    ? "white"
+                                    : "black",
                               fontWeight:
                                 colIndex === 0 || rowIndex === 0
                                   ? "bold"
