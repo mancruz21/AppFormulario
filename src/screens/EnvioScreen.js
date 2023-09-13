@@ -2,14 +2,59 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useRoute } from '@react-navigation/native';
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function
   EnvioScreen(props) {
-  const { navigation } = props ;
-  const goToFormulario = () => {
+  const { navigation } = props;
+
+  const limpiar = async () => {
+    try {
+      console.log("Borrado datos de AsyncStorage");
+      await AsyncStorage.removeItem("selectedOption");
+      await AsyncStorage.removeItem("identificacionData");
+      await AsyncStorage.removeItem("formData");
+
+      await AsyncStorage.removeItem("opcion1");
+      await AsyncStorage.removeItem("opcion2");
+      await AsyncStorage.removeItem("opcion3");
+      await AsyncStorage.removeItem("discapacidad");
+      await AsyncStorage.removeItem("OptionSelection");
+      await AsyncStorage.removeItem("etnia");
+      await AsyncStorage.removeItem("indigena");
+      await AsyncStorage.removeItem("educativo");
+      await AsyncStorage.removeItem("educacionSuperior");
+      await AsyncStorage.removeItem("ocupacion");
+      await AsyncStorage.removeItem("trabajo");
+      await AsyncStorage.removeItem("salario");
+      await AsyncStorage.removeItem("promedio");
+      await AsyncStorage.removeItem("selectedOption");
+      await AsyncStorage.removeItem("aseguradora");
+      await AsyncStorage.removeItem("otraAseguradora");
+      await AsyncStorage.removeItem("selectedOption2");
+      await AsyncStorage.removeItem("municipio");
+      await AsyncStorage.removeItem("selectedOption3");
+      await AsyncStorage.removeItem("municipio1");
+      await AsyncStorage.removeItem("nombreDepartamento");
+
+      await AsyncStorage.removeItem("datosGuardados");
+
+      await AsyncStorage.removeItem("datosGuardados5");
+      await AsyncStorage.removeItem("componente6");
+
+      console.log("Navegar a siguiente ventana");
+      
+    } catch (error) {
+      console.error("Error al borrar datos de AsyncStorage:", error);
+    }
+
+  };
+  const goToFormulario = async () => {
+    limpiar();
     navigation.navigate("Pregunta 2.5", { formCounter: formCounter });
+
   };
   const goToSalida = () => {
+    limpiar();
     navigation.navigate("Login");
   };
   const route = useRoute();

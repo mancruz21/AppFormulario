@@ -95,15 +95,11 @@ export default function PreDosScreen(props) {
         const savedOpcion2 = await AsyncStorage.getItem("opcion2");
         const savedOpcion3 = await AsyncStorage.getItem("opcion3");
         const savedDiscapacidad = await AsyncStorage.getItem("discapacidad");
-        const savedOptionSelection = await AsyncStorage.getItem(
-          "OptionSelection"
-        );
+        const savedOptionSelection = await AsyncStorage.getItem("OptionSelection");
         const savedEtnia = await AsyncStorage.getItem("etnia");
         const savedIndigena = await AsyncStorage.getItem("indigena");
         const savedEducativo = await AsyncStorage.getItem("educativo");
-        const savedEducacionSuperior = await AsyncStorage.getItem(
-          "educacionSuperior"
-        );
+        const savedEducacionSuperior = await AsyncStorage.getItem("educacionSuperior");
         const savedOcupacion = await AsyncStorage.getItem("ocupacion");
         const savedTrabajo = await AsyncStorage.getItem("trabajo");
         const savedSalario = await AsyncStorage.getItem("salario");
@@ -145,7 +141,7 @@ export default function PreDosScreen(props) {
         : true) &&
       (ocupacion === "Trabajando" ? trabajo.length > 0 : true) &&
       (ocupacion ===
-      "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
+        "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
         ? trabajo !== null
         : true)
     ) {
@@ -163,7 +159,7 @@ export default function PreDosScreen(props) {
         if (educativo !== null)
           await AsyncStorage.setItem("educativo", educativo);
         if (educacionSuperior !== null)
-          await AsyncStorage.setItem("educacionSuperior", educacionSuperior);
+        await AsyncStorage.setItem("educacionSuperior", educacionSuperior);
         await AsyncStorage.setItem("ocupacion", JSON.stringify(ocupacion));
         await AsyncStorage.setItem("trabajo", JSON.stringify(trabajo));
         if (salario !== null) await AsyncStorage.setItem("salario", salario);
@@ -294,7 +290,7 @@ export default function PreDosScreen(props) {
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   opcion1 ===
-                  "Población en proceso de reincorporación / reintegración"
+                    "Población en proceso de reincorporación / reintegración"
                     ? styles.selectedOptionText
                     : styles.checkBoxText
                 }
@@ -677,7 +673,7 @@ export default function PreDosScreen(props) {
               containerStyle={styles.checkBoxContainer}
               textStyle={
                 etnia ===
-                "Negro(a), Mulato(a), Afrocolombiano(a) o Afrodescendiente"
+                  "Negro(a), Mulato(a), Afrocolombiano(a) o Afrodescendiente"
                   ? styles.selectedOptionText
                   : styles.checkBoxText
               }
@@ -1011,7 +1007,7 @@ export default function PreDosScreen(props) {
               containerStyle={styles.checkBoxContainer}
               textStyle={
                 ocupacion ===
-                "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
+                  "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
                   ? styles.selectedOptionText
                   : styles.checkBoxText
               }
@@ -1108,154 +1104,154 @@ export default function PreDosScreen(props) {
               ocupacion.includes(
                 "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
               )) && (
-              <View style={styles.questionContainer}>
-                <Text style={styles.question2}>
-                  {" "}
-                  PREGUNTA 2.8 ( SELECCIÓN ÚNICA ){" "}
-                </Text>
-                <View style={styles.linea1} />
-                <Text style={styles.preguntas}>
-                  ¿Cuál es su ingreso mensual promedio?
-                </Text>
-                <View style={styles.inputDate}>
-                  <CheckBox
-                    title="Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)"
-                    checked={
-                      salario === "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)"
-                    }
-                    onPress={() =>
-                      setSalario("Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)")
-                    }
-                    containerStyle={styles.checkBoxContainer}
-                    textStyle={
-                      salario === "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)"
-                        ? styles.selectedOptionText
-                        : styles.checkBoxText
-                    }
-                    checkedColor="#BA0C2F"
-                  />
+                <View style={styles.questionContainer}>
+                  <Text style={styles.question2}>
+                    {" "}
+                    PREGUNTA 2.8 ( SELECCIÓN ÚNICA ){" "}
+                  </Text>
+                  <View style={styles.linea1} />
+                  <Text style={styles.preguntas}>
+                    ¿Cuál es su ingreso mensual promedio?
+                  </Text>
+                  <View style={styles.inputDate}>
+                    <CheckBox
+                      title="Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)"
+                      checked={
+                        salario === "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)"
+                      }
+                      onPress={() =>
+                        setSalario("Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)")
+                      }
+                      containerStyle={styles.checkBoxContainer}
+                      textStyle={
+                        salario === "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)"
+                          ? styles.selectedOptionText
+                          : styles.checkBoxText
+                      }
+                      checkedColor="#BA0C2F"
+                    />
 
-                  {salario ===
-                    "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)" && (
-                    <View style={styles.questionContainer}>
-                      <Text style={styles.preguntas}>*Seleccione*</Text>
-                      <Text style={styles.preguntas}>
-                        Linea de pobreza extrema
-                      </Text>
-                      <View>
-                        <CheckBox
-                          title="Entre $0.000 y $145.004"
-                          checked={promedio === "Entre $0.000 y $145.004"}
-                          onPress={() => setPromedio("Entre $0.000 y $145.004")}
-                          containerStyle={styles.checkBoxContainer}
-                          textStyle={
-                            promedio === "Entre $0.000 y $145.004"
-                              ? styles.selectedOptionText
-                              : styles.checkBoxText
-                          }
-                          checkedColor="#BA0C2F"
-                        />
-                      </View>
+                    {salario ===
+                      "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)" && (
+                        <View style={styles.questionContainer}>
+                          <Text style={styles.preguntas}>*Seleccione*</Text>
+                          <Text style={styles.preguntas}>
+                            Linea de pobreza extrema
+                          </Text>
+                          <View>
+                            <CheckBox
+                              title="Entre $0.000 y $145.004"
+                              checked={promedio === "Entre $0.000 y $145.004"}
+                              onPress={() => setPromedio("Entre $0.000 y $145.004")}
+                              containerStyle={styles.checkBoxContainer}
+                              textStyle={
+                                promedio === "Entre $0.000 y $145.004"
+                                  ? styles.selectedOptionText
+                                  : styles.checkBoxText
+                              }
+                              checkedColor="#BA0C2F"
+                            />
+                          </View>
 
-                      <Text style={styles.preguntas}>
-                        Linea de pobreza monetaria
-                      </Text>
+                          <Text style={styles.preguntas}>
+                            Linea de pobreza monetaria
+                          </Text>
 
-                      <View>
-                        <CheckBox
-                          title="Entre $146.000 y $331.688"
-                          checked={promedio === "Entre $146.000 y $331.688"}
-                          onPress={() =>
-                            setPromedio("Entre $146.000 y $331.688")
-                          }
-                          containerStyle={styles.checkBoxContainer}
-                          textStyle={
-                            promedio === "Entre $146.000 y $331.688"
-                              ? styles.selectedOptionText
-                              : styles.checkBoxText
-                          }
-                          checkedColor="#BA0C2F"
-                        />
-                      </View>
+                          <View>
+                            <CheckBox
+                              title="Entre $146.000 y $331.688"
+                              checked={promedio === "Entre $146.000 y $331.688"}
+                              onPress={() =>
+                                setPromedio("Entre $146.000 y $331.688")
+                              }
+                              containerStyle={styles.checkBoxContainer}
+                              textStyle={
+                                promedio === "Entre $146.000 y $331.688"
+                                  ? styles.selectedOptionText
+                                  : styles.checkBoxText
+                              }
+                              checkedColor="#BA0C2F"
+                            />
+                          </View>
 
-                      <Text style={styles.preguntas}>
-                        Condiciones de Vulnerabilidad
-                      </Text>
+                          <Text style={styles.preguntas}>
+                            Condiciones de Vulnerabilidad
+                          </Text>
 
-                      <View>
-                        <CheckBox
-                          title="Entre $332.000 y $653.781"
-                          checked={promedio === "Entre $332.000 y $653.781"}
-                          onPress={() =>
-                            setPromedio("Entre $332.000 y $653.781")
-                          }
-                          containerStyle={styles.checkBoxContainer}
-                          textStyle={
-                            promedio === "Entre $332.000 y $653.781"
-                              ? styles.selectedOptionText
-                              : styles.checkBoxText
-                          }
-                          checkedColor="#BA0C2F"
-                        />
+                          <View>
+                            <CheckBox
+                              title="Entre $332.000 y $653.781"
+                              checked={promedio === "Entre $332.000 y $653.781"}
+                              onPress={() =>
+                                setPromedio("Entre $332.000 y $653.781")
+                              }
+                              containerStyle={styles.checkBoxContainer}
+                              textStyle={
+                                promedio === "Entre $332.000 y $653.781"
+                                  ? styles.selectedOptionText
+                                  : styles.checkBoxText
+                              }
+                              checkedColor="#BA0C2F"
+                            />
 
-                        <View style={styles.linea} />
-                      </View>
-                    </View>
-                  )}
+                            <View style={styles.linea} />
+                          </View>
+                        </View>
+                      )}
 
-                  <CheckBox
-                    title="Entre $654.000 y $908.000 1 SMMLV"
-                    checked={salario === "Entre $654.000 y $908.000 1 SMMLV"}
-                    onPress={() =>
-                      setSalario("Entre $654.000 y $908.000 1 SMMLV")
-                    }
-                    containerStyle={styles.checkBoxContainer}
-                    textStyle={
-                      salario === "Entre $654.000 y $908.000 1 SMMLV"
-                        ? styles.selectedOptionText
-                        : styles.checkBoxText
-                    }
-                    checkedColor="#BA0C2F"
-                  />
+                    <CheckBox
+                      title="Entre $654.000 y $908.000 1 SMMLV"
+                      checked={salario === "Entre $654.000 y $908.000 1 SMMLV"}
+                      onPress={() =>
+                        setSalario("Entre $654.000 y $908.000 1 SMMLV")
+                      }
+                      containerStyle={styles.checkBoxContainer}
+                      textStyle={
+                        salario === "Entre $654.000 y $908.000 1 SMMLV"
+                          ? styles.selectedOptionText
+                          : styles.checkBoxText
+                      }
+                      checkedColor="#BA0C2F"
+                    />
 
-                  <CheckBox
-                    title="Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
-                    checked={
-                      salario ===
-                      "Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
-                    }
-                    onPress={() =>
-                      setSalario(
+                    <CheckBox
+                      title="Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
+                      checked={
+                        salario ===
                         "Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
-                      )
-                    }
-                    containerStyle={styles.checkBoxContainer}
-                    textStyle={
-                      salario ===
-                      "Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
-                        ? styles.selectedOptionText
-                        : styles.checkBoxText
-                    }
-                    checkedColor="#BA0C2F"
-                  />
+                      }
+                      onPress={() =>
+                        setSalario(
+                          "Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
+                        )
+                      }
+                      containerStyle={styles.checkBoxContainer}
+                      textStyle={
+                        salario ===
+                          "Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
+                          ? styles.selectedOptionText
+                          : styles.checkBoxText
+                      }
+                      checkedColor="#BA0C2F"
+                    />
 
-                  <CheckBox
-                    title="Mayor a 1.5 SMMLV ( ≥$1.365.000)"
-                    checked={salario === "Mayor a 1.5 SMMLV ( ≥$1.365.000)"}
-                    onPress={() =>
-                      setSalario("Mayor a 1.5 SMMLV ( ≥$1.365.000)")
-                    }
-                    containerStyle={styles.checkBoxContainer}
-                    textStyle={
-                      salario === "Mayor a 1.5 SMMLV ( ≥$1.365.000)"
-                        ? styles.selectedOptionText
-                        : styles.checkBoxText
-                    }
-                    checkedColor="#BA0C2F"
-                  />
+                    <CheckBox
+                      title="Mayor a 1.5 SMMLV ( ≥$1.365.000)"
+                      checked={salario === "Mayor a 1.5 SMMLV ( ≥$1.365.000)"}
+                      onPress={() =>
+                        setSalario("Mayor a 1.5 SMMLV ( ≥$1.365.000)")
+                      }
+                      containerStyle={styles.checkBoxContainer}
+                      textStyle={
+                        salario === "Mayor a 1.5 SMMLV ( ≥$1.365.000)"
+                          ? styles.selectedOptionText
+                          : styles.checkBoxText
+                      }
+                      checkedColor="#BA0C2F"
+                    />
+                  </View>
                 </View>
-              </View>
-            )}
+              )}
             {/* Botón */}
             <TouchableOpacity
               style={styles.boton}
