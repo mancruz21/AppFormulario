@@ -207,30 +207,7 @@ export default function PreSeisScreen(props) {
 
   // Suponiendo que ya tienes 'realm' disponible y has definido tu modelo 'Componente6'
 
-  const guardarPersonasEnFirestore = async () => {
-    try {
-      const personas = realm.objects("Persona");
-
-      // Convierte los registros de Realm en objetos JSON y elimina el campo _id
-      const registrosFirestore = personas.map((persona) => {
-        const registro = persona.toJSON();
-        delete registro._id; // Elimina el campo _id
-        return registro;
-      });
-
-      // Guarda los registros en Firestore
-      await Promise.all(
-        registrosFirestore.map(async (registro) => {
-          await addDoc(collection(db, "personasFirestore"), registro);
-        })
-      );
-
-      console.log("Registros de Persona guardados en Firestore con éxito.");
-    } catch (error) {
-      console.error("Error al guardar registros en Firestore:", error);
-      Alert.alert("Error", "Hubo un error al guardar registros en Firestore");
-    }
-  };
+  
 
   const SaveComponente6 = async () => {
     /*  try {
@@ -271,7 +248,6 @@ export default function PreSeisScreen(props) {
     } catch (error) {
       console.error("Error al guardar datos en Realm:", error);
     }
-    guardarPersonasEnFirestore();
   };
 
   return (

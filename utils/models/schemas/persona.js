@@ -2,6 +2,7 @@ import { Realm } from "@realm/react";
 export class Persona extends Realm.Object {
   tipoID = "";
   id_document = 0;
+  departamento="";
   component1 = {};
   component2 = {};
   component3 = {};
