@@ -14,18 +14,18 @@ import {
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 import appFirebase from "../components/firebase-config";
-import {addDoc, collection, getFirestore} from 'firebase/firestore';
+import { addDoc, collection, getFirestore } from 'firebase/firestore';
 const db = getFirestore(appFirebase)
 
 
 
 export default function RegistrateScreen(props) {
- 
+
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  
+
 
 
   const auth = getAuth(appFirebase);
@@ -65,7 +65,7 @@ export default function RegistrateScreen(props) {
         // También puedes guardar el userData en otros lugares si es necesario
       ]);
 
-      Alert.alert("Registro exitoso, el usuario ha sido exitosamente registrado");
+      Alert.alert("Registro exitoso", "El usuario se ha registrado exitosamente");
 
       // Ejemplo: Mostrar los valores ingresados en la consola
       console.log("Nombre:", name);

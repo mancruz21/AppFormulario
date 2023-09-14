@@ -364,8 +364,8 @@ export default function PreCinScreen(props) {
         pregunta5_10_1: selectedOptions0,
         pregunta5_10_2: motivo,
         pregunta5_11: selected1Option,
-        pregunta5_12: cellTexts,
-        pregunta5_13: cellTexts1,
+        pregunta5_12: handleCellSelection,
+        pregunta5_13: handleCellSelection1,
         pregunta5_14: transporte,
         pregunta5_14_1: otro3,
       };

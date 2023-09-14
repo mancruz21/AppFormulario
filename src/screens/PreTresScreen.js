@@ -88,7 +88,7 @@ export default function PreTresScreen(props) {
   };
 
   const SaveComponente3 = async () => {
-    try {
+    /*try {
       await addDoc(collection(db, "componentetres"), {
         pregunta3_1: selectedOption,
         pregunta3_2: aseguradora,
@@ -103,7 +103,7 @@ export default function PreTresScreen(props) {
     } catch (error) {
       console.error(error);
       Alert.alert("Error", "Hubo un error al guardar sus respuestas");
-    }
+    }*/
 
     try {
       realm.write(() => {
@@ -400,7 +400,7 @@ NACIONALES DE COLOMBIA"
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selectedOption2 ===
-                    "Centro de Salud y/o Hospital del Municipio"
+                      "Centro de Salud y/o Hospital del Municipio"
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -420,7 +420,7 @@ NACIONALES DE COLOMBIA"
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selectedOption2 ===
-                    "Centro de Salud y/o Hospital en otro Municipio"
+                      "Centro de Salud y/o Hospital en otro Municipio"
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -440,7 +440,7 @@ NACIONALES DE COLOMBIA"
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selectedOption2 ===
-                    "Consultorio Particular u otro servicio dentro del Municipio"
+                      "Consultorio Particular u otro servicio dentro del Municipio"
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -460,7 +460,7 @@ NACIONALES DE COLOMBIA"
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selectedOption2 ===
-                    "Consultorio Particular u otro servicio fuera del Municipio"
+                      "Consultorio Particular u otro servicio fuera del Municipio"
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -480,7 +480,7 @@ NACIONALES DE COLOMBIA"
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selectedOption2 ===
-                    "Medicina Tradicional (Quilombo, Maloka, Sobandero, Taita … etc.)"
+                      "Medicina Tradicional (Quilombo, Maloka, Sobandero, Taita … etc.)"
                       ? styles.selectedOptionText
                       : styles.checkBoxText
                   }
@@ -491,19 +491,19 @@ NACIONALES DE COLOMBIA"
               {(selectedOption2 ===
                 "Centro de Salud y/o Hospital en otro Municipio" ||
                 selectedOption2 ===
-                  "Consultorio Particular u otro servicio fuera del Municipio") && (
-                <View style={styles.preguntaContainer}>
-                  <Text style={styles.preguntas}>
-                    Ingrese el nombre del municipio:
-                  </Text>
-                  <TextInput
-                    style={styles.input}
-                    value={municipio}
-                    onChangeText={handleMunicipioChange}
-                    placeholder="Nombre del municipio"
-                  />
-                </View>
-              )}
+                "Consultorio Particular u otro servicio fuera del Municipio") && (
+                  <View style={styles.preguntaContainer}>
+                    <Text style={styles.preguntas}>
+                      Ingrese el nombre del municipio:
+                    </Text>
+                    <TextInput
+                      style={styles.input}
+                      value={municipio}
+                      onChangeText={handleMunicipioChange}
+                      placeholder="Nombre del municipio"
+                    />
+                  </View>
+                )}
             </View>
           </View>
         </View>
