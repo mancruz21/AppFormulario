@@ -14,10 +14,13 @@ import { addDoc, collection, getFirestore } from "firebase/firestore";
 const db = getFirestore(appFirebase);
 import { RealmConfigContext } from "./../../utils/models/context";
 const { useRealm } = RealmConfigContext;
+import { useRoute } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function PreCinScreen(props) {
   const realm = useRealm();
+  const route = useRoute();
+  const { numeroIdentificacion } = route.params;
   const [selectedOption3, setSelectedOption3] = useState("");
   const [selectedOption2, setSelectedOption2] = useState([]);
 
@@ -55,6 +58,7 @@ export default function PreCinScreen(props) {
   const [showTextInput2, setShowTextInput2] = useState(false);
   const [showTextInput3, setShowTextInput3] = useState(false);
   const [transporte, setTransporte] = useState([]);
+  const [showQuestion5_6, setShowQuestion5_6] = useState(true);
 
   //Constantes para campos de texto, Otros
   const [motivo, setMotivo] = useState("");
@@ -80,6 +84,7 @@ export default function PreCinScreen(props) {
       newSelectedColumns[col] = row;
     }
     setSelectedColumns(newSelectedColumns);
+    printSelectedCellContent(row, col);
   };
 
   const cellColors = Array(5)
@@ -118,6 +123,10 @@ export default function PreCinScreen(props) {
     ],
     ["MUY ALTA", "Entre $30.000  $60.000", "Entre $29.900  $60.000", "> 90m"],
   ];
+
+
+
+
 
   //Constante para pregunta 5.13
 
@@ -189,53 +198,78 @@ export default function PreCinScreen(props) {
       (selectedOption3 === "No" ? selectedOption22.length !== 0 : true) &&
       selectedOption1 !== "" &&
       (selectedOption1 === "No" ? (selected1Option.length !== 0) : true)
-
-
     ) {
-      navigation.navigate("Pregunta 2.4");
+      navigation.navigate("Pregunta 2.4", {
+
+        numeroIdentificacion: numeroIdentificacion,
+
+      });
       console.log("Opcion 1:", selectedOption11);
+      console.log(numeroIdentificacion);
     } else {
       Alert.alert("Error", "Por favor completa todos los campos.");
     }
+
     try {
       realm.write(() => {
         const personaToUpdate = realm
           .objects("Persona")
-          .filtered("id_document = 1002965852");
+          .filtered(`id_document = ${numeroIdentificacion}`);
         if (personaToUpdate.length > 0) {
           const persona = personaToUpdate[0];
+          // Convierte selectedOptions a una cadena antes de asignarlo a pregunta5_1_SI
+          const selectedOptionsAsString = JSON.stringify(selectedOptions);
+          const selectedOptions5AsString = JSON.stringify(selectedOptions5);
+          const selectedOptions1AsString = JSON.stringify(selectedOptions1);
+          const selectedOption2AsString = JSON.stringify(selectedOption2);
+          const selectedOption11AsString = JSON.stringify(selectedOption11);
+          const selectedOption222AsString = JSON.stringify(selectedOption222);
+          const selectedOptions4AsString = JSON.stringify(selectedOptions4);
+          const selectedOptions0AsString = JSON.stringify(selectedOptions0);
+          const selected1OptionAsString = JSON.stringify(selected1Option);
+          const selectedColumnsJSON = JSON.stringify(selectedColumns);
+          const selectedColumns1JSON = JSON.stringify(selectedColumns1);
+          const trasnporteAsString = JSON.stringify(transporte);
+
+
+
+          // Verificar si selectedOption8 es nulo y asignar un valor predeterminado si es así
+          const selectedOption8AsString = selectedOption8 !== null ? selectedOption8 : "";
+          const selectedOption9AsString = selectedOption9 !== null ? selectedOption9 : "";
           persona.component5 = {
-            pregunta5_1: "string",
-            pregunta5_1_SI: "string",
-            pregunta5_1_OtrosServi: "string",
-            pregunta5_1_Otro: "string",
-            pregunta5_2: "string",
-            pregunta5_3: "string",
-            pregunta5_3_1_OtrosServ: "string",
-            pregunta5_3_2_Otro: "string",
-            pregunta5_4: "string",
-            pregunta5_4_1: "string",
-            pregunta5_5: "string",
-            pregunta5_6: "string",
-            pregunta5_6_1_OtroServ: "string",
-            pregunta5_6_2_Otro: "string",
-            pregunta5_7: "string",
-            pregunta5_8: "string",
-            pregunta5_8_1: "string",
-            pregunta5_8_2: "string",
-            pregunta5_9: "string",
-            pregunta5_10: "string",
-            pregunta5_10_1: "string",
-            pregunta5_10_2: "string",
-            pregunta5_11: "string",
-            pregunta5_12: "string",
-            pregunta5_13: "string",
-            pregunta5_14: "string",
-            pregunta5_14_1: "string",
+            pregunta5_1: selectedOption,
+            pregunta5_1_SI: selectedOptionsAsString,
+            pregunta5_1_OtrosServi: selectedOptions5AsString,
+            pregunta5_1_Otro: otro,
+            pregunta5_2: selectedOption3,
+            pregunta5_3: selectedOption2AsString,
+            pregunta5_3_1_OtrosServ: selectedOptions1AsString,
+            pregunta5_3_2_Otro: otro1,
+            pregunta5_4: selectedOption22,
+            pregunta5_4_1: municipio,
+            pregunta5_5: selectedOption1,
+            pregunta5_6: selectedOption222AsString,
+            pregunta5_6_1_OtroServ: selectedOption11AsString,
+            pregunta5_6_2_Otro: otro2,
+            pregunta5_7: selectedOptions4AsString,
+            pregunta5_8: selectedOption8AsString,
+            pregunta5_8_1: nombre,
+            pregunta5_8_2: lugar,
+            pregunta5_9: selectedOption9AsString,
+            pregunta5_10: selectedOption0,
+            pregunta5_10_1: selectedOptions0AsString,
+            pregunta5_10_2: motivo,
+            pregunta5_11: selected1OptionAsString,
+            pregunta5_12: selectedColumnsJSON,
+            pregunta5_13: selectedColumns1JSON,
+            pregunta5_14: trasnporteAsString,
+            pregunta5_14_1: otro3,
           };
         }
       });
       console.log("Los datos se han guardado correctamente en Realm.");
+      console.log(selectedColumns, selectedColumns1);
+
     } catch (error) {
       console.error("Error al guardar datos en Realm:", error);
     }
@@ -587,7 +621,7 @@ export default function PreCinScreen(props) {
     motivo, motivo1, motivo2, motivo3, selectedColumns, selectedColumns1,]);
 
 
-  const [showQuestion5_6, setShowQuestion5_6] = useState(true);
+
 
   return (
     <ScrollView>

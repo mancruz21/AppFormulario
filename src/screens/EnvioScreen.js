@@ -1,11 +1,87 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Button,
+  Alert,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { useRoute } from '@react-navigation/native';
+import { useRoute } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-export default function
-  EnvioScreen(props) {
+import { RealmConfigContext } from "./../../utils/models/context";
+const { useRealm } = RealmConfigContext;
+import appFirebase from "../components/firebase-config";
+import { addDoc, collection, getFirestore } from "firebase/firestore";
+const db = getFirestore(appFirebase);
+import NetInfo from "@react-native-community/netinfo";
+
+
+export default function EnvioScreen(props) {
   const { navigation } = props;
+  const realm = useRealm();
+  const route = useRoute();
+  const { numeroIdentificacion } = route.params;
+
+  useEffect(() => {
+    // Función para verificar la conexión a Internet
+    const checkInternetConnectivity = async () => {
+      try {
+        const netInfoState = await NetInfo.fetch();
+        if (netInfoState.isConnected) {
+          console.log("Estás conectado a Internet");
+          // Si hay conexión a Internet, llama a la función para guardar personas
+          guardarPersonasEnFirestore();
+          Alert.alert(
+            "Exitoso",
+            "Se ha realizado la carga correctamente"
+          );
+        } else {
+          Alert.alert("Error", "No estás conectado a Internet");
+          console.log("No estás conectado a Internet");
+        }
+      } catch (error) {
+        Alert.alert("Error", "Error al verificar la conexión a Internet");
+        console.error("Error al verificar la conexión a Internet:", error);
+      }
+    };
+
+    // Llama a la función de verificación de conexión cuando se carga la pantalla
+    checkInternetConnectivity();
+  }, []); // El segundo argumento vacío [] garantiza que se ejecute solo una vez al cargar la pantalla
+
+  const guardarPersonasEnFirestore = async () => {
+    try {
+      const personas = realm.objects("Persona");
+
+      // Convierte los registros de Realm en objetos JSON y elimina el campo _id
+      const registrosFirestore = personas.map((persona) => {
+        const registro = persona.toJSON();
+        registro.id_document = numeroIdentificacion;
+        delete registro._id; // Elimina el campo _id
+        return registro;
+      });
+
+      // Guarda los registros en Firestore
+      await Promise.all(
+        registrosFirestore.map(async (registro) => {
+          await addDoc(collection(db, "personasFirestore"), registro);
+        })
+      );
+
+      console.log("Registros de Persona guardados en Firestore con éxito.");
+      // Elimina el archivo Realm después de un guardado exitoso
+      realm.write(() => {
+        realm.deleteAll(); // Esto eliminará todos los objetos en Realm
+      });
+
+      console.log("Archivo Realm eliminado con éxito.");
+    } catch (error) {
+      console.error("Error al guardar registros en Firestore:", error);
+      Alert.alert("Error", "Hubo un error al guardar registros en Firestore");
+    }
+  };
 
   const limpiar = async () => {
     try {
@@ -42,26 +118,21 @@ export default function
       await AsyncStorage.removeItem("componente6");
 
       console.log("Navegar a siguiente ventana");
-      
     } catch (error) {
       console.error("Error al borrar datos de AsyncStorage:", error);
     }
-
   };
   const goToFormulario = async () => {
     limpiar();
-    navigation.navigate("Pregunta 2.5", { formCounter: formCounter });
-
+    navigation.navigate("Pregunta 2.5");
   };
   const goToSalida = () => {
     limpiar();
     navigation.navigate("Login");
   };
-  const route = useRoute();
-  const { formCounter } = route.params;
+
   return (
     <ScrollView>
-
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
@@ -70,8 +141,7 @@ export default function
               Se han enviado los datos correctamente{" "}
             </Text>
             <Text style={styles.texto}>
-
-              El{formCounter > 1 ? 's' : ''} formulario{formCounter > 1 ? 's' : ''} se ha enviado con numero{formCounter === 1 ? '' : 'n'}  {formCounter}
+              La información ha sido enviada correctamente con número: {numeroIdentificacion}
             </Text>
 
             <View style={styles.container}>
@@ -91,8 +161,6 @@ export default function
                 </Text>
               </TouchableOpacity>
             </View>
-
-
           </View>
           <View style={styles.linea} />
         </View>
@@ -151,14 +219,11 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     fontWeight: "bold",
     color: "#1b3f90",
-
-
   },
   registrateText: {
     fontSize: 16,
     marginBottom: 8,
     marginTop: 30,
-
   },
   container: {
     marginTop: 0,
@@ -168,5 +233,5 @@ const styles = StyleSheet.create({
 
     fontWeight: "bold",
     fontSize: 18,
-  }
+  },
 });

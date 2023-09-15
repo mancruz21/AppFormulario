@@ -14,6 +14,7 @@ import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { Picker } from "@react-native-picker/picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { RealmConfigContext } from "./../../utils/models/context";
+import { useRoute } from "@react-navigation/native";
 const { useRealm } = RealmConfigContext;
 
 const db = getFirestore(appFirebase);
@@ -21,6 +22,9 @@ const db = getFirestore(appFirebase);
 export default function PreTresScreen(props) {
   const realm = useRealm();
   const { navigation } = props;
+  const route = useRoute();
+  const { numeroIdentificacion } = route.params;
+
   const [selectedOption, setSelectedOption] = useState(null);
   const [aseguradora, setAseguradora] = useState("option1");
   const [selectedOption2, setSelectedOption2] = useState(null);
@@ -84,11 +88,11 @@ export default function PreTresScreen(props) {
       return;
     }
 
-    navigation.navigate("Pregunta 2.2");
+    navigation.navigate("Pregunta 2.2", { numeroIdentificacion: numeroIdentificacion });
   };
 
   const SaveComponente3 = async () => {
-    /*try {
+    /* try {
       await addDoc(collection(db, "componentetres"), {
         pregunta3_1: selectedOption,
         pregunta3_2: aseguradora,
@@ -103,13 +107,13 @@ export default function PreTresScreen(props) {
     } catch (error) {
       console.error(error);
       Alert.alert("Error", "Hubo un error al guardar sus respuestas");
-    }*/
+    } */
 
     try {
       realm.write(() => {
         const personaToUpdate = realm
           .objects("Persona")
-          .filtered("id_document = 1002965852");
+          .filtered(`id_document = ${numeroIdentificacion}`);
         if (personaToUpdate.length > 0) {
           const persona = personaToUpdate[0];
           persona.component3 = {
@@ -129,6 +133,7 @@ export default function PreTresScreen(props) {
         }
       });
       console.log("Los datos se han guardado correctamente en Realm.");
+      console.log(numeroIdentificacion)
     } catch (error) {
       console.error("Error al guardar datos en Realm:", error);
     }

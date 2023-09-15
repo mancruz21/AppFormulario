@@ -4,7 +4,7 @@
     "slug": "AppBeta",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo.png",
+    "icon": "./assets/rehabcoicon.png",
     "userInterfaceStyle": "light",
     "platforms": ["ios", "android"],
     "splash": {
@@ -19,7 +19,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo.png",
+        "foregroundImage": "./assets/rehabcoicon",
         "backgroundColor": "#ffffff"
       },
       "permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
@@ -27,7 +27,7 @@
     },
     "jsEngine": "hermes",
     "web": {
-      "favicon": "./assets/logo.png"
+      "favicon": "./assets/rehabcoicon"
     },
     "extra": {
       "eas": {

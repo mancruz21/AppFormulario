@@ -15,11 +15,14 @@ import { addDoc, collection, getFirestore } from "firebase/firestore";
 const db = getFirestore(appFirebase);
 import { RealmConfigContext } from "./../../utils/models/context";
 const { useRealm } = RealmConfigContext;
+import { useRoute } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function PreCuaScreen(props) {
   const realm = useRealm();
   const { navigation } = props;
+  const route = useRoute();
+  const {numeroIdentificacion} = route.params;
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedOption1, setSelectedOption1] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -43,7 +46,11 @@ export default function PreCuaScreen(props) {
       (selectedOption !== "Si" || selectedOptions.length !== 0) &&
       (selectedOption !== "Si" || selectedOptions1.length !== 0)
     ) {
-      navigation.navigate("Pregunta 2.3");
+      navigation.navigate("Pregunta 2.3",{
+     
+        numeroIdentificacion: numeroIdentificacion,
+        
+      });
     } else {
       Alert.alert("Error", "Por favor completa todos los campos.");
     }
@@ -132,7 +139,7 @@ export default function PreCuaScreen(props) {
       realm.write(() => {
         const personaToUpdate = realm
           .objects("Persona")
-          .filtered("id_document = 1002965852");
+          .filtered(`id_document = ${numeroIdentificacion}`);
         if (personaToUpdate.length > 0) {
           const persona = personaToUpdate[0];
           persona.component4 = {
@@ -150,6 +157,7 @@ export default function PreCuaScreen(props) {
         }
       });
       console.log("Los datos se han guardado correctamente en Realm.");
+      console.log(numeroIdentificacion)
     } catch (error) {
       console.error("Error al guardar datos en Realm:", error);
     }

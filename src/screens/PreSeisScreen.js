@@ -16,9 +16,12 @@ import { RealmConfigContext } from "./../../utils/models/context";
 const { useRealm } = RealmConfigContext;
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { useRoute } from "@react-navigation/native";
 export default function PreSeisScreen(props) {
   const realm = useRealm();
   const { navigation } = props;
+  const route = useRoute();
+  const { numeroIdentificacion } = route.params;
   const [opcionOtro, setOpcionOtro] = useState(false);
   const [opcionOtro1, setOpcionOtro1] = useState(false);
   const [otroTexto, setOtroTexto] = useState("");
@@ -94,6 +97,7 @@ export default function PreSeisScreen(props) {
     "Otro",
     "Ninguna",
   ];
+ 
 
   const handleCheckboxChange = (index) => {
     if (selectedOptions.includes(4) && index !== 4) {
@@ -199,7 +203,7 @@ export default function PreSeisScreen(props) {
         nombreDepartamento !== "") ||
         selectedOption3 === "No") // Validación de la selección única y campos de texto
     ) {
-      navigation.navigate("Envio", { formCounter: formCounter });
+      navigation.navigate("Envio", { numeroIdentificacion: numeroIdentificacion });
     } else {
       Alert.alert("Error", "Por favor completa todos los campos.");
     }
@@ -207,35 +211,7 @@ export default function PreSeisScreen(props) {
 
   // Suponiendo que ya tienes 'realm' disponible y has definido tu modelo 'Componente6'
 
-  const guardarPersonasEnFirestore = async () => {
-    try {
-      const personas = realm.objects("Persona");
 
-      // Convierte los registros de Realm en objetos JSON y elimina el campo _id
-      const registrosFirestore = personas.map((persona) => {
-        const registro = persona.toJSON();
-        delete registro._id; // Elimina el campo _id
-        return registro;
-      });
-
-      // Guarda los registros en Firestore
-      await Promise.all(
-        registrosFirestore.map(async (registro) => {
-          await addDoc(collection(db, "personasFirestore"), registro);
-        })
-      );
-
-      console.log("Registros de Persona guardados en Firestore con éxito.");
-    } catch (error) {
-      console.error("Error al guardar registros en Firestore:", error);
-      Alert.alert("Error", "Hubo un error al guardar registros en Firestore");
-    }
-  };
-
-  // Llama a la función para guardar los registros de 'Persona' en Firestore
-  guardarPersonasEnFirestore();
-
-  // Llama a la función para obtener y mostrar todos los registros
 
   const SaveComponente6 = async () => {
     /*  try {
@@ -253,30 +229,41 @@ export default function PreSeisScreen(props) {
       console.error(error);
       Alert.alert("Error", "Hubo un error al guardar sus respuestas");
     } */
+    const selectedOptionsStrings = selectedOptions.map((index) => opciones[index]);
+    const pregunta6_1 = selectedOptionsStrings.join(', ');
+
+    const selectedOptions1Strings = selectedOptions1.map((index) => opciones[index]);
+    const pregunta6_2_1 = selectedOptions1Strings.join(', ');
+
 
     try {
       realm.write(() => {
         const personaToUpdate = realm
           .objects("Persona")
-          .filtered("id_document = 1002965852");
+          .filtered(`id_document = ${numeroIdentificacion}`);
         if (personaToUpdate.length > 0) {
           const persona = personaToUpdate[0];
+
+
+          
           persona.component6 = {
-            pregunta6_1: "string",
-            otroTexto6_1: "string",
-            pregunta6_2: "string",
-            otroIndicacion6_2: "string",
-            pregunta6_3: "string",
-            municipio_pregunta6_3: "string",
+            pregunta6_1,
+            otroTexto6_1: otroTexto,
+            pregunta6_2: seleccionoSi.toString(),
+            pregunta6_2_1,
+            otroIndicacion6_2: seleccionoSi ? otroTexto1: "",
+            pregunta6_3: selectedOption3,
+            departamento_pregunta6_3:nombreDepartamento,
+            municipio_pregunta6_3: municipio,
           };
         }
       });
 
       console.log("Los datos se han guardado correctamente en Realm.");
+      console.log(numeroIdentificacion);
     } catch (error) {
       console.error("Error al guardar datos en Realm:", error);
     }
-    guardarPersonasEnFirestore();
   };
 
   return (

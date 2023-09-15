@@ -14,12 +14,15 @@ import { addDoc, collection, getFirestore } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { RealmConfigContext } from "./../../utils/models/context";
 const { useRealm } = RealmConfigContext;
+import { useRoute } from "@react-navigation/native";
 
 const db = getFirestore(appFirebase);
 
 export default function PreDosScreen(props) {
   const realm = useRealm();
   const { navigation } = props;
+  const route = useRoute();
+  const { numeroIdentificacion } = route.params;
 
   const [opcion1, setOpcion1] = useState("");
   const [opcion2, setOpcion2] = useState("");
@@ -159,13 +162,18 @@ export default function PreDosScreen(props) {
         if (educativo !== null)
           await AsyncStorage.setItem("educativo", educativo);
         if (educacionSuperior !== null)
-        await AsyncStorage.setItem("educacionSuperior", educacionSuperior);
+          await AsyncStorage.setItem("educacionSuperior", educacionSuperior);
         await AsyncStorage.setItem("ocupacion", JSON.stringify(ocupacion));
         await AsyncStorage.setItem("trabajo", JSON.stringify(trabajo));
         if (salario !== null) await AsyncStorage.setItem("salario", salario);
         if (promedio !== null) await AsyncStorage.setItem("promedio", promedio);
 
-        navigation.navigate("Pregunta 2.1");
+        navigation.navigate("Pregunta 2.1", {
+
+          numeroIdentificacion: numeroIdentificacion,
+
+        });
+        console.log(numeroIdentificacion)
       } catch (error) {
         console.error("Error saving data:", error);
       }
@@ -205,23 +213,30 @@ export default function PreDosScreen(props) {
         // Si selectedOption4 no es una cadena, intenta convertirlo en cadena
         pregunta2_4 = String(selectedOption4);
       }
+      // Asegúrate de que los campos opcionales no sean nulos antes de guardarlo
+
+      
+
+      if (!educacionSuperior) educacionSuperior = "NULL";
+      if (!salario) salario = "NULL";
+      if (!promedio) promedio = "NULL";
       // En la pantalla dos, actualiza los datos en el mismo objeto Persona
       realm.write(() => {
         const personaToUpdate = realm
           .objects("Persona")
-          .filtered("id_document = 1002965852");
+          .filtered(`id_document = ${numeroIdentificacion}`);
         if (personaToUpdate.length > 0) {
           const persona = personaToUpdate[0];
           persona.component2 = {
-            pregunta2_1: opcion1,
-            pregunta2_2: opcion2,
-            pregunta2_3: opcion3,
+            pregunta2_1: opcion1 || "",
+            pregunta2_2: opcion2 || "",
+            pregunta2_3: opcion3 || "",
             pregunta2_4: selectedOption4.toString(),
             pregunta2_2_1: discapacidad,
             pregunta2_2_2: OptionSelection.toString(),
-            pregunta2_4_1: etnia,
+            pregunta2_4_1: etnia || "",
             pregunta2_4_1_nombre: indigena,
-            pregunta2_5_2_UltimoNivel: educativo,
+            pregunta2_5_2_UltimoNivel: educativo || "",
             pregunta2_5_1EducaSuperior: educacionSuperior
               ? educacionSuperior
               : "NULL",

@@ -15,34 +15,23 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
 
 
+
+
 const db = getFirestore(appFirebase)
 
 export default function IdentificacionScreen(props) {
   const { navigation } = props;
-  const [selectedOption, setSelectedOption] = useState("");
+  const [tipoId, setTipoId] = useState("");
   const [numeroIdentificacion, setNumeroIdentificacion] = useState("");
   const [puedeAvanzar, setPuedeAvanzar] = useState(false);
-  const [departamento, setDepartamento] = useState("");
+  const [departamentoID, setDepartamentoID] = useState("");
+  const [numeroIdentificacionValue, setNumeroIdentificacionValue] = useState("");
 
-  const goToPreguntaUno = () => {
-    // Aquí puedes realizar acciones con la opción seleccionada
-    if (
-      selectedOption !== "" &&
-      (!shouldShowNumeroIdentificacion() || numeroIdentificacion.trim() !== "")
-    ) {
-      console.log("Opción seleccionada:", selectedOption);
-      console.log("Número de identificación:", numeroIdentificacion);
-      console.log("Departamento:", departamento);
-      navigation.navigate("Pregunta 1.1");
-    } else {
-      // Mostrar una alerta al usuario
-      Alert.alert("Error", "Por favor completa todos los campos.");
-    }
-  };
+
   // departamento donde se hace la encuesta
 
   const departamentoHandle = (itemValue, itemIndex) => {
-    setDepartamento(itemValue);
+    setDepartamentoID(itemValue);
   };
   useEffect(() => {
     // Recuperar los datos guardados de AsyncStorage cuando la pantalla se carga
@@ -51,9 +40,9 @@ export default function IdentificacionScreen(props) {
         const savedData = await AsyncStorage.getItem("identificacionData");
         if (savedData) {
           const parsedData = JSON.parse(savedData);
-          setSelectedOption(parsedData.selectedOption);
+          setTipoId(parsedData.tipoId);
           setNumeroIdentificacion(parsedData.numeroIdentificacion);
-          setDepartamento(parsedData.departamento);
+          setDepartamentoID(parsedData.departamentoID);
         }
       } catch (error) {
         console.error("Error al restaurar los datos:", error);
@@ -68,9 +57,9 @@ export default function IdentificacionScreen(props) {
     const saveData = async () => {
       try {
         const dataToSave = JSON.stringify({
-          selectedOption,
+          tipoId,
           numeroIdentificacion,
-          departamento,
+          departamentoID,
         });
         await AsyncStorage.setItem("identificacionData", dataToSave);
       } catch (error) {
@@ -79,33 +68,42 @@ export default function IdentificacionScreen(props) {
     };
 
     saveData();
-  }, [selectedOption, numeroIdentificacion, departamento]);
+  }, [tipoId, numeroIdentificacion, departamentoID]);
 
   //Para que no salga la opcion de escribir el documento de identidad
   const shouldShowNumeroIdentificacion = () => {
     return (
-      selectedOption !== "" &&
-      selectedOption !== "AdultoSinIdentificacion" &&
-      selectedOption !== "AdultoSinIdentificacionAnonimo"
+      tipoId !== "" &&
+      tipoId !== "AdultoSinIdentificacion" &&
+      tipoId !== "AdultoSinIdentificacionAnonimo"
     );
   };
 
   const toggleOption = (option) => {
-    if (selectedOption === option) {
+    if (tipoId === option) {
       // Si la opción actual ya está seleccionada, deselecciónala
-      setSelectedOption("");
+      setTipoId("");
+      setNumeroIdentificacionValue("");
     } else {
       // Si no está seleccionada, selecciónala
-      setSelectedOption(option);
+      setTipoId(option);
+      // Generar un número aleatorio único cuando se selecciona la opción
+      if (option === "AdultoSinIdentificacion" || option === "AdultoSinIdentificacionAnonimo") {
+        const randomNumber = Math.floor(Math.random() * 1000000); // Generar un número aleatorio único
+        setNumeroIdentificacionValue(randomNumber.toString());
+      } else {
+        // Si no se selecciona una opción que genere un número aleatorio, usa el valor actual de numeroIdentificacion
+        setNumeroIdentificacionValue(numeroIdentificacion);
+      }
     }
   };
   //Metodo para guardar en firestore
   const SaveIdent = async () => {
     try {
       const docRef = await addDoc(collection(db, 'identificacion'), {
-        tipoIdentificacion: selectedOption,
-        numeroIdentificacion: numeroIdentificacion,
-        departamento: departamento,
+        tipoIdentificacion: tipoId,
+        numeroIdentificacion: numeroIdentificacionValue,
+        departamento: departamentoID,
       });
 
       console.log("Documento guardado con ID:", docRef.id);
@@ -116,12 +114,32 @@ export default function IdentificacionScreen(props) {
     }
   }
   useEffect(() => {
-    if (selectedOption !== '' && (selectedOption === 'AdultoSinIdentificacion' || selectedOption === 'AdultoSinIdentificacionAnonimo' || numeroIdentificacion !== '')) {
+    if (tipoId !== '' && (tipoId === 'AdultoSinIdentificacion' || tipoId === 'AdultoSinIdentificacionAnonimo' || numeroIdentificacion !== '')) {
       setPuedeAvanzar(true);
     } else {
       setPuedeAvanzar(false);
     }
-  }, [selectedOption, numeroIdentificacion])
+  }, [tipoId, numeroIdentificacion])
+
+  const goToPreguntaUno = () => {
+    // Aquí puedes realizar acciones con la opción seleccionada
+    if (
+      tipoId !== "" &&
+      (!shouldShowNumeroIdentificacion() || numeroIdentificacionValue.trim() !== "" || numeroIdentificacion.trim() !== "")
+    ) {
+      console.log("Opción seleccionada:", tipoId);
+      console.log("Número de identificación:", numeroIdentificacionValue);
+      console.log("Departamento:", departamentoID);
+      navigation.navigate("Pregunta 1.1", {
+        tipoId: tipoId,
+        numeroIdentificacion: numeroIdentificacionValue,
+        departamentoID: departamentoID
+      });
+    } else {
+      // Mostrar una alerta al usuario
+      Alert.alert("Error", "Por favor completa todos los campos.");
+    }
+  };
 
   return (
     <ScrollView>
@@ -131,11 +149,11 @@ export default function IdentificacionScreen(props) {
             <Text style={styles.title}>Escoge el tipo de identificación</Text>
             <CheckBox
               title="TI Tarjeta de Identidad (10 a 17 años)"
-              checked={selectedOption === "TI"}
+              checked={tipoId === "TI"}
               onPress={() => toggleOption("TI")}
               containerStyle={styles.checkBoxContainer}
               textStyle={
-                selectedOption === "TI"
+                tipoId === "TI"
                   ? styles.selectedOptionText
                   : styles.checkBoxText
               }
@@ -144,11 +162,11 @@ export default function IdentificacionScreen(props) {
 
             <CheckBox
               title="CC Cédula de Ciudadanía"
-              checked={selectedOption === "CC"}
+              checked={tipoId === "CC"}
               onPress={() => toggleOption("CC")}
               containerStyle={styles.checkBoxContainer}
               textStyle={
-                selectedOption === "CC"
+                tipoId === "CC"
                   ? styles.selectedOptionText
                   : styles.checkBoxText
               }
@@ -156,11 +174,11 @@ export default function IdentificacionScreen(props) {
             />
             <CheckBox
               title="CE Cédula de Extranjería"
-              checked={selectedOption === "CE"}
+              checked={tipoId === "CE"}
               onPress={() => toggleOption("CE")}
               containerStyle={styles.checkBoxContainer}
               textStyle={
-                selectedOption === "CE"
+                tipoId === "CE"
                   ? styles.selectedOptionText
                   : styles.checkBoxText
               }
@@ -168,11 +186,11 @@ export default function IdentificacionScreen(props) {
             />
             <CheckBox
               title="PA Pasaporte"
-              checked={selectedOption === "PA"}
+              checked={tipoId === "PA"}
               onPress={() => toggleOption("PA")}
               containerStyle={styles.checkBoxContainer}
               textStyle={
-                selectedOption === "PA"
+                tipoId === "PA"
                   ? styles.selectedOptionText
                   : styles.checkBoxText
               }
@@ -180,11 +198,11 @@ export default function IdentificacionScreen(props) {
             />
             <CheckBox
               title="PEP Permiso Especial de Permanencia"
-              checked={selectedOption === "PEP"}
+              checked={tipoId === "PEP"}
               onPress={() => toggleOption("PEP")}
               containerStyle={styles.checkBoxContainer}
               textStyle={
-                selectedOption === "PEP"
+                tipoId === "PEP"
                   ? styles.selectedOptionText
                   : styles.checkBoxText
               }
@@ -192,11 +210,11 @@ export default function IdentificacionScreen(props) {
             />
             <CheckBox
               title="Adulto sin Identificación (no tiene)"
-              checked={selectedOption === "AdultoSinIdentificacion"}
+              checked={tipoId === "AdultoSinIdentificacion"}
               onPress={() => toggleOption("AdultoSinIdentificacion")}
               containerStyle={styles.checkBoxContainer}
               textStyle={
-                selectedOption === "AdultoSinIdentificacion"
+                tipoId === "AdultoSinIdentificacion"
                   ? styles.selectedOptionText
                   : styles.checkBoxText
               }
@@ -204,13 +222,13 @@ export default function IdentificacionScreen(props) {
             />
             <CheckBox
               title="Adulto sin Identificación (participa como anónimo)"
-              checked={selectedOption === "AdultoSinIdentificacionAnonimo"}
+              checked={tipoId === "AdultoSinIdentificacionAnonimo"}
               onPress={() =>
                 toggleOption("AdultoSinIdentificacionAnonimo")
               }
               containerStyle={styles.checkBoxContainer}
               textStyle={
-                selectedOption === "AdultoSinIdentificacionAnonimo"
+                tipoId === "AdultoSinIdentificacionAnonimo"
                   ? styles.selectedOptionText
                   : styles.checkBoxText
               }
@@ -239,7 +257,7 @@ export default function IdentificacionScreen(props) {
               </Text>
 
               <Picker
-                selectedValue={departamento}
+                selectedValue={departamentoID}
                 style={{ height: 70, width: 300 }}
                 onValueChange={departamentoHandle}
               >

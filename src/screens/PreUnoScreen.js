@@ -18,10 +18,17 @@ import { addDoc, collection, getFirestore } from "firebase/firestore";
 const db = getFirestore(appFirebase);
 import { RealmConfigContext } from "./../../utils/models/context";
 const { useRealm } = RealmConfigContext;
+import { useRoute } from "@react-navigation/native";
+
 
 export default function PreUnoScreen(props) {
   const realm = useRealm();
+
   const { navigation } = props;
+  const route = useRoute();
+  const { tipoId, numeroIdentificacion, departamentoID } = route.params;
+
+
   /* const realm = new Realm({ schema: [Persona] }); */
   // Función para guardar los datos en AsyncStorage
   const saveDataToStorage = async () => {
@@ -173,9 +180,8 @@ export default function PreUnoScreen(props) {
     setDate(currentDate);
 
     // Formateamos la fecha en "DD/MM/AAAA" antes de asignarla al estado "fecha"
-    const formattedDate = `${currentDate.getDate()}/${
-      currentDate.getMonth() + 1
-    }/${currentDate.getFullYear()}`;
+    const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1
+      }/${currentDate.getFullYear()}`;
     setFecha(formattedDate);
 
     // Calculamos la edad y la establecemos en el estado "edad"
@@ -234,7 +240,11 @@ export default function PreUnoScreen(props) {
       estratoSocial !== null
     ) {
       // Todas las respuestas requeridas han sido llenadas, permitir la navegación
-      navigation.navigate("Pregunta 1.2");
+      navigation.navigate("Pregunta 1.2", {
+
+        numeroIdentificacion: numeroIdentificacion,
+
+      });
       console.log("Sexo:", selectedOption);
       console.log("Apellido:", apellido);
       console.log("Nombres:", nombres);
@@ -248,12 +258,15 @@ export default function PreUnoScreen(props) {
       console.log("Dirección:", direccion);
       console.log("Celular:", Celular);
       console.log("Estrato social:", estratoSocial);
+      console.log(departamentoID, numeroIdentificacion, tipoId)
     } else {
       // Mostrar una alerta al usuario indicando que deben llenar todas las respuestas
       Alert.alert("Error", "Por favor completa todos los campos.");
     }
     saveDataToStorage();
   };
+
+
   const SaveComponente1 = async () => {
     /* try {
       await addDoc(collection(db, "componenteuno"), {
@@ -277,13 +290,18 @@ export default function PreUnoScreen(props) {
       console.error(error);
     } */
 
+
+
+
     Celular_parse = parseInt(Celular);
     edad_parse = parseInt(edadCalculada);
+    id_documento = parseInt(numeroIdentificacion);
     try {
       realm.write(() => {
         realm.create("Persona", {
-          tipoID: "CC",
-          id_document: 10029658523,
+          tipoId: tipoId,
+          id_document: id_documento,
+          departamento: departamentoID,
           component1: {
             pregunta1_1Apell: apellido.toString(),
             pregunta1_1_2Nombres: nombres.toString(),
@@ -303,6 +321,7 @@ export default function PreUnoScreen(props) {
         });
       });
       console.log("Los datos se han guardado correctamente en Realm.");
+      console.log(departamentoID, numeroIdentificacion, tipoId)
     } catch (error) {
       console.error("Error al guardar datos en Realm:", error);
     }
