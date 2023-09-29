@@ -136,6 +136,8 @@ export default function EnvioScreen(props) {
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
+
+
             <Text style={styles.question}>
               {" "}
               Se han enviado los datos correctamente{" "}
@@ -160,6 +162,20 @@ export default function EnvioScreen(props) {
                   <Text style={styles.registrate}> Presione aquí </Text>
                 </Text>
               </TouchableOpacity>
+
+
+              <Text style={styles.texto}>
+                Esta aplicación es posible gracias al generoso apoyo del pueblo
+                de Estados Unidos a través de su Agencia para el Desarrollo Internacional
+                (USAID). Los contenidos son responsabilidad de ASCOFI y no necesariamente
+                reflejan las opiniones de USAID ni del gobierno de Estados Unidos de América,
+                ni de la OIM.
+                Esta encuesta es posible gracias al generoso apoyo del pueblo de Estados
+                Unidos a través de su Agencia para el Desarrollo Internacional (USAID).
+                Los contenidos son responsabilidad de ASCOFI y no necesariamente reflejan
+                las opiniones de USAID ni del gobierno de Estados Unidos de América, ni de la OIM.
+
+              </Text>
             </View>
           </View>
           <View style={styles.linea} />
@@ -230,8 +246,9 @@ const styles = StyleSheet.create({
   },
   texto: {
     marginTop: 40,
-
+    justifyContent: "center",
+    textAlign: "justify",
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 16,
   },
 });

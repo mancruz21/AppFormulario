@@ -22,7 +22,7 @@ export default function PreCuaScreen(props) {
   const realm = useRealm();
   const { navigation } = props;
   const route = useRoute();
-  const {numeroIdentificacion} = route.params;
+  const { numeroIdentificacion } = route.params;
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedOption1, setSelectedOption1] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -46,10 +46,10 @@ export default function PreCuaScreen(props) {
       (selectedOption !== "Si" || selectedOptions.length !== 0) &&
       (selectedOption !== "Si" || selectedOptions1.length !== 0)
     ) {
-      navigation.navigate("Pregunta 2.3",{
-     
+      navigation.navigate("Pregunta 2.3", {
+
         numeroIdentificacion: numeroIdentificacion,
-        
+
       });
     } else {
       Alert.alert("Error", "Por favor completa todos los campos.");
@@ -239,11 +239,30 @@ export default function PreCuaScreen(props) {
 
   return (
     <ScrollView>
-      {/* Pregunta 4.1 */}
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
             <Text style={styles.titulo}> CONDICIONES DE SALUD </Text>
+            <Text style={styles.texto}>
+              Las condiciones de salud se refieren a molestias, dolores, enfermedades,
+              trastornos, lesiones, traumatismos, de tipo físico o mental con consecuencias
+              permanentes o temporales. Una condición de salud también incluye diferentes
+              circunstancias que implican cambios en el estado de salud de las personas, tales
+              como el embarazo, el envejecimiento, el estrés, una alteración genética, entre
+              otras.
+              Jesus, T. S., Landry, M. D., y Hoenig, H. (2019). Global need for physical
+              rehabilitation: systematic analysis from the Global Burden of Disease Study 2017.
+              International journal of environmental research and public health, 16(6), 980.
+            </Text>
+          </View>
+          <View style={styles.linea} />
+        </View>
+      </View>
+      {/* Pregunta 4.1 */}
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
+         
             <Text style={styles.question}>
               {" "}
               PREGUNTA 4.1 ( SELECCIÓN ÚNICA){" "}
@@ -2402,6 +2421,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: "bold",
     fontSize: 18,
+    textAlign:"justify",
+  },
+  texto: {
+    color: "#000000",
+    marginBottom: 10,
+    marginTop: 10,
+    fontWeight: "bold",
+    fontSize: 16,
+    textAlign:"justify",
   },
   question: {
     color: "#35669a",

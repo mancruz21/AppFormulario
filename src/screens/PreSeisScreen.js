@@ -97,7 +97,7 @@ export default function PreSeisScreen(props) {
     "Otro",
     "Ninguna",
   ];
- 
+
 
   const handleCheckboxChange = (index) => {
     if (selectedOptions.includes(4) && index !== 4) {
@@ -245,15 +245,15 @@ export default function PreSeisScreen(props) {
           const persona = personaToUpdate[0];
 
 
-          
+
           persona.component6 = {
             pregunta6_1,
             otroTexto6_1: otroTexto,
             pregunta6_2: seleccionoSi.toString(),
             pregunta6_2_1,
-            otroIndicacion6_2: seleccionoSi ? otroTexto1: "",
+            otroIndicacion6_2: seleccionoSi ? otroTexto1 : "",
             pregunta6_3: selectedOption3,
-            departamento_pregunta6_3:nombreDepartamento,
+            departamento_pregunta6_3: nombreDepartamento,
             municipio_pregunta6_3: municipio,
           };
         }
@@ -268,11 +268,27 @@ export default function PreSeisScreen(props) {
 
   return (
     <ScrollView>
-      {/* Pregunta 6.1 */}
+
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
             <Text style={styles.titulo}>SALUD PÚBLICA</Text>
+            <Text style={styles.texto}>
+              La Salud Pública es un conjunto de acciones que se realizan de manera individual (persona por persona) o también de forma colectiva (grupal) para contribuir al
+              bienestar, el desarrollo y el mejoramiento de calidad de vida de la población. Dentro de las acciones de salud pública se cuentan: salud ambiental, salud nutricional,
+              salud mental y sustancias psicoactivas, vacunación, enfermedades transmisibles, enfermedades no transmisibles, poblaciones vulnerables, estilos saludables, epidemiología
+              y demografía, salud sexual y reproductiva, entre otras. Estas acciones se realizan bajo la rectoría del Estado y se caracterizan por promover la participación de
+              todos los sectores de la comunidad, de acuerdo con las responsabilidades de cada uno de los mismos. - Ley 1122 de 2007 - Resolución 1536 de 2015 del MSPS -
+            </Text>
+          </View>
+          <View style={styles.linea} />
+        </View>
+      </View>
+      {/* Pregunta 6.1 */}
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
+
             <Text style={styles.question}>
               {" "}
               PREGUNTA 6.1 ( SELECCIÓN MÚLTIPLE - MÁXIMO 2 OPCIONES){" "}
@@ -509,6 +525,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: "bold",
     fontSize: 18,
+    textAlign:"justify",
+  },
+  texto: {
+    color: "#000000",
+    marginBottom: 10,
+    marginTop: 10,
+    fontWeight: "bold",
+    fontSize: 16,
+    textAlign:"justify",
   },
   question: {
     color: "#35669a",

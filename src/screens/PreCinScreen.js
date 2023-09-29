@@ -65,41 +65,13 @@ export default function PreCinScreen(props) {
   const [motivo1, setMotivo1] = useState("");
   const [motivo2, setMotivo2] = useState("");
   const [motivo3, setMotivo3] = useState("");
+  const [showQuestion5_12, setShowQuestion5_12] = useState(true);
+
 
   //Constante para pregunta 5.12
-  const [selectedColumns, setSelectedColumns] = useState(Array(4).fill(-1));
+  const [selectedColumns, setSelectedColumns] = useState(Array(4).fill(null));
 
-  const handleCellSelection = (row, col) => {
-    if (row === 0 || col === 0) {
-      // Evitar selección en la primera fila y la primera columna
-      return;
-    }
 
-    const newSelectedColumns = [...selectedColumns];
-    if (newSelectedColumns[col] === row) {
-      // Deseleccionar la celda si ya está seleccionada
-      newSelectedColumns[col] = -1;
-    } else {
-      // Seleccionar la celda si no está seleccionada
-      newSelectedColumns[col] = row;
-    }
-    setSelectedColumns(newSelectedColumns);
-    printSelectedCellContent(row, col);
-  };
-
-  const cellColors = Array(5)
-    .fill(null)
-    .map((_, rowIndex) =>
-      Array(4)
-        .fill("white")
-        .map((color, colIndex) =>
-          colIndex === 0
-            ? "white"
-            : selectedColumns[colIndex] === rowIndex
-              ? "#BA0C2F"
-              : "white"
-        )
-    );
 
   const cellTexts = [
     [
@@ -123,6 +95,48 @@ export default function PreCinScreen(props) {
     ],
     ["MUY ALTA", "Entre $30.000  $60.000", "Entre $29.900  $60.000", "> 90m"],
   ];
+  const handleCellSelection = (row, col) => {
+    if (row === 0 || col === 0) {
+      // Evitar selección en la primera fila y la primera columna
+      return;
+    }
+
+    const newSelectedColumns = [...selectedColumns];
+    const selectedText = cellTexts[row][col];
+
+    if (newSelectedColumns[col] === selectedText) {
+      // Deseleccionar la celda si ya está seleccionada
+      newSelectedColumns[col] = "";
+    } else {
+      // Seleccionar la celda y almacenar el texto
+      newSelectedColumns[col] = selectedText;
+    }
+
+    setSelectedColumns(newSelectedColumns);
+  };
+  // En la definición de los estilos:
+
+
+  const cellColors = Array(5)
+    .fill(null)
+    .map((_, rowIndex) =>
+      Array(4)
+        .fill("white")
+        .map((color, colIndex) =>
+          colIndex === 0
+            ? "white"
+            : selectedColumns[colIndex] === cellTexts[rowIndex][colIndex]
+              ? "#BA0C2F"
+              : "white"
+        )
+    );
+  const cellTextStyle = {
+
+    fontWeight: "normal",
+    textAlign: "center",
+  };
+
+
 
 
 
@@ -131,38 +145,6 @@ export default function PreCinScreen(props) {
   //Constante para pregunta 5.13
 
   const [selectedColumns1, setSelectedColumns1] = useState(Array(3).fill(-1));
-
-  const handleCellSelection1 = (row, col) => {
-    if (row === 0 || col === 0) {
-      // Evitar selección en la primera fila y la primera columna
-      return;
-    }
-
-    const newSelectedColumns1 = [...selectedColumns1];
-    if (newSelectedColumns1[col] === row) {
-      // Deseleccionar la celda si ya está seleccionada
-      newSelectedColumns1[col] = -1;
-    } else {
-      // Seleccionar la celda si no está seleccionada
-      newSelectedColumns1[col] = row;
-    }
-    setSelectedColumns1(newSelectedColumns1);
-  };
-
-  const cellColors1 = Array(4)
-    .fill(null)
-    .map((_, rowIndex) =>
-      Array(4)
-        .fill("white")
-        .map((color, colIndex) =>
-          colIndex === 0
-            ? "white"
-            : selectedColumns1[colIndex] === rowIndex
-              ? "#BA0C2F"
-              : "white"
-        )
-    );
-
   const cellTexts1 = [
     [
       "",
@@ -174,6 +156,41 @@ export default function PreCinScreen(props) {
     ["MEDIA", "3 - 5 días", "4 - 7 ", "4 - 7 "],
     ["BAJA", "> 5 días", "1 - 3 ", "1 - 3 "],
   ];
+  const handleCellSelection1 = (row, col) => {
+    if (row === 0 || col === 0) {
+      // Evitar selección en la primera fila y la primera columna
+      return;
+    }
+
+    const newSelectedColumns1 = [...selectedColumns1];
+    const selectedText1 = cellTexts1[row][col];
+
+    if (newSelectedColumns1[col] === selectedText1) {
+      // Deseleccionar la celda si ya está seleccionada
+      newSelectedColumns1[col] = "";
+    } else {
+      // Seleccionar la celda y almacenar el texto
+      newSelectedColumns1[col] = selectedText1;
+    }
+
+    setSelectedColumns1(newSelectedColumns1);
+  };
+
+  const cellColors1 = Array(4)
+    .fill(null)
+    .map((_, rowIndex) =>
+      Array(4)
+        .fill("white")
+        .map((color, colIndex) =>
+          colIndex === 0
+            ? "white"
+            : selectedColumns1[colIndex] === cellTexts1[rowIndex][colIndex]
+              ? "#BA0C2F"
+              : "white"
+        )
+    );
+
+
   const [opcionOtro, setOpcionOtro] = useState(false);
   const [otroTexto, setOtroTexto] = useState("");
   const [selecteOptions, setSelecteOptions] = useState([]);
@@ -205,6 +222,8 @@ export default function PreCinScreen(props) {
 
       });
       console.log("Opcion 1:", selectedOption11);
+      console.log("Opcion 1:", selectedColumns);
+      console.log("Opcion 1:", selectedColumns1);
       console.log(numeroIdentificacion);
     } else {
       Alert.alert("Error", "Por favor completa todos los campos.");
@@ -268,7 +287,7 @@ export default function PreCinScreen(props) {
         }
       });
       console.log("Los datos se han guardado correctamente en Realm.");
-      console.log(selectedColumns, selectedColumns1);
+
 
     } catch (error) {
       console.error("Error al guardar datos en Realm:", error);
@@ -312,17 +331,25 @@ export default function PreCinScreen(props) {
     setSelectedOption9(option);
   };
   //Metodo general de opciones SI y NO 5.5
+
   const handleOption1Select = (option) => {
     if (selected1Option.includes(option)) {
       setSelected1Option(selected1Option.filter((item) => item !== option));
     } else {
-      if (selectedOption1 === "Si" && selected1Option.length < 3) {
+      if (selectedOption1 === "Si" && selected1Option.length < 2) {
         setSelected1Option([...selected1Option, option]);
       } else if (selectedOption1 === "No" && selected1Option.length < 1) {
         setSelected1Option([...selected1Option, option]);
       }
     }
   };
+
+
+
+
+
+
+
   const handleOption1Select2 = (option) => {
     // Deselecciona todas las opciones
     setSelected1Option2([]);
@@ -626,11 +653,33 @@ export default function PreCinScreen(props) {
   return (
     <ScrollView>
       {/* Pregunta 5.1 */}
+
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
             <Text style={styles.titulo}>PRESTACIÓN DE SERVICIOS</Text>
 
+            <Text style={styles.texto}>
+              La rehabilitación es una serie de intervenciones creadas para mejorar la condición de salud de las
+              personas favoreciendo la interacción con su entorno. Las condiciones de salud se refieren a
+              enfermedades (agudas o crónicas), trastornos, lesiones o traumatismos. Una condición de salud
+              también puede incluir otras circunstancias como el embarazo, el envejecimiento, el estrés, una
+              anomalía congénita o predisposición genética.
+              Los servicios de rehabilitación en salud son centros de atención para las personas que tienen una
+              condición de salud y que requieren asistencia por parte de profesionales de disciplinas como la
+              FISIOTERAPIA / TERAPIA FÍSICA, TERAPIA OCUPACIONAL, FONOAUDIOLOGÍA/ TERAPIA DEL
+              LENGUAJE, PSICOLOGÍA, TERAPIA RESPIRATORIA,OPTOMETRÍA, TRABAJO SOCIAL, con el
+              propósito de recuperar o mejorar su capacidad para realizar las actividades de la vida diaria
+              ESTUDIAR, TRABAJAR, BAÑARSE, COMER, DESPLAZARSE de la forma más independiente
+              posible.
+            </Text>
+          </View>
+          <View style={styles.linea} />
+        </View>
+      </View>
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
             <Text style={styles.question}>
               {" "}
               PREGUNTA 5.1 ( SELECCIÓN MÚLTIPLE - MÁXIMO 3 OPCIONES){" "}
@@ -1597,6 +1646,11 @@ export default function PreCinScreen(props) {
           </View>
         </View>
       </View>
+
+      {/* 0000 Esconde el demas formulario si selcciona alguna de lñas 2 primeras opciones de la 5.11 */}
+
+
+
       {selectedOption1 === "No" && showQuestion5_6 && (
         <View>
           {/* Pregunta 5.12 */}
@@ -1637,23 +1691,23 @@ export default function PreCinScreen(props) {
                         >
                           <Text
                             style={{
-                              color:
-                                colIndex === 0
-                                  ? "black"
-                                  : selectedColumns[colIndex] === rowIndex
-                                    ? "white"
-                                    : "black",
-                              fontWeight: colIndex === 0 ? "bold" : "normal",
+                              ...cellTextStyle, // Estilo de texto predeterminad
+                              color: colIndex === 0 || rowIndex === 0
+                                ? "black" // Mantén el texto negro en la primera fila y columna
+                                : selectedColumns[colIndex] === rowIndex ? "white" : "black", // Cambia el color del texto a blanco cuando se selecciona
+                              fontWeight: colIndex === 0 ? "bold" : cellTextStyle.fontWeight,
                             }}
                           >
                             {colIndex === 0 && rowIndex === 0
-                              ? "  ACCESO\n\n\n DIFICULTAD"
+                              ? "ACCESO\n\n\nDIFICULTAD"
                               : cellTexts[rowIndex][colIndex]}
                           </Text>
                         </TouchableOpacity>
                       ))}
                     </View>
                   ))}
+
+
                 </View>
               </View>
             </View>
@@ -1843,6 +1897,9 @@ export default function PreCinScreen(props) {
           </View>
         </View>
       )}
+
+
+
       {/* Pregunta 5.6 */}
 
       {selectedOption1 === "Sí" && (
@@ -2773,6 +2830,9 @@ export default function PreCinScreen(props) {
             </View>
           </View>
 
+
+
+
           {/* Pregunta 5.12 */}
           <View style={styles.contenedorPadre}>
             <View style={styles.tarjeta}>
@@ -3057,6 +3117,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: "bold",
     fontSize: 18,
+    textAlign:"justify",
+  },
+  texto: {
+    color: "#000000",
+    marginBottom: 10,
+    marginTop: 10,
+    fontWeight: "bold",
+    fontSize: 16,
+    textAlign:"justify",
   },
   question: {
     color: "#35669a",
@@ -3204,4 +3273,6 @@ const styles = StyleSheet.create({
     color: "#BA0C2F",
     fontSize: 16,
   },
+
+
 });

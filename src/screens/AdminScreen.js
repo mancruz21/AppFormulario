@@ -5,7 +5,7 @@ export default function AdminScreen() {
 
   const handleConsultarEncuestas = () => {
     // URL que quieres abrir al hacer clic en el botón "Consultar Encuestas".
-    const url = 'https://adminrethi.web.app';
+    const url = 'https://adminrethab.web.app/';
 
     // Abre la URL en el navegador o la aplicación correspondiente.
     Linking.openURL(url).catch((err) => console.error('Error al abrir la URL', err));

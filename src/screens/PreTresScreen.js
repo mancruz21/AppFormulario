@@ -123,12 +123,12 @@ export default function PreTresScreen(props) {
             municipio_pregunta3_3: municipio,
             pregunta3_4: selectedOption3 ? selectedOption3 : "Null",
             municipio_pregunta3_4:
-              selectedOption3 === "No" ? municipio : "null",
+              selectedOption3 === "No" ? municipio1 : "null",
             departamento_pregunta3_4:
               selectedOption3 === "No" ? nombreDepartamento : "null",
-            municipio: "string",
-            departamento_pregunta3_4: "string",
-            nombreDepartamento: "string",
+
+
+
           };
         }
       });
@@ -174,10 +174,29 @@ export default function PreTresScreen(props) {
   return (
     <ScrollView>
       {/* Pregunta 3.1 */}
+
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
             <Text style={styles.titulo}> ASEGURAMIENTO EN LA SALUD </Text>
+
+            <Text style={styles.texto}>
+              {" "}
+              El aseguramiento en salud hace referencia a las acciones (financieras y
+              administrativas) por parte de los Entes Territoriales (Secretarías de Salud) y las
+              Entidades Administradoras de Planes de Beneficios (EAPB) para garantizar a las
+              personas el derecho a la atención en salud, a través de las instituciones
+              prestadoras de servicios de salud (IPS, clínicas, consultorios) contratadas en el
+              territorio nacional. - Resolución 1536 de 2015 del MSPS –
+            </Text>
+          </View>
+          <View style={styles.linea} />
+        </View>
+      </View>
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
+           
 
             <Text style={styles.question}>
               {" "}
@@ -613,6 +632,7 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     marginTop: -20,
   },
+  
 
   pregunta: {
     marginBottom: 5,
@@ -627,6 +647,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: "bold",
     fontSize: 18,
+    textAlign:"justify",
+  },
+  texto: {
+    color: "#000000",
+    marginBottom: 10,
+    marginTop: 10,
+    fontWeight: "bold",
+    fontSize: 16,
+    textAlign:"justify",
   },
   question: {
     color: "#35669a",

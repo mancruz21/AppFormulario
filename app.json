@@ -19,7 +19,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/rehabcoicon",
+        "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
@@ -27,7 +27,7 @@
     },
     "jsEngine": "hermes",
     "web": {
-      "favicon": "./assets/rehabcoicon"
+      "favicon": "./assets/logo.png"
     },
     "extra": {
       "eas": {

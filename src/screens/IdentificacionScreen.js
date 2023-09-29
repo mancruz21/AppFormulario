@@ -78,25 +78,22 @@ export default function IdentificacionScreen(props) {
       tipoId !== "AdultoSinIdentificacionAnonimo"
     );
   };
-
   const toggleOption = (option) => {
-    if (tipoId === option) {
-      // Si la opción actual ya está seleccionada, deselecciónala
-      setTipoId("");
-      setNumeroIdentificacionValue("");
+    // Siempre establece el tipo de identificación
+    setTipoId(option);
+  
+    // Generar un número aleatorio único cuando se selecciona la opción
+    if (option === "AdultoSinIdentificacion" || option === "AdultoSinIdentificacionAnonimo") {
+      const randomNumber = Math.floor(Math.random() * 1000000); // Generar un número aleatorio único
+      setNumeroIdentificacionValue(randomNumber.toString());
     } else {
-      // Si no está seleccionada, selecciónala
-      setTipoId(option);
-      // Generar un número aleatorio único cuando se selecciona la opción
-      if (option === "AdultoSinIdentificacion" || option === "AdultoSinIdentificacionAnonimo") {
-        const randomNumber = Math.floor(Math.random() * 1000000); // Generar un número aleatorio único
-        setNumeroIdentificacionValue(randomNumber.toString());
-      } else {
-        // Si no se selecciona una opción que genere un número aleatorio, usa el valor actual de numeroIdentificacion
-        setNumeroIdentificacionValue(numeroIdentificacion);
-      }
+      // Si se selecciona otra opción, asegúrate de que numeroIdentificacionValue esté vacío
+      setNumeroIdentificacionValue("");
     }
   };
+  
+
+  
   //Metodo para guardar en firestore
   const SaveIdent = async () => {
     try {
@@ -119,13 +116,13 @@ export default function IdentificacionScreen(props) {
     } else {
       setPuedeAvanzar(false);
     }
-  }, [tipoId, numeroIdentificacion])
+  }, [tipoId, numeroIdentificacionValue])
 
   const goToPreguntaUno = () => {
     // Aquí puedes realizar acciones con la opción seleccionada
     if (
       tipoId !== "" &&
-      (!shouldShowNumeroIdentificacion() || numeroIdentificacionValue.trim() !== "" || numeroIdentificacion.trim() !== "")
+      (!shouldShowNumeroIdentificacion() || numeroIdentificacionValue.trim() !== "")
     ) {
       console.log("Opción seleccionada:", tipoId);
       console.log("Número de identificación:", numeroIdentificacionValue);
@@ -242,8 +239,10 @@ export default function IdentificacionScreen(props) {
                   placeholder="Ingresa tu número de identificación"
                   keyboardType="numeric"
                   maxLength={10}
-                  onChangeText={setNumeroIdentificacion}
-                  value={numeroIdentificacion}
+                  value={numeroIdentificacionValue} // Usa numeroIdentificacionValue en lugar de numeroIdentificacion
+                  onChangeText={(text) => {
+                    setNumeroIdentificacionValue(text);
+                  }}
                   underlineColorAndroid="transparent" // Para Android
                   selectionColor="#efefef" // Color de la línea cuando se selecciona el campo
                 />
@@ -266,7 +265,7 @@ export default function IdentificacionScreen(props) {
                 <Picker.Item label="Cauca" value="Cauca" />
                 <Picker.Item label="Meta" value="Meta" />
                 <Picker.Item label="Putumayo" value="Putumayo" />
-                <Picker.Item label="Sucre" value="Sucre" />
+
                 <Picker.Item label="Valle del Cauca" value="Valle del Cauca" />
 
               </Picker>

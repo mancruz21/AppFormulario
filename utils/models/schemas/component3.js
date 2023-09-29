@@ -19,9 +19,8 @@ export class Component3 extends Realm.Object {
       municipio_pregunta3_3: "string",
       pregunta3_4: "string",
       municipio_pregunta3_4: "string",
-      municipio: "string",
       departamento_pregunta3_4: "string",
-      nombreDepartamento: "string",
+      
     }
   };
 }

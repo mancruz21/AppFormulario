@@ -120,7 +120,7 @@ export default function PreUnoScreen(props) {
     },
     {
       departamento: "Bolívar",
-      municipios: ["San Jacinto", "San Juan Nepomuceno"],
+      municipios: ["San Jacinto", "San Juan Nepomuceno", "María la Baja"],
     },
 
     {
@@ -140,10 +140,7 @@ export default function PreUnoScreen(props) {
       departamento: "Putumayo",
       municipios: ["Orito"],
     },
-    {
-      departamento: "Sucre",
-      municipios: ["Colosó"],
-    },
+
     {
       departamento: "Valle del Cauca",
       municipios: ["Buenaventura"],

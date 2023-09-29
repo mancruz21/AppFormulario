@@ -215,11 +215,9 @@ export default function PreDosScreen(props) {
       }
       // Asegúrate de que los campos opcionales no sean nulos antes de guardarlo
 
-      
 
-      if (!educacionSuperior) educacionSuperior = "NULL";
-      if (!salario) salario = "NULL";
-      if (!promedio) promedio = "NULL";
+
+
       // En la pantalla dos, actualiza los datos en el mismo objeto Persona
       realm.write(() => {
         const personaToUpdate = realm
@@ -232,14 +230,12 @@ export default function PreDosScreen(props) {
             pregunta2_2: opcion2 || "",
             pregunta2_3: opcion3 || "",
             pregunta2_4: selectedOption4.toString(),
-            pregunta2_2_1: discapacidad,
+            pregunta2_2_1: discapacidad || "",
             pregunta2_2_2: OptionSelection.toString(),
             pregunta2_4_1: etnia || "",
             pregunta2_4_1_nombre: indigena,
             pregunta2_5_2_UltimoNivel: educativo || "",
-            pregunta2_5_1EducaSuperior: educacionSuperior
-              ? educacionSuperior
-              : "NULL",
+            pregunta2_5_1EducaSuperior: educacionSuperior ? educacionSuperior : "NULL",
             pregunta2_6_Ocupacion: ocupacion.toString(),
             pregunta2_7_Trabajo: trabajo.toString(),
             pregunta2_8_1_Salario: salario ? salario : "NULL",
