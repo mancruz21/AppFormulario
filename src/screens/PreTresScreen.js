@@ -25,12 +25,12 @@ export default function PreTresScreen(props) {
   const route = useRoute();
   const { numeroIdentificacion } = route.params;
 
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState("");
   const [aseguradora, setAseguradora] = useState("option1");
-  const [selectedOption2, setSelectedOption2] = useState(null);
+  const [selectedOption2, setSelectedOption2] = useState("");
   const [municipio, setMunicipio] = useState("");
   const [municipio1, setMunicipio1] = useState("");
-  const [selectedOption3, setSelectedOption3] = useState(null);
+  const [selectedOption3, setSelectedOption3] = useState("");
   const [nombreDepartamento, setNombreDepartamento] = useState("");
   const [otraAseguradora, setOtraAseguradora] = useState("");
 

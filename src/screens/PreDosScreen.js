@@ -28,18 +28,18 @@ export default function PreDosScreen(props) {
   const [opcion2, setOpcion2] = useState("");
   const [opcion3, setOpcion3] = useState("");
   const [selectedOption4, setSelectedOption4] = useState([]);
-  const [discapacidad, setDiscapacidad] = useState(null);
+  const [discapacidad, setDiscapacidad] = useState("");
   const [OptionSelection, setOptionSelection] = useState("");
-  const [etnia, setEtnia] = useState(null);
+  const [etnia, setEtnia] = useState("");
   const [indigena, setIndigena] = useState("");
-  const [educativo, setEducativo] = useState(null);
-  const [educacionSuperior, setEducacionSuperior] = useState(null);
+  const [educativo, setEducativo] = useState("");
+  const [educacionSuperior, setEducacionSuperior] = useState("");
   const [ocupacion, setOcupacion] = useState([]);
   const [trabajo, setTrabajo] = useState([]);
   const [urbano, setUrbano] = useState(false);
   const [rural, setRural] = useState(false);
-  const [salario, setSalario] = useState(null);
-  const [promedio, setPromedio] = useState(null);
+  const [salario, setSalario] = useState("");
+  const [promedio, setPromedio] = useState("");
   const handleOption1Press = (opcion) => {
     if (opcion === opcion1) {
       // Si la opción seleccionada es la misma que se presionó, deselecciónala

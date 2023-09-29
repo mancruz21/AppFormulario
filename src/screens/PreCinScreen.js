@@ -33,8 +33,8 @@ export default function PreCinScreen(props) {
   const [selectedOptions1, setSelectedOptions1] = useState([]);
 
   const [selectedOptions4, setSelectedOptions4] = useState([]);
-  const [selectedOption9, setSelectedOption9] = useState(null);
-  const [selectedOption8, setSelectedOption8] = useState(null);
+  const [selectedOption9, setSelectedOption9] = useState("");
+  const [selectedOption8, setSelectedOption8] = useState("");
 
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -42,6 +42,9 @@ export default function PreCinScreen(props) {
 
   const [selectedOption0, setSelectedOption0] = useState("");
   const [selectedOptions0, setSelectedOptions0] = useState([]);
+
+  const [selectedOptions5_11, setSelectedOptions5_11] = useState([]);
+  const [selectedOptions5_12, setSelectedOptions5_12] = useState([]);
 
   const [selectedOption22, setSelectedOption22] = useState("");
   const [selectedOption11, setSelectedOption11] = useState([]);
@@ -66,6 +69,9 @@ export default function PreCinScreen(props) {
   const [motivo2, setMotivo2] = useState("");
   const [motivo3, setMotivo3] = useState("");
   const [showQuestion5_12, setShowQuestion5_12] = useState(true);
+  const [hideAdditionalQuestions, setHideAdditionalQuestions] = useState(false);
+  const [hideAdditionalQuestions1, setHideAdditionalQuestions1] = useState(false);
+
 
 
   //Constante para pregunta 5.12
@@ -333,6 +339,19 @@ export default function PreCinScreen(props) {
   //Metodo general de opciones SI y NO 5.5
 
   const handleOption1Select = (option) => {
+
+     // Deselecciona todas las opciones
+     setSelected1Option([]);
+
+     // Luego selecciona la opción actual
+     if (!selected1Option.includes(option)) {
+       setSelected1Option([option]);
+     } else {
+       // Si la opción ya está seleccionada, deselecciónala
+       setSelected1Option([]);
+     }
+
+
     if (selected1Option.includes(option)) {
       setSelected1Option(selected1Option.filter((item) => item !== option));
     } else {
@@ -341,6 +360,15 @@ export default function PreCinScreen(props) {
       } else if (selectedOption1 === "No" && selected1Option.length < 1) {
         setSelected1Option([...selected1Option, option]);
       }
+    }
+
+    setSelectedOptions5_12([...selectedOptions5_12, option]);
+
+    // Muestra las preguntas adicionales si seleccionas una opción diferente de las dos primeras
+    if (option === 'Cree que ya no lo necesita' || option === 'No le gusta, no le interesa') {
+      setHideAdditionalQuestions1(true);
+    } else {
+      setHideAdditionalQuestions1(false);
     }
   };
 
@@ -355,7 +383,21 @@ export default function PreCinScreen(props) {
     setSelected1Option2([]);
 
     // Luego selecciona la opción actual
-    setSelected1Option2([option]);
+    if (!selected1Option2.includes(option)) {
+      setSelected1Option2([option]);
+    } else {
+      // Si la opción ya está seleccionada, deselecciónala
+      setSelected1Option2([]);
+    }
+    // Actualiza el estado de las selecciones de la pregunta 5.11
+    setSelectedOptions5_11([...selectedOptions5_11, option]);
+
+    // Muestra las preguntas adicionales si seleccionas una opción diferente de las dos primeras
+    if (option === 'Cree que ya no lo necesita' || option === 'No le gusta, no le interesa') {
+      setHideAdditionalQuestions(true);
+    } else {
+      setHideAdditionalQuestions(false);
+    }
   };
   const handleOption4Select = (option) => {
     // Check if the option is already selected
@@ -1651,7 +1693,9 @@ export default function PreCinScreen(props) {
 
 
 
-      {selectedOption1 === "No" && showQuestion5_6 && (
+      {(showQuestion5_6 && !hideAdditionalQuestions1) &&(
+
+
         <View>
           {/* Pregunta 5.12 */}
           <View style={styles.contenedorPadre}>
@@ -2797,7 +2841,7 @@ export default function PreCinScreen(props) {
                 <CheckBox
                   title="No sabe"
                   checked={selected1Option2.includes("No sabe")}
-                  onPress={() => handleOption1Select("No sabe")}
+                  onPress={() => handleOption1Select2("No sabe")}
                   containerStyle={styles.checkBoxContainer}
                   textStyle={
                     selected1Option2.includes("No sabe")
@@ -2833,249 +2877,274 @@ export default function PreCinScreen(props) {
 
 
 
-          {/* Pregunta 5.12 */}
-          <View style={styles.contenedorPadre}>
-            <View style={styles.tarjeta}>
-              <View style={styles.contenedor}>
-                <Text style={styles.question}>
-                  {" "}
-                  PREGUNTA 5.12 (SELECCIÓN ÚNICA)
-                </Text>
-              </View>
-              <View style={styles.linea} />
-            </View>
-          </View>
+          {!hideAdditionalQuestions && (
+            /* Pregunta 5.12 */
 
-          <View style={styles.contenedorPadre}>
-            <View style={styles.tarjeta}>
-              <View style={styles.contenedor}>
-                <View style={styles.container}>
-                  <Text style={styles.advertencia}>
-                    Validar con la respuesta a pregunta 5.5
-                  </Text>
-
-                  <Text style={styles.preguntas}>
-                    Según su experiencia de atención en los servicios de
-                    rehabilitación durante el último año califique:{" "}
-                  </Text>
-
-                  {cellColors.map((rowColors, rowIndex) => (
-                    <View key={rowIndex} style={styles.row}>
-                      {rowColors.map((color, colIndex) => (
-                        <TouchableOpacity
-                          key={colIndex}
-                          style={[styles.cell, { backgroundColor: color }]}
-                          onPress={() =>
-                            handleCellSelection(rowIndex, colIndex)
-                          }
-                        >
-                          <Text
-                            style={{
-                              color:
-                                colIndex === 0
-                                  ? "black"
-                                  : selectedColumns[colIndex] === rowIndex
-                                    ? "white"
-                                    : "black",
-                              fontWeight: colIndex === 0 ? "bold" : "normal",
-                            }}
-                          >
-                            {colIndex === 0 && rowIndex === 0
-                              ? "  ACCESO\n\n\n DIFICULTAD"
-                              : cellTexts[rowIndex][colIndex]}
-                          </Text>
-                        </TouchableOpacity>
-                      ))}
-                    </View>
-                  ))}
+            <View>
+              <View style={styles.contenedorPadre}>
+                <View style={styles.tarjeta}>
+                  <View style={styles.contenedor}>
+                    <Text style={styles.question}>
+                      PREGUNTA 5.12(SELECCIÓN ÚNICA)
+                    </Text>
+                  </View>
+                  <View style={styles.linea} />
                 </View>
               </View>
-            </View>
-          </View>
 
-          {/* Pregunta 5.13 */}
-          <View style={styles.contenedorPadre}>
-            <View style={styles.tarjeta}>
-              <View style={styles.contenedor}>
-                <Text style={styles.question}>
-                  {" "}
-                  PREGUNTA 5.13 (SELECCIÓN ÚNICA)
-                </Text>
-              </View>
-              <View style={styles.linea} />
-            </View>
-          </View>
+              <View style={styles.contenedorPadre}>
+                <View style={styles.tarjeta}>
+                  <View style={styles.contenedor}>
+                    <View style={styles.container}>
+                      <Text style={styles.advertencia}>
+                        Validar con la respuesta a pregunta 5.5
+                      </Text>
 
-          <View style={styles.contenedorPadre}>
-            <View style={styles.tarjeta}>
-              <View style={styles.contenedor}>
-                <View style={styles.container}>
-                  <Text style={styles.advertencia}>
-                    Validar con la respuesta a pregunta 5.5
-                  </Text>
-                  <Text style={styles.preguntas}>
-                    Según su experiencia de atención en los servicios de
-                    rehabilitación durante el último año califique:{" "}
-                  </Text>
+                      <Text style={styles.preguntas}>
+                        Según su experiencia de atención en los servicios de
+                        rehabilitación durante el último año califique:{" "}
+                      </Text>
 
-                  {cellColors1.map((rowColors, rowIndex) => (
-                    <View key={rowIndex} style={styles.row}>
-                      {rowColors.map((color, colIndex) => (
-                        <TouchableOpacity
-                          key={colIndex}
-                          style={[styles.cell, { backgroundColor: color }]}
-                          onPress={() =>
-                            handleCellSelection1(rowIndex, colIndex)
-                          }
-                        >
-                          <Text
-                            style={{
-                              color:
-                                colIndex === 0
-                                  ? "black"
-                                  : selectedColumns1[colIndex] === rowIndex
-                                    ? "white"
-                                    : "black",
-                              fontWeight:
-                                colIndex === 0 || rowIndex === 0
-                                  ? "bold"
-                                  : "normal",
-                            }}
-                          >
-                            {colIndex === 0 && rowIndex === 0
-                              ? "  USO\n\n\n SATISFACCIÓN"
-                              : cellTexts1[rowIndex][colIndex]}
-                          </Text>
-                        </TouchableOpacity>
+                      {cellColors.map((rowColors, rowIndex) => (
+                        <View key={rowIndex} style={styles.row}>
+                          {rowColors.map((color, colIndex) => (
+                            <TouchableOpacity
+                              key={colIndex}
+                              style={[styles.cell, { backgroundColor: color }]}
+                              onPress={() =>
+                                handleCellSelection(rowIndex, colIndex)
+                              }
+                            >
+                              <Text
+                                style={{
+                                  color:
+                                    colIndex === 0
+                                      ? "black"
+                                      : selectedColumns[colIndex] === rowIndex
+                                        ? "white"
+                                        : "black",
+                                  fontWeight: colIndex === 0 ? "bold" : "normal",
+                                }}
+                              >
+                                {colIndex === 0 && rowIndex === 0
+                                  ? "  ACCESO\n\n\n DIFICULTAD"
+                                  : cellTexts[rowIndex][colIndex]}
+                              </Text>
+                            </TouchableOpacity>
+                          ))}
+                        </View>
                       ))}
                     </View>
-                  ))}
-                </View>
-              </View>
-            </View>
-          </View>
-
-          {/* Pregunta 5.14 */}
-          <View style={styles.contenedorPadre}>
-            <View style={styles.tarjeta}>
-              <View style={styles.contenedor}>
-                <Text style={styles.question}>
-                  {" "}
-                  PREGUNTA 5.14 (SELECCIÓN MÚLTIPLE - MÁXIMO 2 OPCIONES)
-                </Text>
-              </View>
-              <View style={styles.linea} />
-            </View>
-          </View>
-
-          <View style={styles.contenedorPadre}>
-            <View style={styles.tarjeta}>
-              <View style={styles.contenedor}>
-                <View style={styles.preguntaContainer}>
-                  <Text style={styles.pregunta}>
-                    Indique el medio de transporte utilizado para asistir al
-                    servicio de salud / rehabilitación:
-                  </Text>
-                  <View style={styles.optionContainer}>
-                    <CheckBox
-                      title="A pie"
-                      checked={transporte.includes("A pie")}
-                      onPress={() => handleOptionTransporte("A pie")}
-                      containerStyle={styles.checkBoxContainer}
-                      textStyle={
-                        (checked = transporte.includes("A pie")
-                          ? styles.selectedOptionText
-                          : styles.checkBoxText)
-                      }
-                      checkedColor="#BA0C2F"
-                    />
-
-                    <CheckBox
-                      title="Terrestre"
-                      checked={transporte.includes("Terrestre")}
-                      onPress={() => handleOptionTransporte("Terrestre")}
-                      containerStyle={styles.checkBoxContainer}
-                      textStyle={
-                        (checked = transporte.includes("Terrestre")
-                          ? styles.selectedOptionText
-                          : styles.checkBoxText)
-                      }
-                      checkedColor="#BA0C2F"
-                    />
-                    <CheckBox
-                      title="Aéreo"
-                      checked={transporte.includes("Aéreo")}
-                      onPress={() => handleOptionTransporte("Aéreo")}
-                      containerStyle={styles.checkBoxContainer}
-                      textStyle={
-                        (checked = transporte.includes("Aéreo")
-                          ? styles.selectedOptionText
-                          : styles.checkBoxText)
-                      }
-                      checkedColor="#BA0C2F"
-                    />
-
-                    <CheckBox
-                      title="Fluvial"
-                      checked={transporte.includes("Fluvial")}
-                      onPress={() => handleOptionTransporte("Fluvial")}
-                      containerStyle={styles.checkBoxContainer}
-                      textStyle={
-                        (checked = transporte.includes("Fluvial")
-                          ? styles.selectedOptionText
-                          : styles.checkBoxText)
-                      }
-                      checkedColor="#BA0C2F"
-                    />
-                    <CheckBox
-                      title="Animales de tiro/ de montar"
-                      checked={transporte.includes(
-                        "Animales de tiro/ de montar"
-                      )}
-                      onPress={() =>
-                        handleOptionTransporte("Animales de tiro/ de montar")
-                      }
-                      containerStyle={styles.checkBoxContainer}
-                      textStyle={
-                        (checked = transporte.includes(
-                          "Animales de tiro/ de montar"
-                        )
-                          ? styles.selectedOptionText
-                          : styles.checkBoxText)
-                      }
-                      checkedColor="#BA0C2F"
-                    />
-
-                    <CheckBox
-                      title="Otro ¿Cuál?"
-                      checked={transporte.includes("Otro ¿Cuál?")}
-                      onPress={() => handleOptionTransporte("Otro ¿Cuál?")}
-                      containerStyle={styles.checkBoxContainer}
-                      textStyle={
-                        (checked = transporte.includes("Otro ¿Cuál?")
-                          ? styles.selectedOptionText
-                          : styles.checkBoxText)
-                      }
-                      checkedColor="#BA0C2F"
-                    />
-                    {(transporte.includes("Otro ¿Cuál?")) && (
-                      <View style={styles.preguntaContainer}>
-                        <Text style={styles.preguntas}>Especifique otro:</Text>
-                        <TextInput
-                          style={styles.input}
-                          value={otro3}
-                          onChangeText={handleOtro3}
-                          placeholder="Indique cuál"
-                        />
-                      </View>
-                    )}
                   </View>
                 </View>
               </View>
+
+              {/* Pregunta 5.13 */}
+              <View style={styles.contenedorPadre}>
+                <View style={styles.tarjeta}>
+                  <View style={styles.contenedor}>
+                    <Text style={styles.question}>
+                      {" "}
+                      PREGUNTA 5.13 (SELECCIÓN ÚNICA)
+                    </Text>
+                  </View>
+                  <View style={styles.linea} />
+                </View>
+              </View>
+
+              <View style={styles.contenedorPadre}>
+                <View style={styles.tarjeta}>
+                  <View style={styles.contenedor}>
+                    <View style={styles.container}>
+                      <Text style={styles.advertencia}>
+                        Validar con la respuesta a pregunta 5.5
+                      </Text>
+                      <Text style={styles.preguntas}>
+                        Según su experiencia de atención en los servicios de
+                        rehabilitación durante el último año califique:{" "}
+                      </Text>
+
+                      {cellColors1.map((rowColors, rowIndex) => (
+                        <View key={rowIndex} style={styles.row}>
+                          {rowColors.map((color, colIndex) => (
+                            <TouchableOpacity
+                              key={colIndex}
+                              style={[styles.cell, { backgroundColor: color }]}
+                              onPress={() =>
+                                handleCellSelection1(rowIndex, colIndex)
+                              }
+                            >
+                              <Text
+                                style={{
+                                  color:
+                                    colIndex === 0
+                                      ? "black"
+                                      : selectedColumns1[colIndex] === rowIndex
+                                        ? "white"
+                                        : "black",
+                                  fontWeight:
+                                    colIndex === 0 || rowIndex === 0
+                                      ? "bold"
+                                      : "normal",
+                                }}
+                              >
+                                {colIndex === 0 && rowIndex === 0
+                                  ? "  USO\n\n\n SATISFACCIÓN"
+                                  : cellTexts1[rowIndex][colIndex]}
+                              </Text>
+                            </TouchableOpacity>
+                          ))}
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+                </View>
+              </View>
+
+              {/* Pregunta 5.14 */}
+              <View style={styles.contenedorPadre}>
+                <View style={styles.tarjeta}>
+                  <View style={styles.contenedor}>
+                    <Text style={styles.question}>
+                      {" "}
+                      PREGUNTA 5.14 (SELECCIÓN MÚLTIPLE - MÁXIMO 2 OPCIONES)
+                    </Text>
+                  </View>
+                  <View style={styles.linea} />
+                </View>
+              </View>
+
+              <View style={styles.contenedorPadre}>
+                <View style={styles.tarjeta}>
+                  <View style={styles.contenedor}>
+                    <View style={styles.preguntaContainer}>
+                      <Text style={styles.pregunta}>
+                        Indique el medio de transporte utilizado para asistir al
+                        servicio de salud / rehabilitación:
+                      </Text>
+                      <View style={styles.optionContainer}>
+                        <CheckBox
+                          title="A pie"
+                          checked={transporte.includes("A pie")}
+                          onPress={() => handleOptionTransporte("A pie")}
+                          containerStyle={styles.checkBoxContainer}
+                          textStyle={
+                            (checked = transporte.includes("A pie")
+                              ? styles.selectedOptionText
+                              : styles.checkBoxText)
+                          }
+                          checkedColor="#BA0C2F"
+                        />
+
+                        <CheckBox
+                          title="Terrestre"
+                          checked={transporte.includes("Terrestre")}
+                          onPress={() => handleOptionTransporte("Terrestre")}
+                          containerStyle={styles.checkBoxContainer}
+                          textStyle={
+                            (checked = transporte.includes("Terrestre")
+                              ? styles.selectedOptionText
+                              : styles.checkBoxText)
+                          }
+                          checkedColor="#BA0C2F"
+                        />
+                        <CheckBox
+                          title="Aéreo"
+                          checked={transporte.includes("Aéreo")}
+                          onPress={() => handleOptionTransporte("Aéreo")}
+                          containerStyle={styles.checkBoxContainer}
+                          textStyle={
+                            (checked = transporte.includes("Aéreo")
+                              ? styles.selectedOptionText
+                              : styles.checkBoxText)
+                          }
+                          checkedColor="#BA0C2F"
+                        />
+
+                        <CheckBox
+                          title="Fluvial"
+                          checked={transporte.includes("Fluvial")}
+                          onPress={() => handleOptionTransporte("Fluvial")}
+                          containerStyle={styles.checkBoxContainer}
+                          textStyle={
+                            (checked = transporte.includes("Fluvial")
+                              ? styles.selectedOptionText
+                              : styles.checkBoxText)
+                          }
+                          checkedColor="#BA0C2F"
+                        />
+                        <CheckBox
+                          title="Animales de tiro/ de montar"
+                          checked={transporte.includes(
+                            "Animales de tiro/ de montar"
+                          )}
+                          onPress={() =>
+                            handleOptionTransporte("Animales de tiro/ de montar")
+                          }
+                          containerStyle={styles.checkBoxContainer}
+                          textStyle={
+                            (checked = transporte.includes(
+                              "Animales de tiro/ de montar"
+                            )
+                              ? styles.selectedOptionText
+                              : styles.checkBoxText)
+                          }
+                          checkedColor="#BA0C2F"
+                        />
+
+                        <CheckBox
+                          title="Otro ¿Cuál?"
+                          checked={transporte.includes("Otro ¿Cuál?")}
+                          onPress={() => handleOptionTransporte("Otro ¿Cuál?")}
+                          containerStyle={styles.checkBoxContainer}
+                          textStyle={
+                            (checked = transporte.includes("Otro ¿Cuál?")
+                              ? styles.selectedOptionText
+                              : styles.checkBoxText)
+                          }
+                          checkedColor="#BA0C2F"
+                        />
+                        {(transporte.includes("Otro ¿Cuál?")) && (
+                          <View style={styles.preguntaContainer}>
+                            <Text style={styles.preguntas}>Especifique otro:</Text>
+                            <TextInput
+                              style={styles.input}
+                              value={otro3}
+                              onChangeText={handleOtro3}
+                              placeholder="Indique cuál"
+                            />
+                          </View>
+                        )}
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+
+
+
+
             </View>
-          </View>
+
+
+
+
+
+
+          )}
+
+
+
+
+
+
+
+
+
+
         </View>
-      )}
+      )
+      }
 
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
@@ -3086,7 +3155,7 @@ export default function PreCinScreen(props) {
           </View>
         </View>
       </View>
-    </ScrollView>
+    </ScrollView >
   );
 }
 const styles = StyleSheet.create({
@@ -3117,7 +3186,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: "bold",
     fontSize: 18,
-    textAlign:"justify",
+    textAlign: "justify",
   },
   texto: {
     color: "#000000",
@@ -3125,7 +3194,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: "bold",
     fontSize: 16,
-    textAlign:"justify",
+    textAlign: "justify",
   },
   question: {
     color: "#35669a",
