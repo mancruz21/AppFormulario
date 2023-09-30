@@ -81,7 +81,7 @@ export default function IdentificacionScreen(props) {
   const toggleOption = (option) => {
     // Siempre establece el tipo de identificación
     setTipoId(option);
-  
+
     // Generar un número aleatorio único cuando se selecciona la opción
     if (option === "AdultoSinIdentificacion" || option === "AdultoSinIdentificacionAnonimo") {
       const randomNumber = Math.floor(Math.random() * 1000000); // Generar un número aleatorio único
@@ -91,9 +91,9 @@ export default function IdentificacionScreen(props) {
       setNumeroIdentificacionValue("");
     }
   };
-  
 
-  
+
+
   //Metodo para guardar en firestore
   const SaveIdent = async () => {
     try {
@@ -111,12 +111,15 @@ export default function IdentificacionScreen(props) {
     }
   }
   useEffect(() => {
-    if (tipoId !== '' && (tipoId === 'AdultoSinIdentificacion' || tipoId === 'AdultoSinIdentificacionAnonimo' || numeroIdentificacion !== '')) {
+    console.log("tipoId:", tipoId);
+    console.log("numeroIdentificacionValue:", numeroIdentificacionValue);
+    if (tipoId !== '' && (tipoId === 'AdultoSinIdentificacion' || tipoId === 'AdultoSinIdentificacionAnonimo' || numeroIdentificacionValue !== '')) {
       setPuedeAvanzar(true);
     } else {
       setPuedeAvanzar(false);
     }
-  }, [tipoId, numeroIdentificacionValue])
+  }, [tipoId, numeroIdentificacionValue]);
+  
 
   const goToPreguntaUno = () => {
     // Aquí puedes realizar acciones con la opción seleccionada
@@ -284,7 +287,7 @@ export default function IdentificacionScreen(props) {
                 SaveIdent();
               }
             }}
-              disabled={!puedeAvanzar}
+
             >
               <Text style={styles.textoBoton}>Siguiente</Text>
             </TouchableOpacity>

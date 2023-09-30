@@ -67,12 +67,17 @@ export default function LoginScreen(props) {
     }
 
     // Comprueba las credenciales guardadas localmente
-    if (email === storedEmail && password === storedPassword) {
-      props.navigation.navigate('Pregunta 2.5');
-    } else {
-      Alert.alert("CREDENCIALES INCORRECTAS", "Por favor, verifica tus credenciales.");
-    }
-  };
+   try {
+  if (email === storedEmail && password === storedPassword) {
+    props.navigation.navigate('Pregunta 2.5');
+  } else {
+    // Mostrar un mensaje de error si las credenciales no coinciden
+    console.log('Credenciales incorrectas');
+  }
+} catch (error) {
+  console.log(error);
+}
+  }
 
 
 

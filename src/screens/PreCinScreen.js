@@ -340,16 +340,16 @@ export default function PreCinScreen(props) {
 
   const handleOption1Select = (option) => {
 
-     // Deselecciona todas las opciones
-     setSelected1Option([]);
+    // Deselecciona todas las opciones
+    setSelected1Option([]);
 
-     // Luego selecciona la opción actual
-     if (!selected1Option.includes(option)) {
-       setSelected1Option([option]);
-     } else {
-       // Si la opción ya está seleccionada, deselecciónala
-       setSelected1Option([]);
-     }
+    // Luego selecciona la opción actual
+    if (!selected1Option.includes(option)) {
+      setSelected1Option([option]);
+    } else {
+      // Si la opción ya está seleccionada, deselecciónala
+      setSelected1Option([]);
+    }
 
 
     if (selected1Option.includes(option)) {
@@ -1693,7 +1693,7 @@ export default function PreCinScreen(props) {
 
 
 
-      {(showQuestion5_6 && !hideAdditionalQuestions1) &&(
+      {(selectedOption1 === "No" && showQuestion5_6 && !hideAdditionalQuestions1) && (
 
 
         <View>
