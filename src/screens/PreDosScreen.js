@@ -36,8 +36,9 @@ export default function PreDosScreen(props) {
   const [educacionSuperior, setEducacionSuperior] = useState("");
   const [ocupacion, setOcupacion] = useState([]);
   const [trabajo, setTrabajo] = useState([]);
-  const [urbano, setUrbano] = useState(false);
-  const [rural, setRural] = useState(false);
+  const [urbano, setUrbano] = useState("");
+  const [poblacion, setPoblacion] = useState("");
+
   const [salario, setSalario] = useState("");
   const [promedio, setPromedio] = useState("");
   const handleOption1Press = (opcion) => {
@@ -79,17 +80,6 @@ export default function PreDosScreen(props) {
     }
   };
 
-  // Función para manejar la selección de la opción Urbano
-  const handleUrbanoPress = () => {
-    setUrbano(true);
-    setRural(false);
-  };
-
-  // Función para manejar la selección de la opción Rural
-  const handleRuralPress = () => {
-    setUrbano(false);
-    setRural(true);
-  };
 
   useEffect(() => {
     async function fetchSavedData() {
@@ -174,6 +164,7 @@ export default function PreDosScreen(props) {
 
         });
         console.log(numeroIdentificacion)
+        console.log(poblacion)
       } catch (error) {
         console.error("Error saving data:", error);
       }
@@ -237,6 +228,7 @@ export default function PreDosScreen(props) {
             pregunta2_5_2_UltimoNivel: educativo || "",
             pregunta2_5_1EducaSuperior: educacionSuperior ? educacionSuperior : "NULL",
             pregunta2_6_Ocupacion: ocupacion.toString(),
+            pregunta2_6_1Poblacion: poblacion.toString(),
             pregunta2_7_Trabajo: trabajo.toString(),
             pregunta2_8_1_Salario: salario ? salario : "NULL",
             pregunta2_8_2_Ingreso: promedio ? promedio : "NULL",
@@ -924,24 +916,29 @@ export default function PreDosScreen(props) {
                   </Text>
                   <CheckBox
                     title="Urbano"
-                    checked={urbano}
-                    onPress={handleUrbanoPress}
+                    checked={poblacion === "Urbano"}
+                    onPress={() => setPoblacion("Urbano")}
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      urbano ? styles.selectedOptionText : styles.checkBoxText
+                      poblacion === "Urbano"
+                        ? styles.selectedOptionText
+                        : styles.checkBoxText
                     }
                     checkedColor="#BA0C2F"
                   />
-                  <CheckBox
+                   <CheckBox
                     title="Rural"
-                    checked={rural}
-                    onPress={handleRuralPress}
+                    checked={poblacion === "Rural"}
+                    onPress={() => setPoblacion("Rural")}
                     containerStyle={styles.checkBoxContainer}
                     textStyle={
-                      rural ? styles.selectedOptionText : styles.checkBoxText
+                      poblacion === "Rural"
+                        ? styles.selectedOptionText
+                        : styles.checkBoxText
                     }
                     checkedColor="#BA0C2F"
                   />
+
 
                   <View style={styles.linea} />
                 </View>

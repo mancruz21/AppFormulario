@@ -8,12 +8,12 @@ import { initializeApp } from "firebase/app";
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBLPgSWQ2WFq99ZOwmphsCZ3vmr6JcH4gA",
-  authDomain: "rehabco-74952.firebaseapp.com",
-  projectId: "rehabco-74952",
-  storageBucket: "rehabco-74952.appspot.com",
-  messagingSenderId: "622259901046",
-  appId: "1:622259901046:web:c644d5a8bb67424ac1c557"
+  apiKey: "AIzaSyA7D9wKCdwsB17Rhwy-FhKhopWIXbloejw",
+  authDomain: "rebhab-a8dd0.firebaseapp.com",
+  projectId: "rebhab-a8dd0",
+  storageBucket: "rebhab-a8dd0.appspot.com",
+  messagingSenderId: "738431869831",
+  appId: "1:738431869831:web:842c34a5f271c09f002922"
 };
 
 const appFirebase = initializeApp(firebaseConfig);

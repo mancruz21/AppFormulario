@@ -11,6 +11,7 @@ export class Component2 extends Realm.Object {
   pregunta2_5_2_UltimoNivel = "";
   pregunta2_5_1EducaSuperior = "";
   pregunta2_6_Ocupacion = "";
+  pregunta2_6_1Poblacion = "";
   pregunta2_7_Trabajo = "";
   pregunta2_8_1_Salario = "";
   pregunta2_8_2_Ingreso = "";
@@ -29,6 +30,7 @@ export class Component2 extends Realm.Object {
       pregunta2_5_2_UltimoNivel: "string",
       pregunta2_5_1EducaSuperior: "string",
       pregunta2_6_Ocupacion: "string",
+      pregunta2_6_1Poblacion: "string",
       pregunta2_7_Trabajo: "string",
       pregunta2_8_1_Salario: "string",
       pregunta2_8_2_Ingreso: "string",

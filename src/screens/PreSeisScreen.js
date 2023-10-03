@@ -25,6 +25,8 @@ export default function PreSeisScreen(props) {
   const [opcionOtro, setOpcionOtro] = useState(false);
   const [opcionOtro1, setOpcionOtro1] = useState(false);
   const [otroTexto, setOtroTexto] = useState("");
+  const [encuestador, setEncuestador] = useState("");
+
   const [otroTexto1, setOtroTexto1] = useState("");
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedOptions1, setSelectedOptions1] = useState([]);
@@ -36,6 +38,7 @@ export default function PreSeisScreen(props) {
   const [nombreDepartamento, setNombreDepartamento] = useState("");
   const [municipio, setMunicipio] = useState("");
   const [formCounter, setFormCounter] = useState(1);
+  const [opcion6_2, setOpcion6_2] = useState("");
 
   useEffect(() => {
     // Recuperar los datos guardados de AsyncStorage cuando la pantalla se carga
@@ -57,6 +60,7 @@ export default function PreSeisScreen(props) {
           setSelectedOption3(parsedData.selectedOption3);
           setNombreDepartamento(parsedData.nombreDepartamento);
           setMunicipio(parsedData.municipio);
+          setEncuestador(parsedData.encuestador)
 
 
         }
@@ -75,9 +79,7 @@ export default function PreSeisScreen(props) {
         const dataToSave6 = JSON.stringify({
           opcionOtro, opcionOtro1, otroTexto, otroTexto1, selectedOptions, selectedOptions1,
           seleccionoSi, seleccionoSi1, otroIndicacion, otroIndicacion1, selectedOption3,
-          nombreDepartamento, municipio,
-
-
+          nombreDepartamento, municipio,encuestador,
         });
         await AsyncStorage.setItem("componente6", dataToSave6);
       } catch (error) {
@@ -88,7 +90,7 @@ export default function PreSeisScreen(props) {
     saveData();
   }, [opcionOtro, opcionOtro1, otroTexto, otroTexto1, selectedOptions, selectedOptions1,
     seleccionoSi, seleccionoSi1, otroIndicacion, otroIndicacion1, selectedOption3,
-    nombreDepartamento, municipio
+    nombreDepartamento, municipio,encuestador
   ]);
   const opciones = [
     "Educación para la salud (cuidado de niños, mujeres y adulto mayor)",
@@ -165,6 +167,9 @@ export default function PreSeisScreen(props) {
   const handleOtroTextoChange = (text) => {
     setOtroTexto(text);
   };
+  const handlEncuestadorTextoChange = (text) => {
+    setEncuestador(text);
+  };
   const handleOtroTextoChange1 = (text) => {
     setOtroTexto1(text);
   };
@@ -201,7 +206,8 @@ export default function PreSeisScreen(props) {
       ((selectedOption3 === "Sí" &&
         municipio !== "" &&
         nombreDepartamento !== "") ||
-        selectedOption3 === "No") // Validación de la selección única y campos de texto
+        selectedOption3 === "No") &&// Validación de la selección única y campos de texto
+        encuestador !==""
     ) {
       navigation.navigate("Envio", { numeroIdentificacion: numeroIdentificacion });
     } else {
@@ -249,12 +255,12 @@ export default function PreSeisScreen(props) {
           persona.component6 = {
             pregunta6_1,
             otroTexto6_1: otroTexto,
-            pregunta6_2: seleccionoSi.toString(),
-            pregunta6_2_1,
-            otroIndicacion6_2: seleccionoSi ? otroTexto1 : "",
+            pregunta6_2: opcion6_2.toString(),
+            pregunta6_2_1: otroTexto1,
             pregunta6_3: selectedOption3,
             departamento_pregunta6_3: nombreDepartamento,
             municipio_pregunta6_3: municipio,
+            encuestador_compo7:encuestador,
           };
         }
       });
@@ -356,30 +362,31 @@ export default function PreSeisScreen(props) {
                 Salud Pública asociadas a la Rehabilitación en el último año?
               </Text>
               <CheckBox
-                title="Si"
-                checked={seleccionoSi1}
-                onPress={handleSiCheckboxChange1}
-                containerStyle={styles.checkBoxContainer}
-                textStyle={
-                  seleccionoSi1
-                    ? styles.selectedOptionText
-                    : styles.checkBoxText
-                }
-                checkedColor="#BA0C2F"
-              />
+              title="Si"
+              checked={opcion6_2 === "Si"}
+              onPress={() => setOpcion6_2("Si")}
+              containerStyle={styles.checkBoxContainer}
+              textStyle={
+                opcion6_2 === "Si"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            />
               <CheckBox
-                title="No"
-                checked={!seleccionoSi1}
-                onPress={handleNoCheckboxChange1}
-                containerStyle={styles.checkBoxContainer}
-                textStyle={
-                  !seleccionoSi1
-                    ? styles.selectedOptionText
-                    : styles.checkBoxText
-                }
-                checkedColor="#BA0C2F"
-              />
-              {seleccionoSi1 && (
+              title="No"
+              checked={opcion6_2 === "No"}
+              onPress={() => setOpcion6_2("No")}
+              containerStyle={styles.checkBoxContainer}
+              textStyle={
+                opcion6_2 === "No"
+                  ? styles.selectedOptionText
+                  : styles.checkBoxText
+              }
+              checkedColor="#BA0C2F"
+            />
+             
+              {opcion6_2=="Si" && (
                 <View>
                   <Text style={styles.advertencia}>
                     Escoja el que se escogio en la respuesta 6.1{" "}
@@ -484,6 +491,37 @@ export default function PreSeisScreen(props) {
                   />
                 </View>
               )}
+            </View>
+            
+          </View>
+        </View>
+      </View>
+
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
+            <Text style={styles.question2}>
+              {" "}
+              COMPONENTE VII. - DATOS DE IDENTIFICACIÓN DE QUIEN REALIZA EL REGISTRO
+            </Text>
+          </View>
+       
+        </View>
+      </View>
+
+      <View style={styles.contenedorPadre}>
+        <View style={styles.tarjeta}>
+          <View style={styles.contenedor}>
+            <View style={styles.preguntaContainer}>
+              <Text style={styles.pregunta}>
+                Ingrese su nombre completo
+              </Text>
+              <TextInput
+                  style={styles.input}
+                  value={encuestador}
+                  onChangeText={handlEncuestadorTextoChange}
+                  placeholder="Ingrese su nombre completo"
+                />
             </View>
             {/* Boton */}
             <TouchableOpacity

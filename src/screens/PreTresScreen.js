@@ -119,6 +119,7 @@ export default function PreTresScreen(props) {
           persona.component3 = {
             pregunta3_1: selectedOption,
             pregunta3_2: aseguradora,
+            pregunta3_2_1Otra: otraAseguradora,
             pregunta3_3: selectedOption2,
             municipio_pregunta3_3: municipio,
             pregunta3_4: selectedOption3 ? selectedOption3 : "Null",
@@ -196,7 +197,7 @@ export default function PreTresScreen(props) {
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-           
+
 
             <Text style={styles.question}>
               {" "}
@@ -293,37 +294,19 @@ export default function PreTresScreen(props) {
                 style={{ height: 70, width: 300 }}
                 onValueChange={handleAseguradoraChange}
               >
-                <Picker.Item label="COOSALUD EPS-S" value="COOSALUD EPS-S" />
-                <Picker.Item label="NUEVA EPS" value="NUEVA EPS" />
-                <Picker.Item label="MUTUAL SER" value="MUTUAL SER" />
                 <Picker.Item label="ALIANSALUD EPS " value="ALIANSALUD EPS " />
+                <Picker.Item label="ASMET SALUD" value="ASMET SALUD" />
                 <Picker.Item
-                  label="SALUD TOTAL EPS S.A"
-                  value="SALUD TOTAL EPS S.A"
+                  label="ASOCIACION INDIGENA DEL CAUCA EPSI"
+                  value="ASOCIACION INDIGENA DEL CAUCA EPSI"
                 />
-                <Picker.Item label="EPS SANITAS" value="EPS SANITAS" />
-                <Picker.Item label="EPS SURA" value="EPS SURA" />
-                <Picker.Item label="FAMISANAR" value="FAMISANAR" />
-                <Picker.Item
-                  label="SERVICIO OCCIDENTAL DE SALUD EPS SOS"
-                  value="SERVICIO OCCIDENTAL DE SALUD EPS SOS"
-                />
-                <Picker.Item label="SALUD MIA" value="SALUD MIA" />
+                <Picker.Item label="ANAS WAYUU EPSI" value="ANAS WAYUU EPSI" />
                 <Picker.Item
                   label="COMFENALCO VALLE"
                   value="COMFENALCO VALLE"
                 />
+                <Picker.Item label="COOSALUD EPS-S" value="COOSALUD EPS-S" />
                 <Picker.Item label="COMPENSAR EPS" value="COMPENSAR EPS" />
-                <Picker.Item
-                  label="EPM - EMPRESAS PUBLICAS DE MEDELLIN"
-                  value="EPM - EMPRESAS PUBLICAS DE MEDELLIN"
-                />
-                <Picker.Item
-                  label="FONDO DE PASIVO SOCIAL DE FERROCARRILES
-NACIONALES DE COLOMBIA"
-                  value="FONDO DE PASIVO SOCIAL DE FERROCARRILES
-NACIONALES DE COLOMBIA"
-                />
                 <Picker.Item
                   label="CAJACOPI ATLANTICO"
                   value="CAJACOPI ATLANTICO "
@@ -332,32 +315,50 @@ NACIONALES DE COLOMBIA"
                 <Picker.Item label="COMFACHOCO" value="COMFACHOCO" />
                 <Picker.Item label="COMFAORIENTE" value="COMFAORIENTE" />
                 <Picker.Item
-                  label="EPS FAMILIAR DE COLOMBIA"
-                  value="EPS FAMILIAR DE COLOMBIA"
-                />
-                <Picker.Item label="ASMET SALUD" value="ASMET SALUD" />
-                <Picker.Item label="EMSSANAR E.S.S" value="EMSSANAR E.S.S" />
-                <Picker.Item
                   label="CAPITAL SALUD EPS-S"
                   value="CAPITAL SALUD EPS-S"
                 />
-                <Picker.Item label="SAVIA SALUD EPS" value="SAVIA SALUD EPS" />
+                <Picker.Item label="NUEVA EPS" value="NUEVA EPS" />
+                <Picker.Item label="MUTUAL SER" value="MUTUAL SER" />
+                <Picker.Item label="MALLAMAS EPSI" value="MALLAMAS EPSI " />
+
+                <Picker.Item label="SALUD TOTAL EPS S.A" value="SALUD TOTAL EPS S.A" />
+                <Picker.Item label="EPS SANITAS" value="EPS SANITAS" />
+                <Picker.Item label="EPS SURA" value="EPS SURA" />
+
+
                 <Picker.Item label="DUSAKAWI EPSI" value="DUSAKAWI EPSI" />
                 <Picker.Item
-                  label="ASOCIACION INDIGENA DEL CAUCA EPSI"
-                  value="ASOCIACION INDIGENA DEL CAUCA EPSI"
+                  label="EPM - EMPRESAS PUBLICAS DE MEDELLIN"
+                  value="EPM - EMPRESAS PUBLICAS DE MEDELLIN"
                 />
-                <Picker.Item label="ANAS WAYUU EPSI" value="ANAS WAYUU EPSI" />
-                <Picker.Item label="MALLAMAS EPSI" value="MALLAMAS EPSI " />
                 <Picker.Item
-                  label="PIJAOS SALUD EPSI"
-                  value="PIJAOS SALUD EPSI"
+                  label="EPS FAMILIAR DE COLOMBIA"
+                  value="EPS FAMILIAR DE COLOMBIA"
                 />
+                <Picker.Item label="EMSSANAR E.S.S" value="EMSSANAR E.S.S" />
+                <Picker.Item
+                  label="FONDO DE PASIVO SOCIAL DE FERROCARRILES
+NACIONALES DE COLOMBIA"
+                  value="FONDO DE PASIVO SOCIAL DE FERROCARRILES
+NACIONALES DE COLOMBIA"
+                />
+                <Picker.Item label="FAMISANAR" value="FAMISANAR" />
+
                 <Picker.Item
                   label="SALUD BÓLIVAR EPS SAS"
                   value="SALUD BÓLIVAR EPS SAS"
                 />
+                <Picker.Item label="SERVICIO OCCIDENTAL DE SALUD EPS SOS" value="SERVICIO OCCIDENTAL DE SALUD EPS SOS" />
+                <Picker.Item label="SALUD MIA" value="SALUD MIA" />
+                <Picker.Item label="SAVIA SALUD EPS" value="SAVIA SALUD EPS" />
+                <Picker.Item
+                  label="PIJAOS SALUD EPSI"
+                  value="PIJAOS SALUD EPSI"
+                />
+
                 <Picker.Item label="OTRA" value="OTRA" />
+                <Picker.Item label="NO APLICA" value="NO APLICA" />
               </Picker>
 
               <Text style={styles.preguntas}>
@@ -404,7 +405,8 @@ NACIONALES DE COLOMBIA"
               </Text>
 
               <Text style={styles.preguntas}>
-                Según la asignación realizada por su aseguradora (EAPB), indique
+
+                Según la <Text style={styles.subrayado}> asignación realizada por su aseguradora (EAPB), </Text> indique
                 cuál es el lugar al que asiste con mayor frecuencia para su
                 atención general en salud
               </Text>
@@ -551,8 +553,8 @@ NACIONALES DE COLOMBIA"
           <View style={styles.contenedor}>
             <View style={styles.preguntaContainer}>
               <Text style={styles.pregunta}>
-                ¿El lugar donde su aseguradora (EAPB) realiza la autorización
-                para la atención especializada en salud (hospitalización,
+                ¿El lugar donde su  <Text style={styles.subrayado}>aseguradora (EAPB) realiza la autorización
+                  para la atención especializada en salud </Text> (hospitalización,
                 cirugía, exámenes diagnósticos, terapias, médicos especialistas,
                 etc.) se encuentra dentro del municipio?
               </Text>
@@ -632,7 +634,7 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     marginTop: -20,
   },
-  
+
 
   pregunta: {
     marginBottom: 5,
@@ -646,8 +648,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 10,
     fontWeight: "bold",
-    fontSize: 18,
-    textAlign:"justify",
+    fontSize: 16,
+    textAlign: "justify",
+
+  },
+  subrayado: {
+    color: "#000000",
+    textDecorationLine: 'underline',
+    textDecorationStyle: 'double', // Esto crea un subrayado más grueso
+    fontWeight: "bold",
+    fontSize: 17,
+    textAlign: "justify",
   },
   texto: {
     color: "#000000",
@@ -655,29 +666,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: "bold",
     fontSize: 16,
-    textAlign:"justify",
+    textAlign: "justify",
   },
-  question: {
-    color: "#35669a",
-    marginBottom: -20,
-    marginTop: 15,
-    fontWeight: "bold",
-    fontSize: 18,
-  },
-  question1: {
-    color: "#35669a",
-    marginBottom: -80,
-    marginTop: -22,
-    fontWeight: "bold",
-    fontSize: 18,
-  },
-  question2: {
-    color: "#35669a",
-    marginBottom: 20,
-    marginTop: 2,
-    fontWeight: "bold",
-    fontSize: 18,
-  },
+
   opcionesContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -761,21 +752,21 @@ const styles = StyleSheet.create({
     marginBottom: -20,
     marginTop: 15,
     fontWeight: "bold",
-    fontSize: 15,
+    fontSize: 18,
   },
   question1: {
     color: "#35669a",
-    marginBottom: -80,
+    marginBottom: 0,
     marginTop: -2,
     fontWeight: "bold",
-    fontSize: 15,
+    fontSize: 18,
   },
   question2: {
     color: "#35669a",
     marginBottom: 20,
     marginTop: 2,
     fontWeight: "bold",
-    fontSize: 15,
+    fontSize: 18,
   },
 
   linea: {

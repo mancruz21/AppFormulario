@@ -38,26 +38,29 @@ export default function PreCuaScreen(props) {
   const [mental, setMental] = useState(""); // Estado para capturar el texto del TextInput
 
   const goToPreguntaCin = () => {
-
-
     if (
       selectedOption !== "" &&
-      (selectedOption === "No" || selectedOptions.length !== 0) && // Verifica que al menos una opción está seleccionada si es "No"
+      (selectedOption === "No" || selectedOptions.length !== 0) &&
       (selectedOption !== "Si" || selectedOptions.length !== 0) &&
-      (selectedOption !== "Si" || selectedOptions1.length !== 0)
+      (selectedOption !== "Si" || selectedOptions1.length !== 0) 
+      
     ) {
-      navigation.navigate("Pregunta 2.3", {
-
-        numeroIdentificacion: numeroIdentificacion,
-
-      });
+      if (
+        selectedOption === "Si"&&
+        !selectedOptions1.includes("Ninguna de las anteriores") &&
+        selectedOption1.length === 0
+      ) {
+        Alert.alert("Error", "Por favor completa todos los campos.");
+      } else {
+        navigation.navigate("Pregunta 2.3", {
+          numeroIdentificacion: numeroIdentificacion,
+        });
+      }
     } else {
       Alert.alert("Error", "Por favor completa todos los campos.");
     }
-
-
-
   };
+  
   useEffect(() => {
     // Recuperar los datos guardados de AsyncStorage cuando la pantalla se carga
     const restoreData = async () => {

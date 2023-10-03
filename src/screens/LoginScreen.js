@@ -73,6 +73,7 @@ export default function LoginScreen(props) {
   } else {
     // Mostrar un mensaje de error si las credenciales no coinciden
     console.log('Credenciales incorrectas');
+    Alert.alert("Credenciales Incorrectas", "Por favor, ingresa un correo o contraseña valido.");
   }
 } catch (error) {
   console.log(error);

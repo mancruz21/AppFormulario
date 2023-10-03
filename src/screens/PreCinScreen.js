@@ -487,15 +487,29 @@ export default function PreCinScreen(props) {
   const handleOptionChange = (option) => {
     if (selectedOptions.includes(option)) {
       setSelectedOptions(selectedOptions.filter((item) => item !== option));
+      setShowOtherServicesText(false);
     } else {
-      if (selectedOptions.length < 3) {
-        setSelectedOptions([...selectedOptions, option]);
-        if (option === "Otros servicios de salud") {
+      if (option === "Otros servicios de salud") {
+        if (selectedOptions.includes("Otros servicios de salud")) {
+          // Si ya se ha seleccionado "Otros servicios de salud", permitir solo una opción adicional
+          if (selectedOptions.length <= 2) {
+            setSelectedOptions([...selectedOptions, option]);
+            setShowOtherServicesText(true);
+          }
+        } else {
+          // Si aún no se ha seleccionado "Otros servicios de salud", permitir la selección
+          setSelectedOptions([...selectedOptions, option]);
           setShowOtherServicesText(true);
+        }
+      } else {
+        // Si es otra opción, permitir la selección siempre que no haya seleccionado más de 3 opciones
+        if (selectedOptions.length < 3) {
+          setSelectedOptions([...selectedOptions, option]);
         }
       }
     }
   };
+  
 
   const handleOptionChangedos = (option) => {
     if (selectedOption2.includes(option)) {
@@ -518,7 +532,7 @@ export default function PreCinScreen(props) {
         setShowTextInput(false);
       }
     } else {
-      if (selectedOptions5.length < 3) {
+      if (selectedOptions5.length < 1) {
         setSelectedOptions5([...selectedOptions5, option]);
 
         if (option === "Otro") {
@@ -572,7 +586,7 @@ export default function PreCinScreen(props) {
         setShowTextInput1(false);
       }
     } else {
-      if (selectedOptions1.length < 3) {
+      if (selectedOptions1.length < 1) {
         setSelectedOptions1([...selectedOptions1, option]);
 
         if (option === "Otro motivo ¿Cuál?") {
@@ -591,7 +605,7 @@ export default function PreCinScreen(props) {
         setShowTextInput2(false);
       }
     } else {
-      if (selectedOption11.length < 3) {
+      if (selectedOption11.length < 1) {
         setSelectedOption11([...selectedOption11, option]);
 
         if (option === "Otro motivo ¿Cuál?") {
@@ -943,19 +957,19 @@ export default function PreCinScreen(props) {
                         checkedColor="#BA0C2F"
                       />
                       <CheckBox
-                        title="Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüen- tos, Sobandero"
+                        title="Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüentos, Sobandero"
                         checked={selectedOptions5.includes(
-                          "Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüen- tos, Sobandero"
+                          "Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüentos, Sobandero"
                         )}
                         onPress={() =>
                           handleOptionChangecinco(
-                            "Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüen- tos, Sobandero"
+                            "Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüentos, Sobandero"
                           )
                         }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
                           selectedOptions5.includes(
-                            "Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüen- tos, Sobandero"
+                            "Medicina Tradicional Ej: Chamán, Taita, Hierbas, Ungüentos, Sobandero"
                           )
                             ? styles.selectedOptionText
                             : styles.checkBoxText
@@ -977,19 +991,19 @@ export default function PreCinScreen(props) {
                         checkedColor="#BA0C2F"
                       />
                       <CheckBox
-                        title="Medicina Especializada Ej: cirugía, cardiología, psiquia- tría, neurología"
+                        title="Medicina Especializada Ej: cirugía, cardiología, psiquiatría, neurología"
                         checked={selectedOptions5.includes(
-                          "Medicina Especializada Ej: cirugía, cardiología, psiquia- tría, neurología"
+                          "Medicina Especializada Ej: cirugía, cardiología, psiquiatría, neurología"
                         )}
                         onPress={() =>
                           handleOptionChangecinco(
-                            "Medicina Especializada Ej: cirugía, cardiología, psiquia- tría, neurología"
+                            "Medicina Especializada Ej: cirugía, cardiología, psiquiatría, neurología"
                           )
                         }
                         containerStyle={styles.checkBoxContainer}
                         textStyle={
                           selectedOptions5.includes(
-                            "Medicina Especializada Ej: cirugía, cardiología, psiquia- tría, neurología"
+                            "Medicina Especializada Ej: cirugía, cardiología, psiquiatría, neurología"
                           )
                             ? styles.selectedOptionText
                             : styles.checkBoxText
@@ -2456,8 +2470,8 @@ export default function PreCinScreen(props) {
                   </Text>
 
                   <Text style={styles.preguntas}>
-                    Como consecuencia de su condición de salud ¿ha requerido
-                    productos de apoyo durante el último año? (ej.: sillas de
+                    Como consecuencia de su condición de salud <Text style={styles.subrayado}>¿ha requerido
+                    productos de apoyo durante el último año? </Text> (ej.: sillas de
                     ruedas, bastones de orientación visual, muletas,
                     caminadores, audífonos, gafas, prótesis, etc.){" "}
                   </Text>
@@ -3194,6 +3208,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: "bold",
     fontSize: 16,
+    textAlign: "justify",
+  },
+  subrayado: {
+    color: "#000000",
+    textDecorationLine: 'underline',
+    textDecorationStyle: 'double', // Esto crea un subrayado más grueso
+    fontWeight: "bold",
+    fontSize: 17,
     textAlign: "justify",
   },
   question: {
