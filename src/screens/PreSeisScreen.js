@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { CheckBox } from "react-native-elements";
+import Icon from "react-native-vector-icons/FontAwesome";
 import { ScrollView } from "react-native-gesture-handler";
 import appFirebase from "../components/firebase-config";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
@@ -15,6 +16,7 @@ const db = getFirestore(appFirebase);
 import { RealmConfigContext } from "./../../utils/models/context";
 const { useRealm } = RealmConfigContext;
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { useRoute } from "@react-navigation/native";
 export default function PreSeisScreen(props) {
@@ -26,7 +28,7 @@ export default function PreSeisScreen(props) {
   const [opcionOtro1, setOpcionOtro1] = useState(false);
   const [otroTexto, setOtroTexto] = useState("");
   const [encuestador, setEncuestador] = useState("");
-
+  const [fecha, setFecha] = useState("");
   const [otroTexto1, setOtroTexto1] = useState("");
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedOptions1, setSelectedOptions1] = useState([]);
@@ -39,6 +41,9 @@ export default function PreSeisScreen(props) {
   const [municipio, setMunicipio] = useState("");
   const [formCounter, setFormCounter] = useState(1);
   const [opcion6_2, setOpcion6_2] = useState("");
+  const [date, setDate] = useState(new Date(1598051730000));
+  const [show, setShow] = useState(false);
+  const [mode, setMode] = useState("date");
 
   useEffect(() => {
     // Recuperar los datos guardados de AsyncStorage cuando la pantalla se carga
@@ -60,7 +65,8 @@ export default function PreSeisScreen(props) {
           setSelectedOption3(parsedData.selectedOption3);
           setNombreDepartamento(parsedData.nombreDepartamento);
           setMunicipio(parsedData.municipio);
-          setEncuestador(parsedData.encuestador)
+          setEncuestador(parsedData.encuestador);
+          setFecha(parsedData.fecha);
 
 
         }
@@ -71,6 +77,31 @@ export default function PreSeisScreen(props) {
 
     restoreData();
   }, []);
+  // Función para formatear la fecha
+  function formatDate(date) {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return date.toLocaleDateString(undefined, options);
+  }
+  const showMode = (mode) => {
+    setMode(mode);
+    setShow(true);
+  };
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === "ios");
+    setDate(currentDate);
+
+    // Formateamos la fecha en "DD/MM/AAAA" antes de asignarla al estado "fecha"
+    const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1
+      }/${currentDate.getFullYear()}`;
+    setFecha(formattedDate);
+
+    // Calculamos la edad y la establecemos en el estado "edad"
+    if (formattedDate !== "") {
+      const age = calcularEdad(formattedDate);
+      setEdad(age);
+    }
+  };
 
   useEffect(() => {
     // Guardar los datos seleccionados en AsyncStorage cuando cambian
@@ -79,7 +110,7 @@ export default function PreSeisScreen(props) {
         const dataToSave6 = JSON.stringify({
           opcionOtro, opcionOtro1, otroTexto, otroTexto1, selectedOptions, selectedOptions1,
           seleccionoSi, seleccionoSi1, otroIndicacion, otroIndicacion1, selectedOption3,
-          nombreDepartamento, municipio,encuestador,
+          nombreDepartamento, municipio, encuestador,fecha,
         });
         await AsyncStorage.setItem("componente6", dataToSave6);
       } catch (error) {
@@ -90,7 +121,7 @@ export default function PreSeisScreen(props) {
     saveData();
   }, [opcionOtro, opcionOtro1, otroTexto, otroTexto1, selectedOptions, selectedOptions1,
     seleccionoSi, seleccionoSi1, otroIndicacion, otroIndicacion1, selectedOption3,
-    nombreDepartamento, municipio,encuestador
+    nombreDepartamento, municipio, encuestador, fecha
   ]);
   const opciones = [
     "Educación para la salud (cuidado de niños, mujeres y adulto mayor)",
@@ -207,7 +238,8 @@ export default function PreSeisScreen(props) {
         municipio !== "" &&
         nombreDepartamento !== "") ||
         selectedOption3 === "No") &&// Validación de la selección única y campos de texto
-        encuestador !==""
+      encuestador !== ""&&
+      fecha.trim() !== ""
     ) {
       navigation.navigate("Envio", { numeroIdentificacion: numeroIdentificacion });
     } else {
@@ -260,13 +292,15 @@ export default function PreSeisScreen(props) {
             pregunta6_3: selectedOption3,
             departamento_pregunta6_3: nombreDepartamento,
             municipio_pregunta6_3: municipio,
-            encuestador_compo7:encuestador,
+            encuestador_compo7: encuestador,
+            FechaDilingecimiento: fecha.toString(),
           };
         }
       });
 
       console.log("Los datos se han guardado correctamente en Realm.");
       console.log(numeroIdentificacion);
+     
     } catch (error) {
       console.error("Error al guardar datos en Realm:", error);
     }
@@ -362,31 +396,31 @@ export default function PreSeisScreen(props) {
                 Salud Pública asociadas a la Rehabilitación en el último año?
               </Text>
               <CheckBox
-              title="Si"
-              checked={opcion6_2 === "Si"}
-              onPress={() => setOpcion6_2("Si")}
-              containerStyle={styles.checkBoxContainer}
-              textStyle={
-                opcion6_2 === "Si"
-                  ? styles.selectedOptionText
-                  : styles.checkBoxText
-              }
-              checkedColor="#BA0C2F"
-            />
+                title="Si"
+                checked={opcion6_2 === "Si"}
+                onPress={() => setOpcion6_2("Si")}
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  opcion6_2 === "Si"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
               <CheckBox
-              title="No"
-              checked={opcion6_2 === "No"}
-              onPress={() => setOpcion6_2("No")}
-              containerStyle={styles.checkBoxContainer}
-              textStyle={
-                opcion6_2 === "No"
-                  ? styles.selectedOptionText
-                  : styles.checkBoxText
-              }
-              checkedColor="#BA0C2F"
-            />
-             
-              {opcion6_2=="Si" && (
+                title="No"
+                checked={opcion6_2 === "No"}
+                onPress={() => setOpcion6_2("No")}
+                containerStyle={styles.checkBoxContainer}
+                textStyle={
+                  opcion6_2 === "No"
+                    ? styles.selectedOptionText
+                    : styles.checkBoxText
+                }
+                checkedColor="#BA0C2F"
+              />
+
+              {opcion6_2 == "Si" && (
                 <View>
                   <Text style={styles.advertencia}>
                     Escoja el que se escogio en la respuesta 6.1{" "}
@@ -492,7 +526,7 @@ export default function PreSeisScreen(props) {
                 </View>
               )}
             </View>
-            
+
           </View>
         </View>
       </View>
@@ -505,7 +539,7 @@ export default function PreSeisScreen(props) {
               COMPONENTE VII. - DATOS DE IDENTIFICACIÓN DE QUIEN REALIZA EL REGISTRO
             </Text>
           </View>
-       
+
         </View>
       </View>
 
@@ -513,15 +547,56 @@ export default function PreSeisScreen(props) {
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
             <View style={styles.preguntaContainer}>
-              <Text style={styles.pregunta}>
+              <Text style={styles.preguntas}>
                 Ingrese su nombre completo
               </Text>
               <TextInput
-                  style={styles.input}
-                  value={encuestador}
-                  onChangeText={handlEncuestadorTextoChange}
-                  placeholder="Ingrese su nombre completo"
-                />
+                style={styles.input}
+                value={encuestador}
+                onChangeText={handlEncuestadorTextoChange}
+                placeholder="Ingrese su nombre completo"
+              />
+
+              <View style={styles.EdadYFecha}>
+                {/* Fecha Nacimiento */}
+                <Text style={styles.preguntas}> Fecha dilingeciamiento</Text>
+                <View style={styles.inputDate}>
+                  <TextInput
+                    placeholder="DD/MM/AAAA"
+                    style={styles.textoDate}
+                    value={fecha}
+                    keyboardType="numeric"
+                    maxLength={12}
+                    onFocus={() => showMode("date")}
+                  />
+
+                  <TouchableOpacity
+                    style={styles.botonDate}
+                    onPress={() => showMode("date")}
+                  >
+                    <View style={styles.contenedorIcono}>
+                      <Text style={styles.iconoCalendario}>
+                        <Icon name="calendar" size={25} color="white" />{" "}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                {show && (
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={date}
+                    mode={mode}
+                    is24Hour={true}
+                    display="default"
+                    onChange={onChange}
+                    minimumDate={new Date(1900, 0, 1)} // 1 de enero de 1900
+
+                  />
+                )}
+
+
+
+              </View>
             </View>
             {/* Boton */}
             <TouchableOpacity
@@ -563,7 +638,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: "bold",
     fontSize: 18,
-    textAlign:"justify",
+    textAlign: "justify",
   },
   texto: {
     color: "#000000",
@@ -571,7 +646,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: "bold",
     fontSize: 16,
-    textAlign:"justify",
+    textAlign: "justify",
   },
   question: {
     color: "#35669a",
@@ -705,5 +780,50 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#BA0C2F",
     fontSize: 16,
+  },
+
+  EdadYFecha: {
+    flexWrap: "wrap",
+    flexDirection: "row",
+  },
+  /* Estilo Fecha Nacimiento*/
+  inputDate: {
+    width: "100%",
+    flexWrap: "wrap",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  checkBoxWidth: {
+    flex: 1,
+  },
+  contenedorIcono: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  checkBoxContainer: {
+    backgroundColor: "transparent",
+    borderWidth: 0,
+    padding: 0,
+    margin: 5,
+    marginBottom: 10,
+  },
+
+  botonDate: {
+    backgroundColor: "#35669a",
+    borderRadius: 5,
+    padding: 10,
+    width: "25%",
+    height: "80%",
+    marginTop: 12,
+    marginLeft: 10,
+  },
+  textoDate: {
+    borderColor: "slategray",
+    borderWidth: 1,
+    padding: 10,
+    marginTop: 10,
+    borderRadius: 8,
   },
 });

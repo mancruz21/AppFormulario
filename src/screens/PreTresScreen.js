@@ -73,6 +73,15 @@ export default function PreTresScreen(props) {
   }, []);
 
   const goToPreguntaCua = async () => {
+    if(
+      selectedOption!==null&&
+      aseguradora!==null&&
+      (aseguradora=== "Otra" ? aseguradora !== "" : true)&&
+      selectedOption2!==null&&
+      selectedOption3!==null
+      
+
+    ){
     try {
       await AsyncStorage.setItem("selectedOption", selectedOption);
       await AsyncStorage.setItem("aseguradora", aseguradora);
@@ -86,7 +95,8 @@ export default function PreTresScreen(props) {
       console.error("Error saving data:", error);
       Alert.alert("Error", "Hubo un error al guardar los datos.");
       return;
-    }
+    } } else {
+      Alert.alert("Error", "Por favor completa todos los campos.");}
 
     navigation.navigate("Pregunta 2.2", { numeroIdentificacion: numeroIdentificacion });
   };

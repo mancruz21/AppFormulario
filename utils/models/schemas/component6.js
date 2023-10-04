@@ -8,6 +8,7 @@ export class Component6 extends Realm.Object {
   departamento_pregunta6_3 = "";
   municipio_pregunta6_3 = "";
   encuestador_compo7 = "";
+  FechaDilingecimiento="";
 
 
   static schema = {
@@ -21,6 +22,7 @@ export class Component6 extends Realm.Object {
       departamento_pregunta6_3: "string",
       municipio_pregunta6_3: "string",
       encuestador_compo7: "string",
+      FechaDilingecimiento: "string",
     }
   };
 }

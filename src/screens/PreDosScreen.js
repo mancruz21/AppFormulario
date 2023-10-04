@@ -128,10 +128,13 @@ export default function PreDosScreen(props) {
     //Condicion de no dejar a la proxima pantalla
     if (
       opcion2 !== null &&
+      etnia !== null &&
       (etnia === "Indígena" ? indigena !== "" : true) &&
+      educativo !== null &&
       (educativo === "Educación Superior"
         ? educacionSuperior !== null
         : true) &&
+      ocupacion !== null &&
       (ocupacion === "Trabajando" ? trabajo.length > 0 : true) &&
       (ocupacion ===
         "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
@@ -926,7 +929,7 @@ export default function PreDosScreen(props) {
                     }
                     checkedColor="#BA0C2F"
                   />
-                   <CheckBox
+                  <CheckBox
                     title="Rural"
                     checked={poblacion === "Rural"}
                     onPress={() => setPoblacion("Rural")}

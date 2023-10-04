@@ -40,13 +40,13 @@ export default function PreCuaScreen(props) {
   const goToPreguntaCin = () => {
     if (
       selectedOption !== "" &&
+     
       (selectedOption === "No" || selectedOptions.length !== 0) &&
       (selectedOption !== "Si" || selectedOptions.length !== 0) &&
-      (selectedOption !== "Si" || selectedOptions1.length !== 0) 
-      
+      (selectedOption !== "Si" || selectedOptions1.length !== 0)
     ) {
       if (
-        selectedOption === "Si"&&
+        selectedOption === "Si" &&
         !selectedOptions1.includes("Ninguna de las anteriores") &&
         selectedOption1.length === 0
       ) {
@@ -60,7 +60,7 @@ export default function PreCuaScreen(props) {
       Alert.alert("Error", "Por favor completa todos los campos.");
     }
   };
-  
+
   useEffect(() => {
     // Recuperar los datos guardados de AsyncStorage cuando la pantalla se carga
     const restoreData = async () => {
@@ -265,7 +265,7 @@ export default function PreCuaScreen(props) {
       <View style={styles.contenedorPadre}>
         <View style={styles.tarjeta}>
           <View style={styles.contenedor}>
-         
+
             <Text style={styles.question}>
               {" "}
               PREGUNTA 4.1 ( SELECCIÓN ÚNICA){" "}
@@ -2424,7 +2424,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: "bold",
     fontSize: 18,
-    textAlign:"justify",
+    textAlign: "justify",
   },
   texto: {
     color: "#000000",
@@ -2432,7 +2432,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: "bold",
     fontSize: 16,
-    textAlign:"justify",
+    textAlign: "justify",
   },
   question: {
     color: "#35669a",

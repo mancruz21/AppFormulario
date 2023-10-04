@@ -24,6 +24,7 @@ export default function EnvioScreen(props) {
   const route = useRoute();
   const { numeroIdentificacion } = route.params;
 
+
   useEffect(() => {
     // Función para verificar la conexión a Internet
     const checkInternetConnectivity = async () => {
@@ -54,28 +55,39 @@ export default function EnvioScreen(props) {
   const guardarPersonasEnFirestore = async () => {
     try {
       const personas = realm.objects("Persona");
-
-      // Convierte los registros de Realm en objetos JSON y elimina el campo _id
-      const registrosFirestore = personas.map((persona) => {
-        const registro = persona.toJSON();
-        registro.id_document = numeroIdentificacion;
-        delete registro._id; // Elimina el campo _id
-        return registro;
-      });
-
-      // Guarda los registros en Firestore
+      const collectionRef = collection(db, "personasFirestore");
+  
+      // Utiliza un objeto Set para realizar un seguimiento de los números de identificación únicos
+      const numerosIdentificacionUnicos = new Set();
+  
+      // Guarda los registros en Firestore con verificación de duplicados
       await Promise.all(
-        registrosFirestore.map(async (registro) => {
-          await addDoc(collection(db, "personasFirestore"), registro);
+        personas.map(async (persona) => {
+          const registro = persona.toJSON();
+          const numeroIdentificacion = registro.id_document;
+          console.log(numeroIdentificacion)
+          console.log(numerosIdentificacionUnicos)
+  
+          // Verifica si el número de identificación ya ha sido guardado en Firestore
+          if (!numerosIdentificacionUnicos.has(numeroIdentificacion)) {
+            numerosIdentificacionUnicos.add(numeroIdentificacion);
+            delete registro._id; // Elimina el campo _id
+  
+            // Guarda el registro en Firestore
+            await addDoc(collectionRef, registro);
+          } else {
+            console.log(`Registro con número de identificación duplicado: ${numeroIdentificacion}`);
+            // Aquí puedes manejar el caso de registros duplicados, como mostrar una alerta o registrarlos en algún lugar.
+          }
         })
       );
-
+  
       console.log("Registros de Persona guardados en Firestore con éxito.");
       // Elimina el archivo Realm después de un guardado exitoso
       realm.write(() => {
         realm.deleteAll(); // Esto eliminará todos los objetos en Realm
       });
-
+  
       console.log("Archivo Realm eliminado con éxito.");
     } catch (error) {
       console.error("Error al guardar registros en Firestore:", error);
@@ -89,7 +101,6 @@ export default function EnvioScreen(props) {
       await AsyncStorage.removeItem("selectedOption");
       await AsyncStorage.removeItem("identificacionData");
       await AsyncStorage.removeItem("formData");
-
       await AsyncStorage.removeItem("opcion1");
       await AsyncStorage.removeItem("opcion2");
       await AsyncStorage.removeItem("opcion3");
@@ -111,12 +122,9 @@ export default function EnvioScreen(props) {
       await AsyncStorage.removeItem("selectedOption3");
       await AsyncStorage.removeItem("municipio1");
       await AsyncStorage.removeItem("nombreDepartamento");
-
       await AsyncStorage.removeItem("datosGuardados");
-
       await AsyncStorage.removeItem("datosGuardados5");
       await AsyncStorage.removeItem("componente6");
-
       console.log("Navegar a siguiente ventana");
     } catch (error) {
       console.error("Error al borrar datos de AsyncStorage:", error);

@@ -235,7 +235,7 @@ export default function PreUnoScreen(props) {
       direccion.trim() !== "" &&
       Celular.trim() !== "" &&
       estratoSocial !== null
-      
+
     ) {
       // Todas las respuestas requeridas han sido llenadas, permitir la navegación
       navigation.navigate("Pregunta 1.2", {

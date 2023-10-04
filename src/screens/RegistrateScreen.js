@@ -79,8 +79,10 @@ export default function RegistrateScreen(props) {
       setEmail("");
       setPassword("");
     } catch (error) {
-      console.log(error);
-      Alert.alert("Error", "Hubo un error al registrar el usuario");
+      console.error("Error al registrar el usuario:", error);
+
+      // Muestra el mensaje específico del error para ayudar al usuario a entender lo que salió mal
+      Alert.alert("Error", `Hubo un error al registrar el usuario: ${error.message}`);
     }
   };
 

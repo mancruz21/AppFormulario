@@ -1697,6 +1697,18 @@ export default function PreCinScreen(props) {
                   }
                   checkedColor="#BA0C2F"
                 />
+                 <CheckBox
+                  title="No Aplica"
+                  checked={selected1Option.includes("No Aplica")}
+                  onPress={() => handleOption1Select("No Aplica")}
+                  containerStyle={styles.checkBoxContainer}
+                  textStyle={
+                    selected1Option.includes("No Aplica")
+                      ? styles.selectedOptionText
+                      : styles.checkBoxText
+                  }
+                  checkedColor="#BA0C2F"
+                />
               </View>
             )}
           </View>
@@ -2878,6 +2890,26 @@ export default function PreCinScreen(props) {
                   textStyle={
                     selected1Option2.includes(
                       "Cierre del servicio por pandemia COVID-19"
+                    )
+                      ? styles.selectedOptionText
+                      : styles.checkBoxText
+                  }
+                  checkedColor="#BA0C2F"
+                />
+                <CheckBox
+                  title="No Aplica"
+                  checked={selected1Option2.includes(
+                    "No Aplica"
+                  )}
+                  onPress={() =>
+                    handleOption1Select2(
+                      "No Aplica"
+                    )
+                  }
+                  containerStyle={styles.checkBoxContainer}
+                  textStyle={
+                    selected1Option2.includes(
+                      "No Aplica"
                     )
                       ? styles.selectedOptionText
                       : styles.checkBoxText

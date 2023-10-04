@@ -95,21 +95,23 @@ export default function IdentificacionScreen(props) {
 
 
   //Metodo para guardar en firestore
-  const SaveIdent = async () => {
-    try {
-      const docRef = await addDoc(collection(db, 'identificacion'), {
-        tipoIdentificacion: tipoId,
-        numeroIdentificacion: numeroIdentificacionValue,
-        departamento: departamentoID,
-      });
+  /*
+const SaveIdent = async () => {
+ 
+  try {
+    const docRef = await addDoc(collection(db, 'identificacion'), {
+      tipoIdentificacion: tipoId,
+      numeroIdentificacion: numeroIdentificacionValue,
+      departamento: departamentoID,
+    });
 
-      console.log("Documento guardado con ID:", docRef.id);
+    console.log("Documento guardado con ID:", docRef.id);
 
 
-    } catch (error) {
-      console.error(error);
-    }
+  } catch (error) {
+    console.error(error);
   }
+}*/
   useEffect(() => {
     console.log("tipoId:", tipoId);
     console.log("numeroIdentificacionValue:", numeroIdentificacionValue);
@@ -119,7 +121,7 @@ export default function IdentificacionScreen(props) {
       setPuedeAvanzar(false);
     }
   }, [tipoId, numeroIdentificacionValue]);
-  
+
 
   const goToPreguntaUno = () => {
     // Aquí puedes realizar acciones con la opción seleccionada
@@ -284,7 +286,7 @@ export default function IdentificacionScreen(props) {
             <TouchableOpacity style={styles.boton} onPress={() => {
               if (puedeAvanzar) {
                 goToPreguntaUno();
-                SaveIdent();
+
               }
             }}
 
