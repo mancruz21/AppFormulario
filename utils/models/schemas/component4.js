@@ -3,6 +3,7 @@ export class Component4 extends Realm.Object {
   pregunta4_1 = "";
   pregunta4_2 = "";
   pregunta4_3_1Transtornos = "";
+  pregunta4_3Mental="";
   pregunta4_3_Def = "";
   pregunta4_3_Cron = "";
   pregunta4_3_Infec = "";
@@ -17,6 +18,7 @@ export class Component4 extends Realm.Object {
       pregunta4_1: "string",
       pregunta4_2: "string",
       pregunta4_3_1Transtornos: "string",
+      pregunta4_3Mental:"string",
       pregunta4_3_Def: "string",
       pregunta4_3_Cron: "string",
       pregunta4_3_Infec: "string",

@@ -59,7 +59,7 @@ export default function PreTresScreen(props) {
         setSelectedOption(savedSelectedOption || null);
         setAseguradora(savedAseguradora || "option1");
         setOtraAseguradora(savedOtraAseguradora || "");
-        setSelectedOption2(savedSelectedOption2 || null);
+        setSelectedOption2(savedSelectedOption2 || "");
         setMunicipio(savedMunicipio || "");
         setSelectedOption3(savedSelectedOption3 || null);
         setMunicipio1(savedMunicipio1 || "");
@@ -73,33 +73,37 @@ export default function PreTresScreen(props) {
   }, []);
 
   const goToPreguntaCua = async () => {
-    if(
-      selectedOption!==null&&
-      aseguradora!==null&&
-      (aseguradora=== "Otra" ? aseguradora !== "" : true)&&
-      selectedOption2!==null&&
-      selectedOption3!==null
-      
+    if (
+      selectedOption !== null &&
+      aseguradora !== "" &&
+      (aseguradora === "Otra" ? otraAseguradora !== "" : true) &&
+      selectedOption2 !== null &&
+      (selectedOption2 !== "Centro de Salud y/o Hospital en otro Municipio" || municipio !== "") &&
+      (selectedOption2 !== "Consultorio Particular u otro servicio fuera del Municipio" || municipio !== "") &&
+      selectedOption3 !== null &&
+      (selectedOption3 !== "No" || municipio1 !== "") &&
+      (selectedOption3 !== "No" || nombreDepartamento !== "")
+    ) {
+      try {
+        await AsyncStorage.setItem("selectedOption", selectedOption);
+        await AsyncStorage.setItem("aseguradora", aseguradora);
+        await AsyncStorage.setItem("otraAseguradora", otraAseguradora);
+        await AsyncStorage.setItem("selectedOption2", selectedOption2);
+        await AsyncStorage.setItem("municipio", municipio);
+        await AsyncStorage.setItem("selectedOption3", selectedOption3);
+        await AsyncStorage.setItem("municipio1", municipio1);
+        await AsyncStorage.setItem("nombreDepartamento", nombreDepartamento);
 
-    ){
-    try {
-      await AsyncStorage.setItem("selectedOption", selectedOption);
-      await AsyncStorage.setItem("aseguradora", aseguradora);
-      await AsyncStorage.setItem("otraAseguradora", otraAseguradora);
-      await AsyncStorage.setItem("selectedOption2", selectedOption2);
-      await AsyncStorage.setItem("municipio", municipio);
-      await AsyncStorage.setItem("selectedOption3", selectedOption3);
-      await AsyncStorage.setItem("municipio1", municipio1);
-      await AsyncStorage.setItem("nombreDepartamento", nombreDepartamento);
-    } catch (error) {
-      console.error("Error saving data:", error);
-      Alert.alert("Error", "Hubo un error al guardar los datos.");
-      return;
-    } } else {
-      Alert.alert("Error", "Por favor completa todos los campos.");}
-
-    navigation.navigate("Pregunta 2.2", { numeroIdentificacion: numeroIdentificacion });
+        navigation.navigate("Pregunta 2.2", { numeroIdentificacion: numeroIdentificacion });
+      } catch (error) {
+        console.error("Error saving data:", error);
+        Alert.alert("Error", "Hubo un error al guardar los datos.");
+      }
+    } else {
+      Alert.alert("Error", "Por favor completa todos los campos.");
+    }
   };
+
 
   const SaveComponente3 = async () => {
     /* try {
@@ -132,11 +136,11 @@ export default function PreTresScreen(props) {
             pregunta3_2_1Otra: otraAseguradora,
             pregunta3_3: selectedOption2,
             municipio_pregunta3_3: municipio,
-            pregunta3_4: selectedOption3 ? selectedOption3 : "Null",
+            pregunta3_4: selectedOption3 ? selectedOption3 : "",
             municipio_pregunta3_4:
-              selectedOption3 === "No" ? municipio1 : "null",
+              selectedOption3 === "No" ? municipio1 : "",
             departamento_pregunta3_4:
-              selectedOption3 === "No" ? nombreDepartamento : "null",
+              selectedOption3 === "No" ? nombreDepartamento : "",
 
 
 

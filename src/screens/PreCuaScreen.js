@@ -40,7 +40,7 @@ export default function PreCuaScreen(props) {
   const goToPreguntaCin = () => {
     if (
       selectedOption !== "" &&
-     
+
       (selectedOption === "No" || selectedOptions.length !== 0) &&
       (selectedOption !== "Si" || selectedOptions.length !== 0) &&
       (selectedOption !== "Si" || selectedOptions1.length !== 0)
@@ -149,6 +149,7 @@ export default function PreCuaScreen(props) {
             pregunta4_1: selectedOption.toString(),
             pregunta4_2: selectedOptions.toString(),
             pregunta4_3_1Transtornos: selectedOptions1.toString(),
+            pregunta4_3Mental: mental,
             pregunta4_3_Def: deficit,
             pregunta4_3_Cron: cronicas,
             pregunta4_3_Infec: infecciosas,

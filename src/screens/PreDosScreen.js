@@ -229,12 +229,12 @@ export default function PreDosScreen(props) {
             pregunta2_4_1: etnia || "",
             pregunta2_4_1_nombre: indigena,
             pregunta2_5_2_UltimoNivel: educativo || "",
-            pregunta2_5_1EducaSuperior: educacionSuperior ? educacionSuperior : "NULL",
+            pregunta2_5_1EducaSuperior: educacionSuperior ? educacionSuperior : "",
             pregunta2_6_Ocupacion: ocupacion.toString(),
             pregunta2_6_1Poblacion: poblacion.toString(),
             pregunta2_7_Trabajo: trabajo.toString(),
-            pregunta2_8_1_Salario: salario ? salario : "NULL",
-            pregunta2_8_2_Ingreso: promedio ? promedio : "NULL",
+            pregunta2_8_1_Salario: salario ? salario : "",
+            pregunta2_8_2_Ingreso: promedio ? promedio : "",
           };
         }
       });
