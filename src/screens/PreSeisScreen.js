@@ -32,6 +32,7 @@ export default function PreSeisScreen(props) {
   const [otroTexto1, setOtroTexto1] = useState("");
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedOptions1, setSelectedOptions1] = useState([]);
+  const [edad, setEdad] = useState("");
   const [seleccionoSi1, setSeleccionoSi1] = useState(false);
   const [seleccionoSi, setSeleccionoSi] = useState(false);
   const [otroIndicacion, setOtroIndicacion] = useState("");
@@ -82,6 +83,24 @@ export default function PreSeisScreen(props) {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return date.toLocaleDateString(undefined, options);
   }
+     // Función para calcular la edad
+  const calcularEdad = (fechaNacimiento) => {
+    // Convertimos la fechaNacimiento en un objeto Date
+    const fechaNac = new Date(
+      fechaNacimiento.split("/").reverse().join("-") // Convertimos "DD/MM/AAAA" a "AAAA-MM-DD"
+    );
+
+    const today = new Date();
+    let age = today.getFullYear() - fechaNac.getFullYear();
+    const monthDifference = today.getMonth() - fechaNac.getMonth();
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < fechaNac.getDate())
+    ) {
+      age--;
+    }
+    return age.toString();
+  };
   const showMode = (mode) => {
     setMode(mode);
     setShow(true);

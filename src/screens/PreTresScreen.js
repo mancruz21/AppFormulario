@@ -743,12 +743,14 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 
+
   // Estilo para el texto de las opciones seleccionadas
   selectedOptionText: {
     color: "#BA0C2F", // Color de texto para la opción seleccionada
     fontWeight: "bold", // Puedes ajustar el peso del texto si lo deseas
     fontSize: 16,
   },
+
   checkBoxText: {
     fontSize: 16,
   },
