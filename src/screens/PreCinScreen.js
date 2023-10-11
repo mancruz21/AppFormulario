@@ -1343,7 +1343,7 @@ export default function PreCinScreen(props) {
                           <Text style={styles.preguntas}>¿Cuál?</Text>
                           <TextInput
                             style={styles.input}
-                            value={otro}
+                            value={otro1}
                             onChangeText={handleOtro1}
                             placeholder="Indique cuál"
                           />

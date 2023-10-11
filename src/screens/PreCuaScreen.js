@@ -2363,7 +2363,206 @@ export default function PreCuaScreen(props) {
                   }
                   checkedColor="#BA0C2F"
                 />
+
+{!selectedOptions1.includes("Ninguna de las anteriores") && (
+                  <View>
+                    <Text style={styles.question2}>
+                      PREGUNTA 4.4 (SELECCIÓN MÚLTIPLE - MÁXIMO 2 OPCIONES)
+                    </Text>
+                    <View style={styles.linea1} />
+
+                    <Text style={styles.preguntas}>
+                      Su condición de salud en el último año está relacionada
+                      con mayor frecuencia con la alteración de:
+                    </Text>
+
+                    <View style={styles.inputDate}>
+                      <CheckBox
+                        title="Funciones mentales"
+                        checked={selectedOption1.includes("Funciones mentales")}
+                        onPress={() =>
+                          handleOptionChange8("Funciones mentales")
+                        }
+                        containerStyle={styles.checkBoxContainer}
+                        textStyle={
+                          selectedOption1.includes("Funciones mentales")
+                            ? styles.selectedOptionText
+                            : styles.checkBoxText
+                        }
+                        checkedColor="#BA0C2F"
+                      />
+                      <CheckBox
+                        title="Funciones sensoriales para la captación de estímulos"
+                        checked={selectedOption1.includes(
+                          "Funciones sensoriales para la captación de estímulos"
+                        )}
+                        onPress={() =>
+                          handleOptionChange8(
+                            "Funciones sensoriales para la captación de estímulos"
+                          )
+                        }
+                        containerStyle={styles.checkBoxContainer}
+                        textStyle={
+                          selectedOption1.includes(
+                            "Funciones sensoriales para la captación de estímulos"
+                          )
+                            ? styles.selectedOptionText
+                            : styles.checkBoxText
+                        }
+                        checkedColor="#BA0C2F"
+                      />
+
+                      <CheckBox
+                        title="Funciones de la voz y el habla"
+                        checked={selectedOption1.includes(
+                          "Funciones de la voz y el habla"
+                        )}
+                        onPress={() =>
+                          handleOptionChange8("Funciones de la voz y el habla")
+                        }
+                        containerStyle={styles.checkBoxContainer}
+                        textStyle={
+                          selectedOption1.includes(
+                            "Funciones de la voz y el habla"
+                          )
+                            ? styles.selectedOptionText
+                            : styles.checkBoxText
+                        }
+                        checkedColor="#BA0C2F"
+                      />
+
+                      <CheckBox
+                        title="Funciones de los sistemas cardiovascular, hematológico, inmunológico y respiratorio"
+                        checked={selectedOption1.includes(
+                          "Funciones de los sistemas cardiovascular, hematológico, inmunológico y respiratorio"
+                        )}
+                        onPress={() =>
+                          handleOptionChange8(
+                            "Funciones de los sistemas cardiovascular, hematológico, inmunológico y respiratorio"
+                          )
+                        }
+                        containerStyle={styles.checkBoxContainer}
+                        textStyle={
+                          selectedOption1.includes(
+                            "Funciones de los sistemas cardiovascular, hematológico, inmunológico y respiratorio"
+                          )
+                            ? styles.selectedOptionText
+                            : styles.checkBoxText
+                        }
+                        checkedColor="#BA0C2F"
+                      />
+
+                      <CheckBox
+                        title="Funciones de los sistemas digestivos, metabólico y endocrino (las hormonas)"
+                        checked={selectedOption1.includes(
+                          "Funciones de los sistemas digestivos, metabólico y endocrino (las hormonas)"
+                        )}
+                        onPress={() =>
+                          handleOptionChange8(
+                            "Funciones de los sistemas digestivos, metabólico y endocrino (las hormonas)"
+                          )
+                        }
+                        containerStyle={styles.checkBoxContainer}
+                        textStyle={
+                          selectedOption1.includes(
+                            "Funciones de los sistemas digestivos, metabólico y endocrino (las hormonas)"
+                          )
+                            ? styles.selectedOptionText
+                            : styles.checkBoxText
+                        }
+                        checkedColor="#BA0C2F"
+                      />
+
+                      <CheckBox
+                        title="Funciones genitourinarias y reproductoras"
+                        checked={selectedOption1.includes(
+                          "Funciones genitourinarias y reproductoras"
+                        )}
+                        onPress={() =>
+                          handleOptionChange8(
+                            "Funciones genitourinarias y reproductoras"
+                          )
+                        }
+                        containerStyle={styles.checkBoxContainer}
+                        textStyle={
+                          selectedOption1.includes(
+                            "Funciones genitourinarias y reproductoras"
+                          )
+                            ? styles.selectedOptionText
+                            : styles.checkBoxText
+                        }
+                        checkedColor="#BA0C2F"
+                      />
+
+                      <CheckBox
+                        title="Funciones neuromusculoesqueléticas y relacionadas con el movimiento"
+                        checked={selectedOption1.includes(
+                          "Funciones neuromusculoesqueléticas y relacionadas con el movimiento"
+                        )}
+                        onPress={() =>
+                          handleOptionChange8(
+                            "Funciones neuromusculoesqueléticas y relacionadas con el movimiento"
+                          )
+                        }
+                        containerStyle={styles.checkBoxContainer}
+                        textStyle={
+                          selectedOption1.includes(
+                            "Funciones neuromusculoesqueléticas y relacionadas con el movimiento"
+                          )
+                            ? styles.selectedOptionText
+                            : styles.checkBoxText
+                        }
+                        checkedColor="#BA0C2F"
+                      />
+
+                      <CheckBox
+                        title="Funciones de la piel y estructuras relacionadas (uñas, cabello)"
+                        checked={selectedOption1.includes(
+                          "Funciones de la piel y estructuras relacionadas (uñas, cabello)"
+                        )}
+                        onPress={() =>
+                          handleOptionChange8(
+                            "Funciones de la piel y estructuras relacionadas (uñas, cabello)"
+                          )
+                        }
+                        containerStyle={styles.checkBoxContainer}
+                        textStyle={
+                          selectedOption1.includes(
+                            "Funciones de la piel y estructuras relacionadas (uñas, cabello)"
+                          )
+                            ? styles.selectedOptionText
+                            : styles.checkBoxText
+                        }
+                        checkedColor="#BA0C2F"
+                      />
+
+                      <CheckBox
+                        title="Ninguna de las anteriores"
+                        checked={selectedOption1.includes(
+                          "Ninguna de las anteriores"
+                        )}
+                        onPress={() =>
+                          handleOptionChange8("Ninguna de las anteriores")
+                        }
+                        containerStyle={styles.checkBoxContainer}
+                        textStyle={
+                          selectedOption1.includes("Ninguna de las anteriores")
+                            ? styles.selectedOptionText
+                            : styles.checkBoxText
+                        }
+                        checkedColor="#BA0C2F"
+                      />
+                    </View>
+                    <Text style={styles.advertencia}>
+                      Nota: (Validar con respuesta 4.3.){" "}
+                    </Text>
+                  </View>
+                )}
+
+                
               </View>
+
+              
             )}
 
             {/* Boton */}

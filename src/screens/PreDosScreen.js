@@ -104,8 +104,8 @@ export default function PreDosScreen(props) {
         setOptionSelection(savedOptionSelection || "");
         setEtnia(savedEtnia || null);
         setIndigena(savedIndigena || "");
-        setEducativo(savedEducativo || null);
-        setEducacionSuperior(savedEducacionSuperior || null);
+        setEducativo(savedEducativo || "");
+        setEducacionSuperior(savedEducacionSuperior || "");
         if (savedOcupacion) {
           const parsedOcupacion = JSON.parse(savedOcupacion);
           setOcupacion(Array.isArray(parsedOcupacion) ? parsedOcupacion : []);
@@ -114,8 +114,8 @@ export default function PreDosScreen(props) {
           const parsedTrabajo = JSON.parse(savedTrabajo);
           setTrabajo(Array.isArray(parsedTrabajo) ? parsedTrabajo : []);
         }
-        setSalario(savedSalario || null);
-        setPromedio(savedPromedio || null);
+        setSalario(savedSalario || "");
+        setPromedio(savedPromedio || "");
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -135,11 +135,13 @@ export default function PreDosScreen(props) {
         ? educacionSuperior !== null
         : true) &&
       ocupacion !== null &&
+      (ocupacion === "Trabajando" ? poblacion !== "" : true) &&
       (ocupacion === "Trabajando" ? trabajo.length > 0 : true) &&
       (ocupacion ===
         "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
         ? trabajo !== null
-        : true)
+        : true)&&
+        (ocupacion ==="Trabajando" && salario === "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)" ? promedio !== "" : true) 
     ) {
       try {
         // Evitar guardar valores null
@@ -152,14 +154,14 @@ export default function PreDosScreen(props) {
           await AsyncStorage.setItem("OptionSelection", OptionSelection);
         if (etnia !== null) await AsyncStorage.setItem("etnia", etnia);
         if (indigena !== null) await AsyncStorage.setItem("indigena", indigena);
-        if (educativo !== null)
+        if (educativo !== "")
           await AsyncStorage.setItem("educativo", educativo);
-        if (educacionSuperior !== null)
+        if (educacionSuperior !== "")
           await AsyncStorage.setItem("educacionSuperior", educacionSuperior);
         await AsyncStorage.setItem("ocupacion", JSON.stringify(ocupacion));
         await AsyncStorage.setItem("trabajo", JSON.stringify(trabajo));
-        if (salario !== null) await AsyncStorage.setItem("salario", salario);
-        if (promedio !== null) await AsyncStorage.setItem("promedio", promedio);
+        if (salario !== "") await AsyncStorage.setItem("salario", salario);
+        if (promedio !== "") await AsyncStorage.setItem("promedio", promedio);
 
         navigation.navigate("Pregunta 2.1", {
 
@@ -168,6 +170,10 @@ export default function PreDosScreen(props) {
         });
         console.log(numeroIdentificacion)
         console.log(poblacion)
+        console.log(educacionSuperior)
+        console.log(salario)
+        console.log(promedio)
+        console.log(educativo)
       } catch (error) {
         console.error("Error saving data:", error);
       }

@@ -56,7 +56,7 @@ export default function PreTresScreen(props) {
           "nombreDepartamento"
         );
 
-        setSelectedOption(savedSelectedOption || null);
+        setSelectedOption(savedSelectedOption || "");
         setAseguradora(savedAseguradora || "option1");
         setOtraAseguradora(savedOtraAseguradora || "");
         setSelectedOption2(savedSelectedOption2 || "");
@@ -74,7 +74,7 @@ export default function PreTresScreen(props) {
 
   const goToPreguntaCua = async () => {
     if (
-      selectedOption !== null &&
+      selectedOption !== "" &&
       aseguradora !== "" &&
       (aseguradora === "Otra" ? otraAseguradora !== "" : true) &&
       selectedOption2 !== null &&
@@ -83,25 +83,25 @@ export default function PreTresScreen(props) {
       selectedOption3 !== null &&
       (selectedOption3 !== "No" || municipio1 !== "") &&
       (selectedOption3 !== "No" || nombreDepartamento !== "")
-    ) {
+  ) {
       try {
-        await AsyncStorage.setItem("selectedOption", selectedOption);
-        await AsyncStorage.setItem("aseguradora", aseguradora);
-        await AsyncStorage.setItem("otraAseguradora", otraAseguradora);
-        await AsyncStorage.setItem("selectedOption2", selectedOption2);
-        await AsyncStorage.setItem("municipio", municipio);
-        await AsyncStorage.setItem("selectedOption3", selectedOption3);
-        await AsyncStorage.setItem("municipio1", municipio1);
-        await AsyncStorage.setItem("nombreDepartamento", nombreDepartamento);
-
-        navigation.navigate("Pregunta 2.2", { numeroIdentificacion: numeroIdentificacion });
+          await AsyncStorage.setItem("selectedOption", selectedOption);
+          await AsyncStorage.setItem("aseguradora", aseguradora);
+          await AsyncStorage.setItem("otraAseguradora", otraAseguradora);
+          await AsyncStorage.setItem("selectedOption2", selectedOption2);
+          await AsyncStorage.setItem("municipio", municipio);
+          await AsyncStorage.setItem("selectedOption3", selectedOption3);
+          await AsyncStorage.setItem("municipio1", municipio1);
+          await AsyncStorage.setItem("nombreDepartamento", nombreDepartamento);
+  
+          navigation.navigate("Pregunta 2.2", { numeroIdentificacion: numeroIdentificacion });
       } catch (error) {
-        console.error("Error saving data:", error);
-        Alert.alert("Error", "Hubo un error al guardar los datos.");
+          console.error("Error saving data:", error);
+          Alert.alert("Error", "Hubo un error al guardar los datos.");
       }
-    } else {
+  } else {
       Alert.alert("Error", "Por favor completa todos los campos.");
-    }
+  }
   };
 
 
@@ -149,6 +149,8 @@ export default function PreTresScreen(props) {
       });
       console.log("Los datos se han guardado correctamente en Realm.");
       console.log(numeroIdentificacion)
+      console.log(municipio)
+      console.log(selectedOption)
     } catch (error) {
       console.error("Error al guardar datos en Realm:", error);
     }

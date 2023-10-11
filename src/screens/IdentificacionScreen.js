@@ -270,7 +270,6 @@ const SaveIdent = async () => {
                 <Picker.Item label="Cauca" value="Cauca" />
                 <Picker.Item label="Meta" value="Meta" />
                 <Picker.Item label="Putumayo" value="Putumayo" />
-
                 <Picker.Item label="Valle del Cauca" value="Valle del Cauca" />
 
               </Picker>
