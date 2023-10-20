@@ -125,6 +125,36 @@ export default function PreDosScreen(props) {
     }
     setOcupacion(option);
   };
+  const handleEducacion = (option)=>{
+
+     // Resetear las opciones anidadas cuando se cambia la ocupación
+     if ((educativo === "Educación Superior" && option !== "Educación Superior")) {
+     // Restablecer las variables
+     setEducacionSuperior("");
+     
+     
+     // También puedes resetear otras variables relacionadas con "Trabajando" aquí si es necesario
+   }
+   setEducativo(option);
+
+  }
+  const handleSalario = (option)=>{
+
+    // Resetear las opciones anidadas cuando se cambia la ocupación
+    if ((salario === "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)"
+     && option !== "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)")) {
+    // Restablecer las variables
+    setPromedio("");
+    
+    
+    // También puedes resetear otras variables relacionadas con "Trabajando" aquí si es necesario
+  }
+  setSalario(option);
+
+ }
+
+
+
 
 
   useEffect(() => {
@@ -794,7 +824,7 @@ export default function PreDosScreen(props) {
               <CheckBox
                 title="Preescolar"
                 checked={educativo === "Preescolar"}
-                onPress={() => setEducativo("Preescolar")}
+                onPress={() => handleEducacion("Preescolar")}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   educativo === "Preescolar"
@@ -810,7 +840,7 @@ export default function PreDosScreen(props) {
                   educativo === "Educación básica primaria (1 a 5 grado)"
                 }
                 onPress={() =>
-                  setEducativo("Educación básica primaria (1 a 5 grado)")
+                  handleEducacion("Educación básica primaria (1 a 5 grado)")
                 }
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
@@ -826,7 +856,7 @@ export default function PreDosScreen(props) {
                   educativo === "Educación básica secundaria (6 a 9 grado)"
                 }
                 onPress={() =>
-                  setEducativo("Educación básica secundaria (6 a 9 grado)")
+                  handleEducacion("Educación básica secundaria (6 a 9 grado)")
                 }
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
@@ -839,7 +869,7 @@ export default function PreDosScreen(props) {
               <CheckBox
                 title="Educación media (10 a 11 grado)"
                 checked={educativo === "Educación media (10 a 11 grado)"}
-                onPress={() => setEducativo("Educación media (10 a 11 grado)")}
+                onPress={() => handleEducacion("Educación media (10 a 11 grado)")}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   educativo === "Educación media (10 a 11 grado)"
@@ -851,7 +881,7 @@ export default function PreDosScreen(props) {
               <CheckBox
                 title="Educación Superior"
                 checked={educativo === "Educación Superior"}
-                onPress={() => setEducativo("Educación Superior")}
+                onPress={() => handleEducacion("Educación Superior")}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   educativo === "Educación Superior"
@@ -909,7 +939,7 @@ export default function PreDosScreen(props) {
               <CheckBox
                 title="Postgrado"
                 checked={educativo === "Postgrado"}
-                onPress={() => setEducativo("Postgrado")}
+                onPress={() => handleEducacion("Postgrado")}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   educativo === "Postgrado"
@@ -922,7 +952,7 @@ export default function PreDosScreen(props) {
               <CheckBox
                 title="Ninguno"
                 checked={educativo === "Ninguno"}
-                onPress={() => setEducativo("Ninguno")}
+                onPress={() => handleEducacion("Ninguno")}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   educativo === "Ninguno"
@@ -1187,7 +1217,7 @@ export default function PreDosScreen(props) {
                         salario === "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)"
                       }
                       onPress={() =>
-                        setSalario("Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)")
+                        handleSalario("Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)")
                       }
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
@@ -1270,7 +1300,7 @@ export default function PreDosScreen(props) {
                       title="Entre $654.000 y $908.000 1 SMMLV"
                       checked={salario === "Entre $654.000 y $908.000 1 SMMLV"}
                       onPress={() =>
-                        setSalario("Entre $654.000 y $908.000 1 SMMLV")
+                        handleSalario("Entre $654.000 y $908.000 1 SMMLV")
                       }
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
@@ -1288,7 +1318,7 @@ export default function PreDosScreen(props) {
                         "Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
                       }
                       onPress={() =>
-                        setSalario(
+                        handleSalario(
                           "Más de 1 y ≤1.5 SMMLV ($910.000 - $1.362.000)"
                         )
                       }
@@ -1306,7 +1336,7 @@ export default function PreDosScreen(props) {
                       title="Mayor a 1.5 SMMLV ( ≥$1.365.000)"
                       checked={salario === "Mayor a 1.5 SMMLV ( ≥$1.365.000)"}
                       onPress={() =>
-                        setSalario("Mayor a 1.5 SMMLV ( ≥$1.365.000)")
+                        handleSalario("Mayor a 1.5 SMMLV ( ≥$1.365.000)")
                       }
                       containerStyle={styles.checkBoxContainer}
                       textStyle={
