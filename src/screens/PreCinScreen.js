@@ -508,8 +508,9 @@ export default function PreCinScreen(props) {
         }
       }
     }
+    
   };
-  
+
 
   const handleOptionChangedos = (option) => {
     if (selectedOption2.includes(option)) {
@@ -703,7 +704,29 @@ export default function PreCinScreen(props) {
     showTextInput, showTextInput1, showTextInput2, showTextInput3, transporte,
     motivo, motivo1, motivo2, motivo3, selectedColumns, selectedColumns1,]);
 
-
+    
+    const handleSelect = (option) => {
+      // Resetear las opciones anidadas cuando se cambia la ocupación
+      if ((selectedOption1 === "Sí" && option !== "Sí") ||
+        (selectedOption1 === "No" &&
+          option !== "No")) {
+        // Restablecer las variables
+        setSelectedOption222([]);
+        setSelectedOptions4([]);
+        setSelectedOption8("");
+        setSelectedOption9("");
+        setSelectedOption0("");
+        setSelected1Option([]); 
+        setSelected1Option2([]); 
+        setTransporte([]);
+        setSelectedColumns("");
+        setSelectedColumns1("");
+        
+        
+        // También puedes resetear otras variables relacionadas con "Trabajando" aquí si es necesario
+      }
+      setSelectedOption1(option);
+    };
 
 
   return (
@@ -1514,7 +1537,7 @@ export default function PreCinScreen(props) {
               <CheckBox
                 title="Sí"
                 checked={selectedOption1 === "Sí"}
-                onPress={() => setSelectedOption1("Sí")}
+                onPress={() => handleSelect("Sí")}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   selectedOption1 === "Sí"
@@ -1527,7 +1550,7 @@ export default function PreCinScreen(props) {
               <CheckBox
                 title="No"
                 checked={selectedOption1 === "No"}
-                onPress={() => setSelectedOption1("No")}
+                onPress={() => handleSelect("No")}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   selectedOption1 === "No"
@@ -1697,7 +1720,7 @@ export default function PreCinScreen(props) {
                   }
                   checkedColor="#BA0C2F"
                 />
-                 <CheckBox
+                <CheckBox
                   title="No Aplica"
                   checked={selected1Option.includes("No Aplica")}
                   onPress={() => handleOption1Select("No Aplica")}
@@ -2483,7 +2506,7 @@ export default function PreCinScreen(props) {
 
                   <Text style={styles.preguntas}>
                     Como consecuencia de su condición de salud <Text style={styles.subrayado}>¿ha requerido
-                    productos de apoyo durante el último año? </Text> (ej.: sillas de
+                      productos de apoyo durante el último año? </Text> (ej.: sillas de
                     ruedas, bastones de orientación visual, muletas,
                     caminadores, audífonos, gafas, prótesis, etc.){" "}
                   </Text>

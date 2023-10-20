@@ -290,7 +290,7 @@ export default function PreSeisScreen(props) {
     const pregunta6_1 = selectedOptionsStrings.join(', ');
 
     const selectedOptions1Strings = selectedOptions1.map((index) => opciones[index]);
-    const pregunta6_2_1 = selectedOptions1Strings.join(', ');
+    const pregunta6_2_2 = selectedOptions1Strings.join(', ');
 
 
     try {
@@ -307,6 +307,7 @@ export default function PreSeisScreen(props) {
             pregunta6_1,
             otroTexto6_1: otroTexto,
             pregunta6_2: opcion6_2.toString(),
+            pregunta6_2_2,
             pregunta6_2_1: otroTexto1,
             pregunta6_3: selectedOption3,
             departamento_pregunta6_3: nombreDepartamento,
@@ -319,6 +320,8 @@ export default function PreSeisScreen(props) {
 
       console.log("Los datos se han guardado correctamente en Realm.");
       console.log(numeroIdentificacion);
+      console.log(pregunta6_2_2);
+      console.log(pregunta6_1);
      
     } catch (error) {
       console.error("Error al guardar datos en Realm:", error);

@@ -265,6 +265,7 @@ const SaveIdent = async () => {
                 style={{ height: 70, width: 300 }}
                 onValueChange={departamentoHandle}
               >
+                <Picker.Item label="Seleccione un departamento" value="No selecciono" />
                 <Picker.Item label="Antioquia" value="Antioquia" />
                 <Picker.Item label="Bolívar" value="Bolívar" />
                 <Picker.Item label="Cauca" value="Cauca" />

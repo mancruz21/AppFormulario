@@ -78,6 +78,52 @@ export default function PreDosScreen(props) {
       // De lo contrario, establece la opción seleccionada en la opción presionada
       setSelectedOption4(opcion);
     }
+    if (opcion !== selectedOption4) {
+      // Si la opción presionada es diferente, verifica si es una opción de población con preguntas anidadas
+      if (opcion === "Población con Discapacidad") {
+        // Establece la opción de población seleccionada y restablece las selecciones anidadas
+        setSelectedOption4(opcion);
+        setDiscapacidad("");
+        setOptionSelection("");
+
+      } else if (opcion === "Población LGBTIQ") {
+        // Si se selecciona "Población LGBTIQ", restablece las selecciones anidadas
+        setSelectedOption4(opcion);
+        setDiscapacidad("");
+        setOptionSelection("");
+
+      } else {
+        // Si se selecciona otra opción, establece solo la opción seleccionada
+        setSelectedOption4(opcion);
+        // Restablece las selecciones anidadas y el tipo de población seleccionado
+        setDiscapacidad("");
+        setOptionSelection("");
+
+      }
+    } else {
+      // Si la opción presionada es la misma que la opción actualmente seleccionada, deselecciónala
+      setSelectedOption4([]);
+      // Restablece las selecciones anidadas y el tipo de población seleccionado
+      setDiscapacidad("");
+      setOptionSelection("");
+
+    }
+  };
+
+  const handleOcupacionSelect = (option) => {
+    // Resetear las opciones anidadas cuando se cambia la ocupación
+    if ((ocupacion === "Trabajando" && option !== "Trabajando") ||
+      (ocupacion === "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)" &&
+        option !== "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)")) {
+      // Restablecer las variables
+      setPoblacion("");
+      setTrabajo("");
+      setSalario("");
+      setPromedio("");
+      
+      // También puedes resetear otras variables relacionadas con "Trabajando" aquí si es necesario
+    }
+    setOcupacion(option);
   };
 
 
@@ -100,7 +146,7 @@ export default function PreDosScreen(props) {
         setOpcion1(savedOpcion1 || null);
         setOpcion2(savedOpcion2 || null);
         setOpcion3(savedOpcion3 || null);
-        setDiscapacidad(savedDiscapacidad || null);
+        setDiscapacidad(savedDiscapacidad || "");
         setOptionSelection(savedOptionSelection || "");
         setEtnia(savedEtnia || null);
         setIndigena(savedIndigena || "");
@@ -140,8 +186,8 @@ export default function PreDosScreen(props) {
       (ocupacion ===
         "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
         ? trabajo !== null
-        : true)&&
-        (ocupacion ==="Trabajando" && salario === "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)" ? promedio !== "" : true) 
+        : true) &&
+      (ocupacion === "Trabajando" && salario === "Entre $332.000 y $653.781 (De 0 a < 1 SMMLV)" ? promedio !== "" : true)
     ) {
       try {
         // Evitar guardar valores null
@@ -170,10 +216,14 @@ export default function PreDosScreen(props) {
         });
         console.log(numeroIdentificacion)
         console.log(poblacion)
-        console.log(educacionSuperior)
         console.log(salario)
+        console.log(discapacidad)
+        console.log(OptionSelection)
         console.log(promedio)
-        console.log(educativo)
+        console.log(trabajo)
+        console.log(ocupacion)
+
+
       } catch (error) {
         console.error("Error saving data:", error);
       }
@@ -909,7 +959,7 @@ export default function PreDosScreen(props) {
               <CheckBox
                 title="Trabajando"
                 checked={ocupacion === "Trabajando"}
-                onPress={() => setOcupacion("Trabajando")}
+                onPress={() => handleOcupacionSelect("Trabajando")}
                 containerStyle={styles.checkBoxContainer}
                 textStyle={
                   ocupacion === "Trabajando"
@@ -957,7 +1007,7 @@ export default function PreDosScreen(props) {
             <CheckBox
               title="En búsqueda de empleo (cesante)"
               checked={ocupacion === "En búsqueda de empleo (cesante)"}
-              onPress={() => setOcupacion("En búsqueda de empleo (cesante)")}
+              onPress={() => handleOcupacionSelect("En búsqueda de empleo (cesante)")}
               containerStyle={styles.checkBoxContainer}
               textStyle={
                 ocupacion === "En búsqueda de empleo (cesante)"
@@ -971,7 +1021,7 @@ export default function PreDosScreen(props) {
               title="Con incapacidad permanente para trabajar"
               checked={ocupacion === "Con incapacidad permanente para trabajar"}
               onPress={() =>
-                setOcupacion("Con incapacidad permanente para trabajar")
+                handleOcupacionSelect("Con incapacidad permanente para trabajar")
               }
               containerStyle={styles.checkBoxContainer}
               textStyle={
@@ -985,7 +1035,7 @@ export default function PreDosScreen(props) {
             <CheckBox
               title="Estudiando"
               checked={ocupacion === "Estudiando"}
-              onPress={() => setOcupacion("Estudiando")}
+              onPress={() => handleOcupacionSelect("Estudiando")}
               containerStyle={styles.checkBoxContainer}
               textStyle={
                 ocupacion === "Estudiando"
@@ -999,7 +1049,7 @@ export default function PreDosScreen(props) {
               title="Actividades del hogar (sin ingresos)"
               checked={ocupacion === "Actividades del hogar (sin ingresos)"}
               onPress={() =>
-                setOcupacion("Actividades del hogar (sin ingresos)")
+                handleOcupacionSelect("Actividades del hogar (sin ingresos)")
               }
               containerStyle={styles.checkBoxContainer}
               textStyle={
@@ -1017,7 +1067,7 @@ export default function PreDosScreen(props) {
                 "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
               }
               onPress={() =>
-                setOcupacion(
+                handleOcupacionSelect(
                   "Ninguna de las anteriores / Otras Actividades (pensionado, percibiendo renta, beneficiario de ayudas monetarias)"
                 )
               }
